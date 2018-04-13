@@ -33,8 +33,8 @@ CASE_ID INT NOT NULL AUTO_INCREMENT comment '用例ID',
 CASE_LIB_ID INT NOT NULL comment '所属用例库ID',
 CASE_NAME varchar(20) NOT NULL comment '用例名称',
 CASE_PARA_TYPE ENUM('XML', 'JSON') NOT NULL comment '用例参数类别',
-PARAMETER varchar(160) comment '输入',
-DESIRED_RESPONSE varchar(160)  comment '期望输出',
+PARAMETER TEXT comment '输入',
+DESIRED_RESPONSE TEXT  comment '期望输出',
 CASE_INFO varchar(60) NOT NULL comment '用例说明',
 PRIMARY KEY (CASE_ID)
 ) comment='测试用例';
@@ -51,8 +51,8 @@ CREATE TABLE mojohao.TEST_RESULT
 TEST_ID INT NOT NULL COMMENT '测试编号',
 CASE_ID INT NOT NULL COMMENT '用例编号',
 TEST_DATE TIMESTAMP NOT NULL COMMENT '测试时间',
-DESIRED_RESPONSE varchar(160)  comment '期望输出',
-ACTUAL_RESPONSE varchar(160)  comment '实际输出',
+DESIRED_RESPONSE TEXT  comment '期望输出',
+ACTUAL_RESPONSE TEXT  comment '实际输出',
 ASSERTION ENUM('PASSED', 'UNPASSED') comment '断言',
 PRIMARY KEY (TEST_ID,CASE_ID)
 ) comment='测试结果';
