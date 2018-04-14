@@ -1,6 +1,6 @@
 package io.mojohao.soapui_ng.entity;
 
-public class ApiList {
+public class Api {
     private int apiId;
     private String apiName;
     private String apiType;

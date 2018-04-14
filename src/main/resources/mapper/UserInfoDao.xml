@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mojohao.soapui_ng.dao.UserInfoDao">
+    <select id="getAllUserInfos" resultType="UserInfo">
+        SELECT * FROM USER_INFO
+    </select>
+    <select id="queryUserInfoById" parameterType="int" resultType="UserInfo">
+        SELECT * FROM USER_INFO WHERE USER_INFO.USER_ID=#{userId}
+    </select>
+    <select id="queryUserInfoByCondition" parameterType="UserInfo" resultType="UserInfo">
+        SELECT * FROM USER_INFO WHERE USER_INFO.USER_ID=#{userId}
+    </select>
+    <delete id="deleteUserInfoById" parameterType="int">
+        DELETE FROM USER_INFO WHERE USER_INFO.USER_ID=#{userId}
+    </delete>
+    <update id="updateUserInfo" parameterType="UserInfo" >
+        UPDATE USER_INFO
+        SET USER_STATE=#{userState},
+            USER_TYPE=#{userType},
+            USER_NAME=#{userName},
+            USER_ADDRESS=#{userAddress},
+            USER_AREA_CODE=#{userAreaCode},
+            USER_ELEM_CODE=#{userElemCode}
+        WHERE USER_ID=#{userId}
+    </update>
+    <insert id="insertUserInfo" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="userId">
+        insert into USER_INFO(USER_STATE,USER_TYPE,USER_NAME,USER_ADDRESS,USER_AREA_CODE,USER_ELEM_CODE)
+                values(#{userState},#{userType},#{userName},#{userAddress},#{userAreaCode},#{userElemCode})
+    </insert>
+</mapper>

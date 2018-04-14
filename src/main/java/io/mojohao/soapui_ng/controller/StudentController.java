@@ -1,6 +1,5 @@
 package io.mojohao.soapui_ng.controller;
 
-import io.mojohao.soapui_ng.entity.Student;
 import io.mojohao.soapui_ng.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

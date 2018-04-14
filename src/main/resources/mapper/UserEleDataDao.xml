@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mojohao.soapui_ng.dao.UserEleDataDao">
+    <select id="getAllUserEleDatas" resultType="UserEleData">
+        SELECT * FROM USER_ELE_DATA
+    </select>
+    <select id="queryUserEleDataById" resultType="UserEleData">
+        SELECT * FROM USER_ELE_DATA WHERE USER_ELE_DATA.USER_ID=#{userId} AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
+    </select>
+    <select id="queryUserEleDataByCondition" parameterType="UserEleData" resultType="UserEleData">
+        SELECT * FROM USER_ELE_DATA WHERE USER_ELE_DATA.USER_ID=#{userId}
+    </select>
+    <delete id="deleteUserEleDataById">
+        DELETE FROM USER_ELE_DATA WHERE USER_ELE_DATA.USER_ID=#{userId} AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
+    </delete>
+    <update id="updateUserEleData" parameterType="UserEleData" >
+        UPDATE USER_ELE_DATA
+        SET ELEM_ID=#{elemId},
+            ELEM_DATA=#{elemData}
+        WHERE USER_ID=#{userId} AND COLLECT_TIME=#{collectTime}
+    </update>
+    <insert id="insertUserEleData" parameterType="UserEleData" useGeneratedKeys="true" keyProperty="userId">
+        insert into USER_ELE_DATA(COLLECT_TIME,ELEM_ID,ELEM_DATA)
+        values(#{collectTime},#{elemId},#{elemData})
+    </insert>
+</mapper>

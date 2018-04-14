@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mojohao.soapui_ng.dao.ApiDao">
+    <resultMap type="Api" id="ApiResult">
+        <id property="apiId" column="api_id" />
+        <result property="apiName" column="api_name" />
+        <result property="apiType" column="api_type" />
+        <result property="apiLink" column="api_link" />
+        <result property="accessMode" column="access_mode" />
+        <result property="apiInfo" column="api_info" />
+    </resultMap>
+    <select id="getAllApis" resultMap="ApiResult">
+        SELECT * FROM API_LIST
+    </select>
+    <select id="queryApiById" parameterType="int" resultMap="ApiResult">
+        SELECT * FROM API_LIST WHERE API_LIST.API_ID=#{id}
+    </select>
+    <select id="queryApiByCondition" parameterType="Api" resultMap="ApiResult">
+        SELECT * FROM API_LIST WHERE API_LIST.API_ID=#{apiId}
+    </select>
+    <delete id="deleteApiById" parameterType="int">
+        DELETE FROM API_LIST WHERE API_LIST.API_ID=#{id}
+    </delete>
+    <update id="updateApi" parameterType="Api" >
+        UPDATE api_list
+        SET API_NAME=#{apiName},
+            ACCESS_MODE=#{accessMode},
+            API_INFO=#{apiInfo},
+            API_LINK=#{apiLink},
+            API_TYPE=#{apiType}
+        WHERE API_ID=#{apiId}
+    </update>
+    <insert id="insertApi" parameterType="Api" useGeneratedKeys="true" keyProperty="apiId">
+        insert into api_list(API_TYPE,API_LINK,API_INFO,ACCESS_MODE,API_NAME)
+                values(#{apiType},#{apiLink},#{apiInfo},#{accessMode},#{apiName})
+    </insert>
+</mapper>

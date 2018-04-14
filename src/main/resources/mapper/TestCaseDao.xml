@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mojohao.soapui_ng.dao.TestCaseDao">
+    <resultMap type="TestCase" id="TestCaseResult">
+        <id property="caseId" column="case_id" />
+        <result property="caseLibId" column="case_lib_id" />
+        <result property="caseName" column="case_name" />
+        <result property="caseParaType" column="case_para_type" />
+        <result property="parameter" column="parameter" />
+        <result property="desiredResponse" column="desired_response" />
+        <result property="caseInfo" column="case_info" />
+    </resultMap>
+    <select id="getAllTestCases" resultMap="TestCaseResult">
+        SELECT * FROM TEST_CASE
+    </select>
+    <select id="queryTestCaseById" parameterType="int" resultMap="TestCaseResult">
+        SELECT * FROM TEST_CASE WHERE TEST_CASE.CASE_ID=#{id}
+    </select>
+    <select id="queryTestCaseByCondition" parameterType="TestCase" resultMap="TestCaseResult">
+        SELECT * FROM TEST_CASE WHERE TEST_CASE.CASE_ID=#{caseId}
+    </select>
+    <delete id="deleteTestCaseById" parameterType="int">
+        DELETE FROM TEST_CASE WHERE TEST_CASE.CASE_ID=#{id}
+    </delete>
+    <update id="updateTestCase" parameterType="TestCase" >
+        UPDATE TEST_CASE
+        SET CASE_LIB_ID=#{caseLibId},
+            CASE_NAME=#{caseName},
+            CASE_PARA_TYPE=#{caseParaType},
+            PARAMETER=#{parameter},
+            DESIRED_RESPONSE=#{desiredResponse},
+            CASE_INFO=#{caseInfo}
+        WHERE CASE_ID=#{caseId}
+    </update>
+    <insert id="insertTestCase" parameterType="TestCase" useGeneratedKeys="true" keyProperty="caseId">
+        insert into TEST_CASE(CASE_LIB_ID,CASE_NAME,CASE_PARA_TYPE,PARAMETER,DESIRED_RESPONSE,CASE_INFO)
+        values(#{caseLibId},#{caseName},#{caseParaType},#{parameter},#{desiredResponse},#{caseInfo})
+    </insert>
+</mapper>

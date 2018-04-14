@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mojohao.soapui_ng.dao.TestResultDao">
+    <select id="getAllTestResults" resultType="TestResult">
+        SELECT * FROM TEST_RESULT
+    </select>
+    <select id="queryTestResultById" parameterType="int" resultType="TestResult">
+        SELECT * FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
+    </select>
+    <select id="queryTestResultByCondition" parameterType="TestResult" resultType="TestResult">
+        SELECT * FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
+    </select>
+    <insert id="insertTestResult" parameterType="TestResult" useGeneratedKeys="false">
+        insert into TEST_RESULT(TEST_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
+        values(#{testId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})
+    </insert>
+</mapper>
