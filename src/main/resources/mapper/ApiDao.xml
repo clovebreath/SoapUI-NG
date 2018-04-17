@@ -17,7 +17,17 @@
         SELECT * FROM API_LIST WHERE API_LIST.API_ID=#{id}
     </select>
     <select id="queryApiByCondition" parameterType="Api" resultMap="ApiResult">
-        SELECT * FROM API_LIST WHERE API_LIST.API_ID=#{apiId}
+        SELECT * FROM API_LIST
+        WHERE 1=1
+        <if test="apiId!=null and apiId!=''">
+            AND API_LIST.API_ID=#{apiId}
+        </if>
+        <if test="apiName!=null and apiName!=''">
+            AND API_LIST.API_NAME=#{apiName}
+        </if>
+        <if test="apiType!=null and apiType!=''">
+            AND API_LIST.API_TYPE=#{apiType}
+        </if>
     </select>
     <delete id="deleteApiById" parameterType="int">
         DELETE FROM API_LIST WHERE API_LIST.API_ID=#{id}

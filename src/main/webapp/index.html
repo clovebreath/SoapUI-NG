@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <script src="resources/js/jquery-3.3.1.min.js"></script>
     <script src="resources/js/bootstrap.min.js"></script>
+    <script src="resources/js/main.js"></script>
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -13,44 +14,54 @@
 
             <div class="tabbable" id="tabs-main">
                 <ul class="nav nav-tabs">
-                    <li class="active">
+                    <li id="tab-all" class="active">
                         <a href="#panel-all" data-toggle="tab">总览</a>
                     </li>
-                    <li>
-                        <a href="#panel-interface" data-toggle="tab">接口管理</a>
+                    <li id="tab-api">
+                        <a href="#panel-api" data-toggle="tab">接口管理</a>
                     </li>
-                    <li>
+                    <li id="tab-lib">
                         <a href="#panel-lib" data-toggle="tab">用例库管理</a>
                     </li>
-                    <li>
+                    <li id="tab-case">
                         <a href="#panel-case" data-toggle="tab">用例管理</a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="panel-all">
-
+                        <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
                     </div>
-                    <div class="tab-pane" id="panel-interface">
+                    <div class="tab-pane" id="panel-api">
                         <div class="col-md-9 column">
-                            <form class="form-inline" action="interface/query" method="post">
+                            <!-- 表单 用于查询信息 -->
+                            <form class="form-inline" id="api-query-form" target="nm_iframe">
                                 <div class="form-group">
-                                    <label for="interface-name">接口名称</label>
-                                    <input type="text" class="form-control"  width="100px" id="interface-name" placeholder="接口名称">
+                                    <label for="api-name">接口名称</label>
+                                    <input type="text" class="form-control"  width="100px" id="api-name" placeholder="接口名称">
                                 </div>
                                 <div class="form-group">
-                                    <label for="interface-id">接口编号</label>
-                                    <input type="email" class="form-control" width="40px" id="interface-id" placeholder="接口编号">
+                                    <label for="api-id">接口编号</label>
+                                    <input type="number" class="form-control" width="40px" id="api-id" placeholder="接口编号">
                                 </div>
                                 <div class="form-group">
-                                    <label for="interface-type">接口类型</label>
-                                    <select class="form-control" id="interface-type">
-                                        <option>所有</option>
-                                        <option>SOAP</option>
-                                        <option>REST</option>
+                                    <label for="api-type">接口类型</label>
+                                    <select class="form-control" id="api-type">
+                                        <option value="">所有</option>
+                                        <option value="SOAP">SOAP</option>
+                                        <option value="REST">REST</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-default">查询</button>
+                                <button onclick="queryApi()" class="btn btn-default">查询</button>
                             </form>
+
+                            <!-- 表格 用于展示信息 -->
+                            <table id="api-query-table" class="table table-bordered">
+                                <thead><tr>
+                                    <th>ID</th> <th>名称</th> <th>类型</th> <th>地址</th> <th>访问方式</th> <th>说明</th>
+                                </tr></thead>
+                                <tfoot></tfoot>
+                                <tbody></tbody>
+                            </table>
 
                             <div class="modal fade" id="modal-container-new-interface" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
                                 <div class="modal-dialog">
