@@ -18,7 +18,20 @@
         SELECT * FROM TEST_CASE WHERE TEST_CASE.CASE_ID=#{id}
     </select>
     <select id="queryTestCaseByCondition" parameterType="TestCase" resultMap="TestCaseResult">
-        SELECT * FROM TEST_CASE WHERE TEST_CASE.CASE_ID=#{caseId}
+        SELECT * FROM TEST_CASE
+        WHERE 1=1
+        <if test="caseId!=null and caseId!=''">
+            AND TEST_CASE.CASE_ID=#{caseId}
+        </if>
+        <if test="caseName!=null and caseName!=''">
+            AND TEST_CASE.CASE_NAME=#{caseName}
+        </if>
+        <if test="caseParaType!=null and caseParaType!=''">
+            AND TEST_CASE.CASE_PARA_TYPE=#{caseParaType}
+        </if>
+        <if test="caseLibId!=null and caseLibId!=''">
+            AND TEST_CASE.CASE_LIB_ID=#{caseLibId}
+        </if>
     </select>
     <delete id="deleteTestCaseById" parameterType="int">
         DELETE FROM TEST_CASE WHERE TEST_CASE.CASE_ID=#{id}

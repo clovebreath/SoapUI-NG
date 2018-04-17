@@ -1,34 +1,40 @@
 package io.mojohao.soapui_ng.service.impl;
 
+import io.mojohao.soapui_ng.dao.TestCaseDao;
 import io.mojohao.soapui_ng.entity.TestCase;
 import io.mojohao.soapui_ng.service.TestCaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class TestCaseServiceImpl implements TestCaseService {
+
+    @Autowired
+    private TestCaseDao testCaseDao;
+
     public List<TestCase> getAllTestCases() {
-        return null;
+        return testCaseDao.getAllTestCases();
     }
 
     public TestCase queryTestCaseById(int id) {
-        return null;
+        return testCaseDao.queryTestCaseById(id);
     }
 
     public List<TestCase> queryTestCaseByCondition(TestCase testCase) {
-        return null;
+        return testCaseDao.queryTestCaseByCondition(testCase);
     }
 
     public int deleteTestCaseById(int id) {
-        return 0;
+        return testCaseDao.deleteTestCaseById(id);
     }
 
     public int updateTestCase(TestCase testCase) {
-        return 0;
+        return testCaseDao.updateTestCase(testCase);
     }
 
     public int insertTestCase(TestCase testCase) {
-        return 0;
+        return testCaseDao.insertTestCase(testCase);
     }
 }

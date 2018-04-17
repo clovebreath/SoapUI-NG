@@ -1,34 +1,39 @@
 package io.mojohao.soapui_ng.service.impl;
 
+import io.mojohao.soapui_ng.dao.TestCaseLibDao;
 import io.mojohao.soapui_ng.entity.TestCaseLib;
 import io.mojohao.soapui_ng.service.TestCaseLibService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class TestCaseLibServiceImpl implements TestCaseLibService {
+    @Autowired
+    private TestCaseLibDao testCaseLibDao;
+
     public List<TestCaseLib> getAllTestCaseLibs() {
-        return null;
+        return testCaseLibDao.getAllTestCaseLibs();
     }
 
     public TestCaseLib queryTestCaseLibById(int id) {
-        return null;
+        return testCaseLibDao.queryTestCaseLibById(id);
     }
 
     public List<TestCaseLib> queryTestCaseLibByCondition(TestCaseLib testCaseLib) {
-        return null;
+        return testCaseLibDao.queryTestCaseLibByCondition(testCaseLib);
     }
 
     public int deleteTestCaseLibById(int id) {
-        return 0;
+        return testCaseLibDao.deleteTestCaseLibById(id);
     }
 
     public int updateTestCaseLib(TestCaseLib testCaseLib) {
-        return 0;
+        return testCaseLibDao.updateTestCaseLib(testCaseLib);
     }
 
     public int insertTestCaseLib(TestCaseLib testCaseLib) {
-        return 0;
+        return testCaseLibDao.insertTestCaseLib(testCaseLib);
     }
 }

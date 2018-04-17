@@ -40,17 +40,19 @@ public class ApiController {
 
     @RequestMapping(value = "/delete")
     int deleteApiById(int id){
-        return id;
+        return apiService.deleteApiById(id);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/update")
     int updateApi(Api api){
-        return 0;
+        return apiService.updateApi(api);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/insert")
     int insertApi(Api api){
-        return 0;
+        return apiService.insertApi(api);
     }
 
 }

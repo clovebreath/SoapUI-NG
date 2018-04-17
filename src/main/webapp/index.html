@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <script src="resources/js/jquery-3.3.1.min.js"></script>
     <script src="resources/js/bootstrap.min.js"></script>
-    <script src="resources/js/main.js"></script>
+    <script src="resources/js/Api.js"></script>
+    <script src="resources/js/CaseLib.js"></script>
+    <script src="resources/js/Case.js"></script>
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -57,44 +59,122 @@
                             <!-- 表格 用于展示信息 -->
                             <table id="api-query-table" class="table table-bordered">
                                 <thead><tr>
-                                    <th>ID</th> <th>名称</th> <th>类型</th> <th>地址</th> <th>访问方式</th> <th>说明</th>
+                                    <th>ID</th> <th>名称</th> <th>类型</th> <th>地址</th> <th>访问方式</th> <th>说明</th> <th>操作</th>
                                 </tr></thead>
                                 <tfoot></tfoot>
                                 <tbody></tbody>
                             </table>
 
-                            <div class="modal fade" id="modal-container-new-interface" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                            <div class="modal fade" id="modal-container-new-api" role="dialog" aria-labelledby="new-api-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title" id="myModalLabel1">
+                                            <h4 class="modal-title" id="new-api-label">
                                                 新增接口
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            #填写信息
+                                            <form id="api-new-form" target="nm_iframe">
+                                                <div class="form-group">
+                                                    <label for="new-api-name">接口名称</label>
+                                                    <input type="text" class="form-control" id="new-api-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-api-link">接口链接</label>
+                                                    <input type="text" class="form-control" id="new-api-link">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-api-type">接口类型</label>
+                                                    <select class="form-control" id="new-api-type">
+                                                        <option value="SOAP">SOAP</option>
+                                                        <option value="REST">REST</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-api-access-mode">访问方式</label>
+                                                    <select class="form-control" id="new-api-access-mode">
+                                                        <option value="GET">GET</option>
+                                                        <option value="POST">POST</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-api-info">接口说明</label>
+                                                    <input type="text" class="form-control" id="new-api-info">
+                                                </div>
+                                            </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">查询</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="insert-api-modal-close" onclick="clearApiData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="insertApi()">新增</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal fade" id="modal-container-interface-echart" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+                            <div class="modal fade" id="modal-container-modify-api" role="dialog" aria-labelledby="modify-api-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title" id="myModalLabel2">
+                                            <h4 class="modal-title" id="modify-api-label">
+                                                修改接口
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="api-modify-form">
+                                                <div class="form-group" style="display: none;">
+                                                    <label for="modify-api-id">接口ID</label>
+                                                    <input type="text" class="form-control" id="modify-api-id">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-api-name">接口名称</label>
+                                                    <input type="text" class="form-control" id="modify-api-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-api-link">接口链接</label>
+                                                    <input type="text" class="form-control" id="modify-api-link">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-api-type">接口类型</label>
+                                                    <select class="form-control" id="modify-api-type">
+                                                        <option value="SOAP">SOAP</option>
+                                                        <option value="REST">REST</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-api-access-mode">访问方式</label>
+                                                    <select class="form-control" id="modify-api-access-mode">
+                                                        <option value="GET">GET</option>
+                                                        <option value="POST">POST</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-api-info">接口说明</label>
+                                                    <input type="text" class="form-control" id="modify-api-info">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="modify-api-modal-close" onclick="clearApiData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="updateApi()">修改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="modal-container-echart-api" role="dialog" aria-labelledby="echart-api-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="echart-api-label">
                                                 数据概览
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            #表格
+                                            echart
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">保存</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                         </div>
                                     </div>
                                 </div>
@@ -106,45 +186,125 @@
                                     <a href="#" class="btn">查询接口</a>
                                 </li>
                                 <li>
-                                    <a id="modal-new-interface" class="btn" href="#modal-container-new-interface" data-toggle="modal">新增接口</a>
+                                    <a id="modal-new-api" class="btn" href="#modal-container-new-api" data-toggle="modal">新增接口</a>
                                 </li>
                                 <li>
-                                    <a id="modal-interface-echart" class="btn" href="#modal-container-interface-echart" data-toggle="modal">数据概览</a>
+                                    <a id="modal-echart-api" class="btn" href="#modal-container-echart-api" data-toggle="modal">数据概览</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="tab-pane" id="panel-lib">
-                        <div class="col-md-8 column">
-                            <div class="modal fade" id="modal-container-new-lib" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true">
+                        <div class="col-md-9 column">
+
+                            <!-- 表单 用于查询信息 -->
+                            <form class="form-inline" id="lib-query-form" target="nm_iframe">
+                                <div class="form-group">
+                                    <label for="lib-name">用例库名称</label>
+                                    <input type="text" class="form-control"  width="100px" id="lib-name" placeholder="用例库名称">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lib-id">用例库编号</label>
+                                    <input type="number" class="form-control" width="40px" id="lib-id" placeholder="用例库编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="apply-api-id">适用接口编号</label>
+                                    <input type="number" class="form-control" width="40px" id="apply-api-id" placeholder="适用接口编号">
+                                </div>
+                                <button onclick="queryLib()" class="btn btn-default">查询</button>
+                            </form>
+
+                            <!-- 表格 用于展示信息 -->
+                            <table id="lib-query-table" class="table table-bordered">
+                                <thead><tr>
+                                    <th>ID</th><th>名称</th><th>适用接口编号</th><th>简介</th><th>操作</th>
+                                </tr></thead>
+                                <tfoot></tfoot>
+                                <tbody></tbody>
+                            </table>
+
+
+                            <div class="modal fade" id="modal-container-new-lib" role="dialog" aria-labelledby="lib-new-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title" id="myModalLabel3">
+                                            <h4 class="modal-title" id="lib-new-label">
                                                 新增用例库
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            #填写信息
+                                            <form id="lib-new-form" target="nm_iframe">
+                                                <div class="form-group">
+                                                    <label for="new-lib-name">用例库名称</label>
+                                                    <input type="text" class="form-control" id="new-lib-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-lib-info">用例库简介</label>
+                                                    <input type="text" class="form-control" id="new-lib-info">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-apply-api-id">适用接口编号</label>
+                                                    <input type="number" class="form-control" id="new-apply-api-id">
+                                                </div>
+                                            </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">查询</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="insert-lib-modal-close" onclick="clearLibData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="insertLib()">新增</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal fade" id="modal-container-lib-echart" role="dialog" aria-labelledby="myModalLabel4" aria-hidden="true">
+
+                            <div class="modal fade" id="modal-container-modify-lib" role="dialog" aria-labelledby="lib-modify-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title" id="myModalLabel4">
+                                            <h4 class="modal-title" id="lib-modify-label">
+                                                新增用例库
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="lib-modify-form" target="nm_iframe">
+                                                <div class="form-group" style="display: none;">
+                                                    <label for="modify-lib-id">用例库ID</label>
+                                                    <input type="text" class="form-control" id="modify-lib-id">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-lib-name">用例库名称</label>
+                                                    <input type="text" class="form-control" id="modify-lib-name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-lib-info">用例库简介</label>
+                                                    <input type="text" class="form-control" id="modify-lib-info">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-apply-api-id">适用接口编号</label>
+                                                    <input type="number" class="form-control" id="modify-apply-api-id">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="modify-lib-modal-close" onclick="clearLibData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="updateLib()">修改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-container-lib-echart" role="dialog" aria-labelledby="lib-echart-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="lib-echart-label">
                                                 数据概览
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            #表格
+                                            echart
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">保存</button>
@@ -153,7 +313,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 column">
+                        <div class="col-md-3 column">
                             <ul class="nav nav-stacked nav-tabs">
                                 <li class="active">
                                     <a href="#">查询用例库</a>
@@ -168,13 +328,47 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="panel-case">
-                        <div class="col-md-8 column">
-                            <div class="modal fade" id="modal-container-new-case" role="dialog" aria-labelledby="myModalLabel5" aria-hidden="true">
+                        <div class="col-md-9 column">
+                            <!-- 表单 用于查询信息 -->
+                            <form class="form-inline" id="case-query-form" target="nm_iframe">
+                                <div class="form-group">
+                                    <label for="case-name">用例名称</label>
+                                    <input type="text" class="form-control"  width="100px" id="case-name" placeholder="用例名称">
+                                </div>
+                                <div class="form-group">
+                                    <label for="case-id">用例编号</label>
+                                    <input type="number" class="form-control" width="40px" id="case-id" placeholder="用例编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="apply-api-id">用例库编号</label>
+                                    <input type="number" class="form-control" width="40px" id="case-lib-id" placeholder="用例库编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="case-para-type">参数类型</label>
+                                    <select class="form-control" id="case-para-type">
+                                        <option value="">所有</option>
+                                        <option value="JSON">JSON</option>
+                                        <option value="XML">XML</option>
+                                    </select>
+                                </div>
+                                <button onclick="queryCase()" class="btn btn-default">查询</button>
+                            </form>
+
+                            <!-- 表格 用于展示信息 -->
+                            <table id="case-query-table" class="table table-bordered">
+                                <thead><tr>
+                                    <th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th><th>操作</th>
+                                </tr></thead>
+                                <tfoot></tfoot>
+                                <tbody></tbody>
+                            </table>
+
+                            <div class="modal fade" id="modal-container-new-case" role="dialog" aria-labelledby="case-new-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title" id="myModalLabel5">
+                                            <h4 class="modal-title" id="case-new-label">
                                                 新增用例
                                             </h4>
                                         </div>
@@ -182,17 +376,18 @@
                                             #相关信息填写
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">查询</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            <button type="button" class="btn btn-primary">查询</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal fade" id="modal-container-case-echart" role="dialog" aria-labelledby="myModalLabel6" aria-hidden="true">
+                            <div class="modal fade" id="modal-container-case-echart" role="dialog" aria-labelledby="case-echart-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title" id="myModalLabel6">
+                                            <h4 class="modal-title" id="case-echart-label">
                                                 数据概览
                                             </h4>
                                         </div>
@@ -200,16 +395,16 @@
                                             #表格
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> <button type="button" class="btn btn-primary">保存</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 column">
+                        <div class="col-md-3 column">
                             <ul class="nav nav-stacked nav-tabs">
                                 <li class="active">
-                                    <a href="#">查询用例1</a>
+                                    <a href="#">查询用例</a>
                                 </li>
                                 <li>
                                     <a id="modal-new-case" href="#modal-container-new-case" data-toggle="modal">新增用例</a>

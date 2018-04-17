@@ -14,9 +14,35 @@
     <mybatis.version>3.4.5</mybatis.version>
     <junit.version>4.12</junit.version>
     <jackson.version>2.6.0</jackson.version>
+    <slf4j.version>1.7.25</slf4j.version>
   </properties>
 
   <dependencies>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${spring.version}</version>
+          <exclusions>
+              <!-- Exclude Commons Logging in favor of SLF4j -->
+              <exclusion>
+                  <groupId>commons-logging</groupId>
+                  <artifactId>commons-logging</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.slf4j/jcl-over-slf4j -->
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+          <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-simple</artifactId>
+          <version>${slf4j.version}</version>
+      </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
     <dependency>
       <groupId>org.apache.commons</groupId>

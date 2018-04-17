@@ -6,7 +6,7 @@
         <id property="libId" column="LIB_ID" />
         <result property="libName" column="LIB_NAME" />
         <result property="libInfo" column="LIB_INFO" />
-        <result property="applyApiID" column="APPLY_API_ID" />
+        <result property="applyApiId" column="APPLY_API_ID" />
     </resultMap>
     <select id="getAllTestCaseLibs" resultMap="TestCaseLibResult">
         SELECT * FROM TEST_CASE_LIB
@@ -15,7 +15,17 @@
         SELECT * FROM TEST_CASE_LIB WHERE TEST_CASE_LIB.LIB_ID=#{id}
     </select>
     <select id="queryTestCaseLibByCondition" parameterType="TestCaseLib" resultMap="TestCaseLibResult">
-        SELECT * FROM TEST_CASE_LIB WHERE TEST_CASE_LIB.LIB_ID=#{libId}
+        SELECT * FROM TEST_CASE_LIB
+        WHERE 1=1
+        <if test="libId!=null and libId!=''">
+            AND TEST_CASE_LIB.LIB_ID=#{libId}
+        </if>
+        <if test="libName!=null and libName!=''">
+            AND TEST_CASE_LIB.LIB_NAME=#{libName}
+        </if>
+        <if test="applyApiId!=null and applyApiId!=''">
+            AND TEST_CASE_LIB.APPLY_API_ID=#{applyApiId}
+        </if>
     </select>
     <delete id="deleteTestCaseLibById" parameterType="int">
         DELETE FROM TEST_CASE_LIB WHERE TEST_CASE_LIB.LIB_ID=#{id}

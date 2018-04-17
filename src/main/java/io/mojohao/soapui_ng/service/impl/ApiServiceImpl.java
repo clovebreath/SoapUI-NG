@@ -27,14 +27,14 @@ public class ApiServiceImpl implements ApiService {
     }
 
     public int deleteApiById(int id) {
-        return 0;
+        return apiDao.deleteApiById(id);
     }
 
     public int updateApi(Api api) {
-        return 0;
+        return apiDao.updateApi(api);
     }
 
     public int insertApi(Api api) {
-        return 0;
+        return apiDao.insertApi(api);
     }
 }

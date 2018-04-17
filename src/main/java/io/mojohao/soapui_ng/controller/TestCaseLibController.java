@@ -2,9 +2,11 @@ package io.mojohao.soapui_ng.controller;
 
 import io.mojohao.soapui_ng.entity.TestCaseLib;
 import io.mojohao.soapui_ng.service.TestCaseLibService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -14,22 +16,44 @@ public class TestCaseLibController {
     @Autowired
     private TestCaseLibService testCaseLibService;
 
+    @ResponseBody
+    @RequestMapping(value = "/all")
     List<TestCaseLib> getAllTestCaseLibs(){
-        return null;
+        return testCaseLibService.getAllTestCaseLibs();
     }
+
     TestCaseLib queryTestCaseLibById(int id){
-        return null;
+        return testCaseLibService.queryTestCaseLibById(id);
     }
-    List<TestCaseLib> queryTestCaseLibByCondition(TestCaseLib testCaseLib){
-        return null;
+
+    @ResponseBody
+    @RequestMapping(value = "/query")
+    List<TestCaseLib> queryTestCaseLibByCondition(String libId,String libName,String applyApiId){
+        TestCaseLib caseLib=new TestCaseLib();
+        if(StringUtils.isNotBlank(libId)&&StringUtils.isNumeric(libId)){
+            caseLib.setLibId(Integer.parseInt(libId));
+        }
+        if(StringUtils.isNotBlank(libName)){
+            caseLib.setLibName(libName);
+        }
+        if(StringUtils.isNotBlank(applyApiId)&&StringUtils.isNumeric(applyApiId)){
+            caseLib.setApplyApiId(Integer.parseInt(applyApiId));
+        }
+        return testCaseLibService.queryTestCaseLibByCondition(caseLib);
     }
+    @ResponseBody
+    @RequestMapping(value = "/delete")
     int deleteTestCaseLibById(int id){
-        return id;
+        return testCaseLibService.deleteTestCaseLibById(id);
     }
+    @ResponseBody
+    @RequestMapping(value = "/update")
     int updateTestCaseLib(TestCaseLib testCaseLib){
-        return 0;
+        return testCaseLibService.updateTestCaseLib(testCaseLib);
     }
+    @ResponseBody
+    @RequestMapping(value = "/insert")
     int insertTestCaseLib(TestCaseLib testCaseLib){
-        return 0;
+        return testCaseLibService.insertTestCaseLib(testCaseLib);
     }
 }
