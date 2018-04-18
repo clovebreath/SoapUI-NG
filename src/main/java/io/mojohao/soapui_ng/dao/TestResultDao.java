@@ -10,4 +10,5 @@ public interface TestResultDao {
     TestResult queryTestResultById(@Param("testId") int testId,@Param("caseId") int caseId);
     List<TestResult> queryTestResultByCondition(TestResult testResult);
     int insertTestResult(TestResult testResult);
+    int deleteTestResult(int testId, int caseId);
 }

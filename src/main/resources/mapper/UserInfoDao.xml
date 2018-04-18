@@ -9,7 +9,20 @@
         SELECT * FROM USER_INFO WHERE USER_INFO.USER_ID=#{userId}
     </select>
     <select id="queryUserInfoByCondition" parameterType="UserInfo" resultType="UserInfo">
-        SELECT * FROM USER_INFO WHERE USER_INFO.USER_ID=#{userId}
+        SELECT * FROM USER_INFO
+        WHERE 1=1
+        <if test="userId!=null and userId!=''">
+            AND USER_INFO.USER_ID=#{userId}
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND USER_INFO.USER_NAME=#{userName}
+        </if>
+        <if test="userState!=null and userState!=''">
+            AND USER_INFO.USER_STATE=#{userState}
+        </if>
+        <if test="userElemCode!=null and userElemCode!=''">
+            AND USER_INFO.USER_ELEM_CODE=#{userElemCode}
+        </if>
     </select>
     <delete id="deleteUserInfoById" parameterType="int">
         DELETE FROM USER_INFO WHERE USER_INFO.USER_ID=#{userId}

@@ -6,22 +6,40 @@
         SELECT * FROM USER_ELE_DATA
     </select>
     <select id="queryUserEleDataById" resultType="UserEleData">
-        SELECT * FROM USER_ELE_DATA WHERE USER_ELE_DATA.USER_ID=#{userId} AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
+        SELECT * FROM USER_ELE_DATA WHERE USER_ELE_DATA.DATA_ID=#{dataId}
     </select>
     <select id="queryUserEleDataByCondition" parameterType="UserEleData" resultType="UserEleData">
-        SELECT * FROM USER_ELE_DATA WHERE USER_ELE_DATA.USER_ID=#{userId}
+        SELECT * FROM USER_ELE_DATA
+        WHERE 1=1
+        <if test="dataId!=null and dataId!=''">
+            AND USER_ELE_DATA.DATA_ID=#{dataId}
+        </if>
+        <if test="userId!=null and userId!=''">
+            AND USER_ELE_DATA.USER_ID=#{userId}
+        </if>
+        <if test="collectTime!=null and collectTime!=''">
+            AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
+        </if>
+        <if test="elemId!=null and elemId!=''">
+            AND USER_ELE_DATA.ELEM_ID=#{elemId}
+        </if>
+        <if test="elemData!=null and elemData!=''">
+            AND USER_ELE_DATA.ELEM_DATA=#{elemData}
+        </if>
     </select>
     <delete id="deleteUserEleDataById">
-        DELETE FROM USER_ELE_DATA WHERE USER_ELE_DATA.USER_ID=#{userId} AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
+        DELETE FROM USER_ELE_DATA WHERE USER_ELE_DATA.DATA_ID=#{dataId}
     </delete>
     <update id="updateUserEleData" parameterType="UserEleData" >
         UPDATE USER_ELE_DATA
         SET ELEM_ID=#{elemId},
+            USER_ID=#{userId},
+            COLLECT_TIME=#{collectTime},
             ELEM_DATA=#{elemData}
-        WHERE USER_ID=#{userId} AND COLLECT_TIME=#{collectTime}
+        WHERE USER_ELE_DATA.DATA_ID=#{dataId}
     </update>
-    <insert id="insertUserEleData" parameterType="UserEleData" useGeneratedKeys="true" keyProperty="userId">
-        insert into USER_ELE_DATA(COLLECT_TIME,ELEM_ID,ELEM_DATA)
-        values(#{collectTime},#{elemId},#{elemData})
+    <insert id="insertUserEleData" parameterType="UserEleData" useGeneratedKeys="true" keyProperty="dataId">
+        insert into USER_ELE_DATA(USER_ID,COLLECT_TIME,ELEM_ID,ELEM_DATA)
+        values(#{userId},#{collectTime},#{elemId},#{elemData})
     </insert>
 </mapper>

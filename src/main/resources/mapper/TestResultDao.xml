@@ -9,10 +9,23 @@
         SELECT * FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
     </select>
     <select id="queryTestResultByCondition" parameterType="TestResult" resultType="TestResult">
-        SELECT * FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
+        SELECT * FROM TEST_RESULT
+        WHERE 1=1
+        <if test="testId!=null and testId!=''">
+            AND TEST_RESULT.TEST_ID=#{testId}
+        </if>
+        <if test="caseId!=null and caseId!=''">
+            AND TEST_RESULT.CASE_ID=#{caseId}
+        </if>
+        <if test="assertion!=null and assertion!=''">
+            AND TEST_RESULT.ASSERTION=#{assertion}
+        </if>
     </select>
     <insert id="insertTestResult" parameterType="TestResult" useGeneratedKeys="false">
         insert into TEST_RESULT(TEST_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
         values(#{testId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})
     </insert>
+    <delete id="deleteTestResult" parameterType="int">
+        DELETE FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
+    </delete>
 </mapper>

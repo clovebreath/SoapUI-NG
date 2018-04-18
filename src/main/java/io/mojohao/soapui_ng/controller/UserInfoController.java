@@ -2,39 +2,64 @@ package io.mojohao.soapui_ng.controller;
 
 import io.mojohao.soapui_ng.entity.UserInfo;
 import io.mojohao.soapui_ng.service.UserInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/userInfo")
+@RequestMapping(value = "/user")
 public class UserInfoController {
     @Autowired
     private UserInfoService userInfoService;
 
+    @ResponseBody
+    @RequestMapping(value = "/all")
     public List<UserInfo> getAllUserInfos() {
-        return null;
+        return userInfoService.getAllUserInfos();
     }
 
     public UserInfo queryUserInfoById(int userId) {
-        return null;
+        return userInfoService.queryUserInfoById(userId);
     }
 
-    public List<UserInfo> queryUserInfoByCondition(UserInfo userInfo) {
-        return null;
+    @ResponseBody
+    @RequestMapping(value = "/query")
+    public List<UserInfo> queryUserInfoByCondition(String userName,String userState,String userElemCode,String userId) {
+        UserInfo userInfo=new UserInfo();
+        if(StringUtils.isNotBlank(userId)&&StringUtils.isNumeric(userId)){
+            userInfo.setUserId(Integer.parseInt(userId));
+        }
+        if(StringUtils.isNotBlank(userElemCode)){
+            userInfo.setUserElemCode(userElemCode);
+        }
+        if(StringUtils.isNotBlank(userName)){
+            userInfo.setUserName(userName);
+        }
+        if(StringUtils.isNotBlank(userState)){
+            userInfo.setUserState(userState);
+        }
+        return userInfoService.queryUserInfoByCondition(userInfo);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/delete")
     public int deleteUserInfoById(int userId) {
-        return 0;
+        return userInfoService.deleteUserInfoById(userId);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/update")
     public int updateUserInfo(UserInfo userInfo) {
-        return 0;
+        return userInfoService.updateUserInfo(userInfo);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/insert")
     public int insertUserInfo(UserInfo userInfo) {
-        return 0;
+        return userInfoService.insertUserInfo(userInfo);
     }
 }

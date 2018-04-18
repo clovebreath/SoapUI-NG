@@ -1,11 +1,16 @@
 package io.mojohao.soapui_ng.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 
 public class TestResult {
     private int testId;
     private int caseId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
     private Timestamp testDate;
+
     private String desiredResponse;
     private String actualResponse;
     private String assertion;

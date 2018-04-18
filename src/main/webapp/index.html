@@ -7,6 +7,9 @@
     <script src="resources/js/Api.js"></script>
     <script src="resources/js/CaseLib.js"></script>
     <script src="resources/js/Case.js"></script>
+    <script src="resources/js/User.js"></script>
+    <script src="resources/js/UserEleData.js"></script>
+    <script src="resources/js/Result.js"></script>
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -27,6 +30,15 @@
                     </li>
                     <li id="tab-case">
                         <a href="#panel-case" data-toggle="tab">用例管理</a>
+                    </li>
+                    <li id="tab-user">
+                        <a href="#panel-user" data-toggle="tab">用户管理</a>
+                    </li>
+                    <li id="tab-data">
+                        <a href="#panel-data" data-toggle="tab">抄表数据管理</a>
+                    </li>
+                    <li id="tab-result">
+                        <a href="#panel-result" data-toggle="tab">测试结果管理</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -75,7 +87,7 @@
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="api-new-form" target="nm_iframe">
+                                            <form id="api-new-form">
                                                 <div class="form-group">
                                                     <label for="new-api-name">接口名称</label>
                                                     <input type="text" class="form-control" id="new-api-name">
@@ -111,6 +123,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="modal fade" id="modal-container-modify-api" role="dialog" aria-labelledby="modify-api-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -161,6 +174,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="modal fade" id="modal-container-echart-api" role="dialog" aria-labelledby="echart-api-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -179,6 +193,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="col-md-3 column">
                             <ul class="nav nav-stacked nav-tabs">
@@ -234,7 +249,7 @@
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="lib-new-form" target="nm_iframe">
+                                            <form id="lib-new-form">
                                                 <div class="form-group">
                                                     <label for="new-lib-name">用例库名称</label>
                                                     <input type="text" class="form-control" id="new-lib-name">
@@ -263,11 +278,11 @@
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                             <h4 class="modal-title" id="lib-modify-label">
-                                                新增用例库
+                                                修改用例库
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="lib-modify-form" target="nm_iframe">
+                                            <form id="lib-modify-form">
                                                 <div class="form-group" style="display: none;">
                                                     <label for="modify-lib-id">用例库ID</label>
                                                     <input type="text" class="form-control" id="modify-lib-id">
@@ -312,17 +327,18 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <div class="col-md-3 column">
                             <ul class="nav nav-stacked nav-tabs">
                                 <li class="active">
-                                    <a href="#">查询用例库</a>
+                                    <a class="btn" href="#">查询用例库</a>
                                 </li>
                                 <li>
-                                    <a id="modal-new-lib" href="#modal-container-new-lib" data-toggle="modal">新增用例库</a>
+                                    <a id="modal-new-lib" class="btn" href="#modal-container-new-lib" data-toggle="modal">新增用例库</a>
                                 </li>
                                 <li>
-                                    <a id="modal-lib-echart" href="#modal-container-lib-echart" data-toggle="modal">数据概览</a>
+                                    <a id="modal-lib-echart" class="btn" href="#modal-container-lib-echart" data-toggle="modal">数据概览</a>
                                 </li>
                             </ul>
                         </div>
@@ -340,7 +356,7 @@
                                     <input type="number" class="form-control" width="40px" id="case-id" placeholder="用例编号">
                                 </div>
                                 <div class="form-group">
-                                    <label for="apply-api-id">用例库编号</label>
+                                    <label for="case-lib-id">用例库编号</label>
                                     <input type="number" class="form-control" width="40px" id="case-lib-id" placeholder="用例库编号">
                                 </div>
                                 <div class="form-group">
@@ -373,15 +389,96 @@
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            #相关信息填写
+                                            <form id="new-case-form">
+                                                <div class="form-group">
+                                                    <label for="new-case-name">用例名称</label>
+                                                    <input type="text" class="form-control" id="new-case-name" placeholder="用例名称">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-case-lib-id">用例库编号</label>
+                                                    <input type="number" class="form-control" id="new-case-lib-id" placeholder="用例库编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-case-para-type">参数类型</label>
+                                                    <select class="form-control" id="new-case-para-type">
+                                                        <option value="JSON">JSON</option>
+                                                        <option value="XML">XML</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-parameter">参数</label>
+                                                    <textarea class="form-control" id="new-parameter" placeholder="参数"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-desired-response">期望返回值</label>
+                                                    <textarea class="form-control" id="new-desired-response" placeholder="期望返回值"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-case-info">备注</label>
+                                                    <input type="text" class="form-control" id="new-case-info" placeholder="备注">
+                                                </div>
+                                            </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                            <button type="button" class="btn btn-primary">查询</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="insert-case-modal-close" onclick="clearCaseData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="insertCase()">新增</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="modal fade" id="modal-container-modify-case" role="dialog" aria-labelledby="case-modify-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="case-modify-label">
+                                                修改用例
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="modify-case-form">
+                                                <div class="form-group" style="display: none;">
+                                                    <label for="modify-case-id">用例编号</label>
+                                                    <input type="number" class="form-control" id="modify-case-id" placeholder="用例编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-case-name">用例名称</label>
+                                                    <input type="text" class="form-control" id="modify-case-name" placeholder="用例名称">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-case-lib-id">用例库编号</label>
+                                                    <input type="number" class="form-control" id="modify-case-lib-id" placeholder="用例库编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-case-para-type">参数类型</label>
+                                                    <select class="form-control" id="modify-case-para-type">
+                                                        <option value="JSON">JSON</option>
+                                                        <option value="XML">XML</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-parameter">参数</label>
+                                                    <textarea class="form-control" id="modify-parameter" placeholder="参数"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-desired-response">期望返回值</label>
+                                                    <textarea class="form-control" id="modify-desired-response" placeholder="期望返回值"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-case-info">备注</label>
+                                                    <input type="text" class="form-control" id="modify-case-info" placeholder="备注">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="modify-case-modal-close" onclick="clearCaseData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="updateCase()">修改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="modal fade" id="modal-container-case-echart" role="dialog" aria-labelledby="case-echart-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -392,7 +489,317 @@
                                             </h4>
                                         </div>
                                         <div class="modal-body">
-                                            #表格
+                                            echart
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 column">
+                            <ul class="nav nav-stacked nav-tabs">
+                                <li class="active">
+                                    <a class="btn" href="#">查询用例</a>
+                                </li>
+                                <li>
+                                    <a id="modal-new-case" class="btn" href="#modal-container-new-case" data-toggle="modal">新增用例</a>
+                                </li>
+                                <li>
+                                    <a id="modal-case-echart" class="btn" href="#modal-container-case-echart" data-toggle="modal">数据概览</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="panel-user">
+                        <div class="col-md-9 column">
+                            <!-- 表单 用于查询信息 -->
+                            <form class="form-inline" id="user-query-form" target="nm_iframe">
+                                <div class="form-group">
+                                    <label for="user-name">用户名称</label>
+                                    <input type="text" class="form-control" id="user-name" placeholder="用户名称">
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-id">用户编号</label>
+                                    <input type="number" class="form-control" id="user-id" placeholder="用户编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-elem-code">用户电能表编号</label>
+                                    <input type="text" class="form-control" id="user-elem-code" placeholder="用户电能表编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-state">用户状态</label>
+                                    <select class="form-control" id="user-state">
+                                        <option value="">所有</option>
+                                        <option value="ON">启用</option>
+                                        <option value="OFF">停用</option>
+                                    </select>
+                                </div>
+                                <button onclick="queryUser()" class="btn btn-default">查询</button>
+                            </form>
+
+                            <!-- 表格 用于展示信息 -->
+                            <table id="user-query-table" class="table table-bordered">
+                                <thead><tr>
+                                    <th>ID</th><th>名称</th><th>状态</th><th>类型</th><th>地址</th><th>电能表编号</th><th>电能表台区编号</th><th>操作</th>
+                                </tr></thead>
+                                <tfoot></tfoot>
+                                <tbody></tbody>
+                            </table>
+
+                            <div class="modal fade" id="modal-container-new-user" role="dialog" aria-labelledby="user-new-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="user-new-label">
+                                                新增用户档案
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="new-user-form">
+                                                <div class="form-group">
+                                                    <label for="new-user-name">用户名称</label>
+                                                    <input type="text" class="form-control" id="new-user-name" placeholder="用户名称">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-user-type">用户类型</label>
+                                                    <input type="text" class="form-control" id="new-user-type" placeholder="用户类型">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-user-address">用户地址</label>
+                                                    <input type="text" class="form-control" id="new-user-address" placeholder="用户地址">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-user-elem-code">用户电能表编号</label>
+                                                    <input type="text" class="form-control" id="new-user-elem-code" placeholder="用户电能表编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-user-area-code">用户电能表台区编号</label>
+                                                    <input type="text" class="form-control" id="new-user-area-code" placeholder="用户电能表台区编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-user-state">用户状态</label>
+                                                    <select class="form-control" id="new-user-state">
+                                                        <option value="ON">启用</option>
+                                                        <option value="OFF">停用</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="insert-user-modal-close" onclick="clearUserData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="insertUser()">新增</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-container-modify-user" role="dialog" aria-labelledby="user-modify-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="user-modify-label">
+                                                修改用户档案
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="modify-user-form">
+                                                <div class="form-group" style="display: none;">
+                                                    <label for="modify-user-id">用户编号</label>
+                                                    <input type="number" class="form-control" id="modify-user-id" placeholder="用户编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-user-name">用户名称</label>
+                                                    <input type="text" class="form-control" id="modify-user-name" placeholder="用户名称">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-user-type">用户类型</label>
+                                                    <input type="text" class="form-control" id="modify-user-type" placeholder="用户类型">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-user-address">用户地址</label>
+                                                    <input type="text" class="form-control" id="modify-user-address" placeholder="用户地址">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-user-elem-code">用户电能表编号</label>
+                                                    <input type="text" class="form-control" id="modify-user-elem-code" placeholder="用户电能表编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-user-area-code">用户电能表台区编号</label>
+                                                    <input type="text" class="form-control" id="modify-user-area-code" placeholder="用户电能表台区编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-user-state">用户状态</label>
+                                                    <select class="form-control" id="modify-user-state">
+                                                        <option value="ON">启用</option>
+                                                        <option value="OFF">停用</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="modify-user-modal-close" onclick="clearUserData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="updateUser()">修改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-container-user-echart" role="dialog" aria-labelledby="user-echart-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="user-echart-label">
+                                                数据概览
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            echart
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 column">
+                            <ul class="nav nav-stacked nav-tabs">
+                                <li class="active">
+                                    <a class="btn" href="#">查询用户档案</a>
+                                </li>
+                                <li>
+                                    <a id="modal-new-user" class="btn" href="#modal-container-new-user" data-toggle="modal">新增用户档案</a>
+                                </li>
+                                <li>
+                                    <a id="modal-user-echart" class="btn" href="#modal-container-user-echart" data-toggle="modal">数据概览</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="panel-data">
+                        <div class="col-md-9 column">
+                            <!-- 表单 用于查询信息 -->
+                            <form class="form-inline" id="data-query-form" target="nm_iframe">
+                                <div class="form-group">
+                                    <label for="data-id">数据ID</label>
+                                    <input type="number" class="form-control" id="data-id" placeholder="数据ID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="data-user-id">用户ID</label>
+                                    <input type="number" class="form-control" id="data-user-id" placeholder="用户ID">
+                                </div>
+                                <div class="form-group">
+                                    <label for="data-user-elem-code">用户电能表编号</label>
+                                    <input type="text" class="form-control" id="data-user-elem-code" placeholder="用户电能表编号">
+                                </div>
+                                <button onclick="queryData()" class="btn btn-default">查询</button>
+                            </form>
+
+                            <!-- 表格 用于展示信息 -->
+                            <table id="data-query-table" class="table table-bordered">
+                                <thead><tr>
+                                    <th>数据ID</th><th>抄表日期</th><th>用户ID</th><th>电能表编号</th><th>电能表数据</th><th>操作</th>
+                                </tr></thead>
+                                <tfoot></tfoot>
+                                <tbody></tbody>
+                            </table>
+
+                            <div class="modal fade" id="modal-container-new-data" role="dialog" aria-labelledby="data-new-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="data-new-label">
+                                                新增抄表数据
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="new-data-form">
+                                                <div class="form-group">
+                                                    <label for="new-data-user-id">用户ID</label>
+                                                    <input type="number" class="form-control" id="new-data-user-id" placeholder="用户ID">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-data-collect-time">抄表日期</label>
+                                                    <input type="date" class="form-control" id="new-data-collect-time" placeholder="抄表日期">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-data-elem-id">电能表编号</label>
+                                                    <input type="text" class="form-control" id="new-data-elem-id" placeholder="电能表编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-data-elem-data">电能表数据</label>
+                                                    <input type="text" class="form-control" id="new-data-elem-data" placeholder="电能表数据">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="insert-data-modal-close" onclick="clearEleData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="insertData()">新增</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-container-modify-data" role="dialog" aria-labelledby="data-modify-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="data-modify-label">
+                                                修改抄表数据
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="modify-data-form">
+                                                <div class="form-group" style="display: none;">
+                                                    <label for="modify-data-id">数据ID</label>
+                                                    <input type="number" class="form-control" id="modify-data-id" placeholder="数据ID">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-data-user-id">用户ID</label>
+                                                    <input type="number" class="form-control" id="modify-data-user-id" placeholder="用户ID">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-data-collect-time">抄表日期</label>
+                                                    <input type="date" class="form-control" id="modify-data-collect-time" placeholder="抄表日期">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-data-elem-id">电能表编号</label>
+                                                    <input type="text" class="form-control" id="modify-data-elem-id" placeholder="电能表编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modify-data-elem-data">电能表数据</label>
+                                                    <input type="text" class="form-control" id="modify-data-elem-data" placeholder="电能表数据">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="modify-data-modal-close" onclick="clearEleData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="updateData()">修改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-container-data-echart" role="dialog" aria-labelledby="data-echart-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="data-echart-label">
+                                                数据概览
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            echart
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -404,13 +811,126 @@
                         <div class="col-md-3 column">
                             <ul class="nav nav-stacked nav-tabs">
                                 <li class="active">
-                                    <a href="#">查询用例</a>
+                                    <a class="btn" href="#">抄表数据查询</a>
                                 </li>
                                 <li>
-                                    <a id="modal-new-case" href="#modal-container-new-case" data-toggle="modal">新增用例</a>
+                                    <a id="modal-new-data" class="btn" href="#modal-container-new-data" data-toggle="modal">新增抄表数据</a>
                                 </li>
                                 <li>
-                                    <a id="modal-case-echart" href="#modal-container-case-echart" data-toggle="modal">数据概览</a>
+                                    <a id="modal-data-echart" class="btn" href="#modal-container-data-echart" data-toggle="modal">数据概览</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="panel-result">
+                        <div class="col-md-9 column">
+                            <!-- 表单 用于查询信息 -->
+                            <form class="form-inline" id="result-query-form" target="nm_iframe">
+                                <div class="form-group">
+                                    <label for="result-test-id">测试编号</label>
+                                    <input type="number" class="form-control" id="result-test-id" placeholder="测试编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="result-case-id">用例编号</label>
+                                    <input type="number" class="form-control" id="result-case-id" placeholder="用例编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="result-assertion">断言</label>
+                                    <select class="form-control" id="result-assertion">
+                                        <option value="">所有</option>
+                                        <option value="PASSED">通过</option>
+                                        <option value="UNPASSED">未通过</option>
+                                    </select>
+                                </div>
+                                <button onclick="queryResult()" class="btn btn-default">查询</button>
+                            </form>
+
+                            <!-- 表格 用于展示信息 -->
+                            <table id="result-query-table" class="table table-bordered">
+                                <thead><tr>
+                                    <th>测试编号</th><th>用例编号</th><th>测试时间</th><th>期望输出</th><th>实际输出</th><th>断言</th><th>操作</th>
+                                </tr></thead>
+                                <tfoot></tfoot>
+                                <tbody></tbody>
+                            </table>
+
+                            <div class="modal fade" id="modal-container-new-result" role="dialog" aria-labelledby="result-new-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="result-new-label">
+                                                新增抄表数据
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="new-result-form">
+                                                <div class="form-group">
+                                                    <label for="new-result-test-id">测试编号</label>
+                                                    <input type="number" class="form-control" id="new-result-test-id" placeholder="测试编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-result-case-id">用例编号</label>
+                                                    <input type="number" class="form-control" id="new-result-case-id" placeholder="用例编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-result-test-date">测试时间</label>
+                                                    <input type="date" class="form-control" id="new-result-test-date" placeholder="测试时间">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-result-desired-response">期望输出</label>
+                                                    <textarea class="form-control" id="new-result-desired-response" placeholder="期望输出"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-result-actual-response">实际输出</label>
+                                                    <textarea class="form-control" id="new-result-actual-response" placeholder="实际输出"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="new-result-assertion">断言</label>
+                                                    <select class="form-control" id="new-result-assertion">
+                                                        <option value="PASSED">通过</option>
+                                                        <option value="UNPASSED">未通过</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="insert-result-modal-close" onclick="clearResultData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="insertResult()">新增</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-container-result-echart" role="dialog" aria-labelledby="result-echart-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="result-echart-label">
+                                                数据概览
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            echart
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 column">
+                            <ul class="nav nav-stacked nav-tabs">
+                                <li class="active">
+                                    <a class="btn" href="#">测试数据查询</a>
+                                </li>
+                                <li>
+                                    <a id="modal-new-result" class="btn" href="#modal-container-new-result" data-toggle="modal">新增测试数据</a>
+                                </li>
+                                <li>
+                                    <a id="modal-result-echart" class="btn" href="#modal-container-result-echart" data-toggle="modal">数据概览</a>
                                 </li>
                             </ul>
                         </div>

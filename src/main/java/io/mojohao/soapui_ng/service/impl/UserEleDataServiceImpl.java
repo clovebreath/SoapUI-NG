@@ -1,7 +1,9 @@
 package io.mojohao.soapui_ng.service.impl;
 
+import io.mojohao.soapui_ng.dao.UserEleDataDao;
 import io.mojohao.soapui_ng.entity.UserEleData;
 import io.mojohao.soapui_ng.service.UserEleDataService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -9,27 +11,31 @@ import java.util.List;
 
 @Service
 public class UserEleDataServiceImpl implements UserEleDataService {
+
+    @Autowired
+    UserEleDataDao userEleDataDao;
+
     public List<UserEleData> getAllUserEleDatas() {
-        return null;
+        return userEleDataDao.getAllUserEleDatas();
     }
 
-    public UserEleData queryUserEleDataById(int userId, Timestamp collectTime) {
-        return null;
+    public UserEleData queryUserEleDataById(int dataId) {
+        return userEleDataDao.queryUserEleDataById(dataId);
     }
 
     public List<UserEleData> queryUserEleDataByCondition(UserEleData userEleData) {
-        return null;
+        return userEleDataDao.queryUserEleDataByCondition(userEleData);
     }
 
-    public int deleteUserEleDataById(int userId, Timestamp collectTime) {
-        return 0;
+    public int deleteUserEleDataById(int dataId) {
+        return userEleDataDao.deleteUserEleDataById(dataId);
     }
 
     public int updateUserEleData(UserEleData userEleData) {
-        return 0;
+        return userEleDataDao.updateUserEleData(userEleData);
     }
 
     public int insertUserEleData(UserEleData userEleData) {
-        return 0;
+        return userEleDataDao.insertUserEleData(userEleData);
     }
 }

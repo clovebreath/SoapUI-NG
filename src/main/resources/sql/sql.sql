@@ -11,11 +11,12 @@ PRIMARY KEY (USER_ID)
 ) comment='用户档案' ;
 CREATE TABLE mojohao.USER_ELE_DATA
 (
-USER_ID INT NOT NULL AUTO_INCREMENT comment '用户ID',
+DATA_ID INT NOT NULL AUTO_INCREMENT comment '数据ID',
+USER_ID INT NOT NULL comment '用户ID',
 COLLECT_TIME timestamp NOT NULL comment '抄表日期',
 ELEM_ID varchar(20) NOT NULL comment '电能表编号',
 ELEM_DATA varchar(20) NOT NULL comment '电能表数据',
-PRIMARY KEY (USER_ID,COLLECT_TIME)
+PRIMARY KEY (DATA_ID)
 ) comment='采集电能表数据信息';
 CREATE TABLE mojohao.API_LIST
 (

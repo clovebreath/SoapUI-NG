@@ -9,11 +9,11 @@ import java.util.List;
 public interface UserEleDataService {
     List<UserEleData> getAllUserEleDatas();
 
-    UserEleData queryUserEleDataById(@Param("userId") int userId, @Param("collectTime") Timestamp collectTime);
+    UserEleData queryUserEleDataById(int dataId);
 
     List<UserEleData> queryUserEleDataByCondition(UserEleData userEleData);
 
-    int deleteUserEleDataById(@Param("userId") int userId, @Param("collectTime") Timestamp collectTime);
+    int deleteUserEleDataById(int dataId);
 
     int updateUserEleData(UserEleData userEleData);
 

@@ -38,6 +38,7 @@ public class ApiController {
         return apiService.queryApiByCondition(api);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/delete")
     int deleteApiById(int id){
         return apiService.deleteApiById(id);
