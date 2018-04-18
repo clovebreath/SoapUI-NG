@@ -1,6 +1,7 @@
 package io.mojohao.soapui_ng.service.impl;
 
 import io.mojohao.soapui_ng.dao.TestCaseDao;
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.TestCase;
 import io.mojohao.soapui_ng.service.TestCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,13 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     public int insertTestCase(TestCase testCase) {
         return testCaseDao.insertTestCase(testCase);
+    }
+
+    public List<ChartTypeDto> categoryByParaType() {
+        return testCaseDao.categoryByParaType();
+    }
+
+    public List<ChartTypeDto> categoryByLibId() {
+        return testCaseDao.categoryByLibId();
     }
 }

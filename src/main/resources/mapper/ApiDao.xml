@@ -45,4 +45,14 @@
         insert into api_list(API_TYPE,API_LINK,API_INFO,ACCESS_MODE,API_NAME)
                 values(#{apiType},#{apiLink},#{apiInfo},#{accessMode},#{apiName})
     </insert>
+    <select id="categoryByType" resultType="ChartTypeDto">
+        select API_TYPE type,count(API_ID) number
+        from api_list
+        group by API_TYPE
+    </select>
+    <select id="categoryByAccessMode" resultType="ChartTypeDto">
+        select ACCESS_MODE type,count(API_ID) number
+        from api_list
+        group by ACCESS_MODE
+    </select>
 </mapper>

@@ -24,6 +24,21 @@
             AND USER_INFO.USER_ELEM_CODE=#{userElemCode}
         </if>
     </select>
+    <select id="categoryByUserState" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select USER_STATE type,count(1) number
+        from user_info
+        group by USER_STATE
+    </select>
+    <select id="categoryByUserType" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select USER_TYPE type,count(1) number
+        from user_info
+        group by USER_TYPE
+    </select>
+    <select id="categoryByUserAreaCode" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select USER_AREA_CODE type,count(1) number
+        from user_info
+        group by USER_AREA_CODE
+    </select>
     <delete id="deleteUserInfoById" parameterType="int">
         DELETE FROM USER_INFO WHERE USER_INFO.USER_ID=#{userId}
     </delete>

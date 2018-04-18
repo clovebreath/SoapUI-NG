@@ -33,6 +33,16 @@
             AND TEST_CASE.CASE_LIB_ID=#{caseLibId}
         </if>
     </select>
+    <select id="categoryByParaType" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select CASE_PARA_TYPE type,count(CASE_ID) number
+        from test_case
+        group by CASE_PARA_TYPE
+    </select>
+    <select id="categoryByLibId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select CASE_LIB_ID type,count(CASE_ID) number
+        from test_case
+        group by CASE_LIB_ID
+    </select>
     <delete id="deleteTestCaseById" parameterType="int">
         DELETE FROM TEST_CASE WHERE TEST_CASE.CASE_ID=#{id}
     </delete>

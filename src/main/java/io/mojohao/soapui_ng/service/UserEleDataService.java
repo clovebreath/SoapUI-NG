@@ -1,5 +1,6 @@
 package io.mojohao.soapui_ng.service;
 
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.UserEleData;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,4 +19,7 @@ public interface UserEleDataService {
     int updateUserEleData(UserEleData userEleData);
 
     int insertUserEleData(UserEleData userEleData);
+
+    List<ChartTypeDto> categoryByUserId();
+
 }

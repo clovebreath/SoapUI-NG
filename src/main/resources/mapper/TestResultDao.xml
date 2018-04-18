@@ -21,6 +21,21 @@
             AND TEST_RESULT.ASSERTION=#{assertion}
         </if>
     </select>
+    <select id="categoryByTestId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select TEST_ID type,count(1) number
+        from test_result
+        group by TEST_ID
+    </select>
+    <select id="categoryByCaseId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select CASE_ID type,count(1) number
+        from test_result
+        group by CASE_ID
+    </select>
+    <select id="categoryByAssertion" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select ASSERTION type,count(1) number
+        from test_result
+        group by ASSERTION
+    </select>
     <insert id="insertTestResult" parameterType="TestResult" useGeneratedKeys="false">
         insert into TEST_RESULT(TEST_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
         values(#{testId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})

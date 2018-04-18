@@ -1,6 +1,7 @@
 package io.mojohao.soapui_ng.service.impl;
 
 import io.mojohao.soapui_ng.dao.UserEleDataDao;
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.UserEleData;
 import io.mojohao.soapui_ng.service.UserEleDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,9 @@ public class UserEleDataServiceImpl implements UserEleDataService {
 
     public int insertUserEleData(UserEleData userEleData) {
         return userEleDataDao.insertUserEleData(userEleData);
+    }
+
+    public List<ChartTypeDto> categoryByUserId() {
+        return userEleDataDao.categoryByUserId();
     }
 }

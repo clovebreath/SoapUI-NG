@@ -1,6 +1,7 @@
 package io.mojohao.soapui_ng.controller;
 
 import io.mojohao.soapui_ng.entity.Api;
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.service.ApiService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,18 @@ public class ApiController {
     int insertApi(Api api){
         return apiService.insertApi(api);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/categoryByType")
+    public List<ChartTypeDto> categoryByType() {
+        return apiService.categoryByType();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/categoryByAccessMode")
+    public List<ChartTypeDto> categoryByAccessMode() {
+        return apiService.categoryByAccessMode();
+    }
+
 
 }

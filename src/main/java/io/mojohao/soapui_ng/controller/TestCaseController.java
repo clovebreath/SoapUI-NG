@@ -1,5 +1,6 @@
 package io.mojohao.soapui_ng.controller;
 
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.TestCase;
 import io.mojohao.soapui_ng.service.TestCaseService;
 import org.apache.commons.lang3.StringUtils;
@@ -57,5 +58,15 @@ public class TestCaseController {
     @RequestMapping(value = "/insert")
     int insertTestCase(TestCase testCase){
         return testCaseService.insertTestCase(testCase);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/categoryByParaType")
+    List<ChartTypeDto> categoryByParaType(){
+        return testCaseService.categoryByParaType();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/categoryByLibId")
+    List<ChartTypeDto> categoryByLibId(){
+        return testCaseService.categoryByLibId();
     }
 }

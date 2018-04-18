@@ -1,6 +1,7 @@
 package io.mojohao.soapui_ng.service.impl;
 
 import io.mojohao.soapui_ng.dao.UserInfoDao;
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.UserInfo;
 import io.mojohao.soapui_ng.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,4 +38,17 @@ public class UserInfoServiceImpl implements UserInfoService {
     public int insertUserInfo(UserInfo userInfo) {
         return userInfoDao.insertUserInfo(userInfo);
     }
+
+    public List<ChartTypeDto> categoryByUserState() {
+        return userInfoDao.categoryByUserState();
+    }
+
+    public List<ChartTypeDto> categoryByUserType() {
+        return userInfoDao.categoryByUserType();
+    }
+
+    public List<ChartTypeDto> categoryByUserAreaCode() {
+        return userInfoDao.categoryByUserAreaCode();
+    }
+
 }

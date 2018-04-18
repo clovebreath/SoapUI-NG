@@ -1,5 +1,6 @@
 package io.mojohao.soapui_ng.controller;
 
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.UserEleData;
 import io.mojohao.soapui_ng.service.UserEleDataService;
 import org.apache.commons.lang3.StringUtils;
@@ -94,10 +95,15 @@ public class UserEleDataController {
         return userEleDataService.insertUserEleData(userEleData);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/categoryByUserId")
+    List<ChartTypeDto> categoryByUserId(){
+        return userEleDataService.categoryByUserId();
+    }
+
     private Timestamp convertDate(String date) throws ParseException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         format.setLenient(false);
-
         return new Timestamp(format.parse(date).getTime());
 
     }

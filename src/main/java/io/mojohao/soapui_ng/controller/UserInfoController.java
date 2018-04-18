@@ -1,5 +1,6 @@
 package io.mojohao.soapui_ng.controller;
 
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.UserInfo;
 import io.mojohao.soapui_ng.service.UserInfoService;
 import org.apache.commons.lang3.StringUtils;
@@ -61,5 +62,21 @@ public class UserInfoController {
     @RequestMapping(value = "/insert")
     public int insertUserInfo(UserInfo userInfo) {
         return userInfoService.insertUserInfo(userInfo);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/categoryByUserState")
+    List<ChartTypeDto> categoryByUserState(){
+        return userInfoService.categoryByUserState();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/categoryByUserType")
+    List<ChartTypeDto> categoryByUserType(){
+        return userInfoService.categoryByUserType();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/categoryByUserAreaCode")
+    List<ChartTypeDto> categoryByUserAreaCode(){
+        return userInfoService.categoryByUserAreaCode();
     }
 }

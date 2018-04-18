@@ -27,6 +27,11 @@
             AND TEST_CASE_LIB.APPLY_API_ID=#{applyApiId}
         </if>
     </select>
+    <select id="categoryByApplyApiId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select APPLY_API_ID type,count(LIB_ID) number
+        from test_case_lib
+        group by APPLY_API_ID
+    </select>
     <delete id="deleteTestCaseLibById" parameterType="int">
         DELETE FROM TEST_CASE_LIB WHERE TEST_CASE_LIB.LIB_ID=#{id}
     </delete>

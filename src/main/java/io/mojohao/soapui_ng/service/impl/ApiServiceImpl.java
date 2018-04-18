@@ -2,6 +2,7 @@ package io.mojohao.soapui_ng.service.impl;
 
 import io.mojohao.soapui_ng.dao.ApiDao;
 import io.mojohao.soapui_ng.entity.Api;
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,4 +38,14 @@ public class ApiServiceImpl implements ApiService {
     public int insertApi(Api api) {
         return apiDao.insertApi(api);
     }
+
+    public List<ChartTypeDto> categoryByType() {
+        return apiDao.categoryByType();
+    }
+
+    public List<ChartTypeDto> categoryByAccessMode() {
+        return apiDao.categoryByAccessMode();
+    }
+
+
 }

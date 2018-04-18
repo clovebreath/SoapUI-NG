@@ -27,6 +27,11 @@
             AND USER_ELE_DATA.ELEM_DATA=#{elemData}
         </if>
     </select>
+    <select id="categoryByUserId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select USER_ID type,count(1) number
+        from user_ele_data
+        group by USER_ID
+    </select>
     <delete id="deleteUserEleDataById">
         DELETE FROM USER_ELE_DATA WHERE USER_ELE_DATA.DATA_ID=#{dataId}
     </delete>

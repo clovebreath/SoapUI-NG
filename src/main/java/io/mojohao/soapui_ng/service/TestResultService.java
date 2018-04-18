@@ -1,5 +1,6 @@
 package io.mojohao.soapui_ng.service;
 
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.TestResult;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,4 +12,7 @@ public interface TestResultService {
     List<TestResult> queryTestResultByCondition(TestResult testResult);
     int insertTestResult(TestResult testResult);
     int deleteTestResult(int testId, int caseId);
+    List<ChartTypeDto> categoryByTestId();
+    List<ChartTypeDto> categoryByCaseId();
+    List<ChartTypeDto> categoryByAssertion();
 }

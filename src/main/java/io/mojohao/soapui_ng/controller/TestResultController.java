@@ -1,5 +1,6 @@
 package io.mojohao.soapui_ng.controller;
 
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.TestResult;
 import io.mojohao.soapui_ng.service.TestResultService;
 import org.apache.commons.lang3.StringUtils;
@@ -76,11 +77,27 @@ public class TestResultController {
     int deleteTestResult(@Param("testId") int testId, @Param("caseId") int caseId){
         return testResultService.deleteTestResult(testId,caseId);
     }
+    @ResponseBody
+    @RequestMapping(value = "/categoryByTestId")
+    List<ChartTypeDto> categoryByTestId(){
+        return testResultService.categoryByTestId();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/categoryByCaseId")
+    List<ChartTypeDto> categoryByCaseId(){
+        return testResultService.categoryByCaseId();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/categoryByAssertion")
+    List<ChartTypeDto> categoryByAssertion(){
+        return testResultService.categoryByAssertion();
+    }
+
 
     private Timestamp convertDateTime(String dateTime) throws ParseException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         format.setLenient(false);
-
         return new Timestamp(format.parse(dateTime).getTime());
 
     }

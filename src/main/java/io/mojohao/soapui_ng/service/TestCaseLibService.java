@@ -1,5 +1,6 @@
 package io.mojohao.soapui_ng.service;
 
+import io.mojohao.soapui_ng.entity.ChartTypeDto;
 import io.mojohao.soapui_ng.entity.TestCaseLib;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface TestCaseLibService {
     int deleteTestCaseLibById(int id);
     int updateTestCaseLib(TestCaseLib testCaseLib);
     int insertTestCaseLib(TestCaseLib testCaseLib);
+    List<ChartTypeDto> categoryByApplyApiId();
 }
