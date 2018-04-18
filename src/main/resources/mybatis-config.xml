@@ -13,5 +13,7 @@
         <!-- 开启驼峰命名转换:Table{create_time} -> Entity{createTime} -->
         <setting name="mapUnderscoreToCamelCase" value="true" />
 
+        <!-- 指定日志系统 -->
+        <setting name="logImpl" value="SLF4J"/>
     </settings>
 </configuration>
