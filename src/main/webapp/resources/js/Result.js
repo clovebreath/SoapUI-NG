@@ -13,8 +13,8 @@ function queryResult(){
                 let tr = `<tr id="result-${data[i].testId}-${data[i].caseId}">
                           <td>${data[i].testId}</td><td>${data[i].caseId}</td><td>${data[i].testDate}</td>
                           <td>${data[i].desiredResponse}</td><td>${data[i].actualResponse}</td><td>${data[i].assertion}</td>
-                          <td><a onclick="deleteResult(${data[i].dataId},${data[i].caseId})">删除</a></td></tr>`;
-                $("#data-query-table tbody").append(tr);
+                          <td><a onclick="deleteResult(${data[i].testId},${data[i].caseId})">删除</a></td></tr>`;
+                $("#result-query-table tbody").append(tr);
             }
         },
         error: function(data){
@@ -51,12 +51,12 @@ function clearResultData(){
     document.getElementById("new-result-form").reset();
 }
 
-function deleteData(dataId,caseId){
+function deleteResult(testId,caseId){
     $.ajax({
         url:"/result/delete",
         dataType:"json",
         data:{
-            "dataId":dataId,
+            "testId":testId,
             "caseId":caseId
         },
         success:function (data) {

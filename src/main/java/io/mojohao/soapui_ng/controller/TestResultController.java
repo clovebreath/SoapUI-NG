@@ -9,6 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -44,7 +48,26 @@ public class TestResultController {
 
     @ResponseBody
     @RequestMapping(value = "/insert")
-    int insertTestResult(TestResult testResult){
+    int insertTestResult(String testId,String caseId,String testDate,String desiredResponse,String actualResponse,String assertion) throws ParseException {
+        TestResult testResult=new TestResult();
+        if(StringUtils.isNotBlank(caseId)&&StringUtils.isNumeric(caseId)){
+            testResult.setCaseId(Integer.parseInt(caseId));
+        }
+        if(StringUtils.isNotBlank(testId)&&StringUtils.isNumeric(testId)){
+            testResult.setTestId(Integer.parseInt(testId));
+        }
+        if(StringUtils.isNotBlank(assertion)){
+            testResult.setAssertion(assertion);
+        }
+        if(StringUtils.isNotBlank(desiredResponse)){
+            testResult.setDesiredResponse(desiredResponse);
+        }
+        if(StringUtils.isNotBlank(actualResponse)){
+            testResult.setActualResponse(actualResponse);
+        }
+        if(StringUtils.isNotBlank(testDate)){
+            testResult.setTestDate(convertDateTime(testDate.replace("T"," ")));
+        }
         return testResultService.insertTestResult(testResult);
     }
 
@@ -52,5 +75,13 @@ public class TestResultController {
     @RequestMapping(value = "/delete")
     int deleteTestResult(@Param("testId") int testId, @Param("caseId") int caseId){
         return testResultService.deleteTestResult(testId,caseId);
+    }
+
+    private Timestamp convertDateTime(String dateTime) throws ParseException {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        format.setLenient(false);
+
+        return new Timestamp(format.parse(dateTime).getTime());
+
     }
 }

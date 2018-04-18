@@ -5,7 +5,7 @@
     <select id="getAllTestResults" resultType="TestResult">
         SELECT * FROM TEST_RESULT
     </select>
-    <select id="queryTestResultById" parameterType="int" resultType="TestResult">
+    <select id="queryTestResultById" resultType="TestResult">
         SELECT * FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
     </select>
     <select id="queryTestResultByCondition" parameterType="TestResult" resultType="TestResult">
@@ -25,7 +25,7 @@
         insert into TEST_RESULT(TEST_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
         values(#{testId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})
     </insert>
-    <delete id="deleteTestResult" parameterType="int">
+    <delete id="deleteTestResult">
         DELETE FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
     </delete>
 </mapper>
