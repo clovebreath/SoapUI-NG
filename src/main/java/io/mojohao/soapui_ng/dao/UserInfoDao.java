@@ -24,4 +24,6 @@ public interface UserInfoDao {
     List<ChartTypeDto> categoryByUserType();
 
     List<ChartTypeDto> categoryByUserAreaCode();
+
+    int countAll();
 }

@@ -32,6 +32,9 @@
         from user_ele_data
         group by USER_ID
     </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(1) from user_ele_data
+    </select>
     <delete id="deleteUserEleDataById">
         DELETE FROM USER_ELE_DATA WHERE USER_ELE_DATA.DATA_ID=#{dataId}
     </delete>

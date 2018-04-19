@@ -32,6 +32,9 @@
         from test_case_lib
         group by APPLY_API_ID
     </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(1) from test_case_lib
+    </select>
     <delete id="deleteTestCaseLibById" parameterType="int">
         DELETE FROM TEST_CASE_LIB WHERE TEST_CASE_LIB.LIB_ID=#{id}
     </delete>

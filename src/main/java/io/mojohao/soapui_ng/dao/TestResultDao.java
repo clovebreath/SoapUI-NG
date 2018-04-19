@@ -15,4 +15,5 @@ public interface TestResultDao {
     List<ChartTypeDto> categoryByTestId();
     List<ChartTypeDto> categoryByCaseId();
     List<ChartTypeDto> categoryByAssertion();
+    int countAll();
 }

@@ -39,6 +39,9 @@
         from user_info
         group by USER_AREA_CODE
     </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(1) from user_info
+    </select>
     <delete id="deleteUserInfoById" parameterType="int">
         DELETE FROM USER_INFO WHERE USER_INFO.USER_ID=#{userId}
     </delete>

@@ -14,4 +14,5 @@ public interface TestCaseDao {
     int insertTestCase(TestCase testCase);
     List<ChartTypeDto> categoryByParaType();
     List<ChartTypeDto> categoryByLibId();
+    int countAll();
 }

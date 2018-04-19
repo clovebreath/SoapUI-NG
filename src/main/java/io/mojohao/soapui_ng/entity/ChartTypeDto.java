@@ -22,4 +22,12 @@ public class ChartTypeDto {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    public ChartTypeDto() {
+    }
+
+    public ChartTypeDto(String type, int number) {
+        this.type = type;
+        this.number = number;
+    }
 }

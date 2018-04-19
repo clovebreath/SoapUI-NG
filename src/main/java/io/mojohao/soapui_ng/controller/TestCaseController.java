@@ -44,26 +44,31 @@ public class TestCaseController {
         }
         return testCaseService.queryTestCaseByCondition(testCase);
     }
+
     @ResponseBody
     @RequestMapping(value = "/delete")
     int deleteTestCaseById(int id){
         return testCaseService.deleteTestCaseById(id);
     }
+
     @ResponseBody
     @RequestMapping(value = "/update")
     int updateTestCase(TestCase testCase){
         return testCaseService.updateTestCase(testCase);
     }
+
     @ResponseBody
     @RequestMapping(value = "/insert")
     int insertTestCase(TestCase testCase){
         return testCaseService.insertTestCase(testCase);
     }
+
     @ResponseBody
     @RequestMapping(value = "/categoryByParaType")
     List<ChartTypeDto> categoryByParaType(){
         return testCaseService.categoryByParaType();
     }
+
     @ResponseBody
     @RequestMapping(value = "/categoryByLibId")
     List<ChartTypeDto> categoryByLibId(){

@@ -55,4 +55,7 @@
         from api_list
         group by ACCESS_MODE
     </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(1) from api_list
+    </select>
 </mapper>

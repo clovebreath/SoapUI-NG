@@ -22,4 +22,5 @@ public interface UserEleDataDao {
 
     List<ChartTypeDto> categoryByUserId();
 
+    int countAll();
 }

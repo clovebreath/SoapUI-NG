@@ -43,6 +43,9 @@
         from test_case
         group by CASE_LIB_ID
     </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(1) from test_case
+    </select>
     <delete id="deleteTestCaseById" parameterType="int">
         DELETE FROM TEST_CASE WHERE TEST_CASE.CASE_ID=#{id}
     </delete>

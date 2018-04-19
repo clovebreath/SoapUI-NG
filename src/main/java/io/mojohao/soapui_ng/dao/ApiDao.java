@@ -61,4 +61,10 @@ public interface ApiDao {
      * @return
      */
     List<ChartTypeDto> categoryByAccessMode();
+
+    /**
+     * 统计一共多少个
+     * @return
+     */
+    int countAll();
 }

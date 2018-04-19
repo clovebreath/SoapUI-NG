@@ -13,4 +13,5 @@ public interface TestCaseLibDao {
     int updateTestCaseLib(TestCaseLib testCaseLib);
     int insertTestCaseLib(TestCaseLib testCaseLib);
     List<ChartTypeDto> categoryByApplyApiId();
+    int countAll();
 }

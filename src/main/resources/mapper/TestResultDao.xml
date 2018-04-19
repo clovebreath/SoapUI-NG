@@ -36,6 +36,9 @@
         from test_result
         group by ASSERTION
     </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(1) from test_result
+    </select>
     <insert id="insertTestResult" parameterType="TestResult" useGeneratedKeys="false">
         insert into TEST_RESULT(TEST_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
         values(#{testId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})
