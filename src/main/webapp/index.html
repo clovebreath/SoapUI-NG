@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="resources/js/jquery-3.3.1.min.js"></script>
+    <script src="resources/js/jquery.pagination.js"></script>
     <script src="resources/js/bootstrap.min.js"></script>
     <script src="resources/js/Api.js"></script>
     <script src="resources/js/CaseLib.js"></script>
@@ -11,6 +12,7 @@
     <script src="resources/js/UserEleData.js"></script>
     <script src="resources/js/Result.js"></script>
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/css/syntax.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -81,7 +83,7 @@
                                 <tfoot></tfoot>
                                 <tbody></tbody>
                             </table>
-
+                            <ul class="pagination" id="api-pagination"></ul>
                             <div class="modal fade" id="modal-container-new-api" role="dialog" aria-labelledby="new-api-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -248,6 +250,7 @@
                                 <tbody></tbody>
                             </table>
 
+                            <ul class="pagination" id="lib-pagination"></ul>
 
                             <div class="modal fade" id="modal-container-new-lib" role="dialog" aria-labelledby="lib-new-label" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -390,6 +393,8 @@
                                 <tfoot></tfoot>
                                 <tbody></tbody>
                             </table>
+
+                            <ul class="pagination" id="case-pagination"></ul>
 
                             <div class="modal fade" id="modal-container-new-case" role="dialog" aria-labelledby="case-new-label" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -565,7 +570,7 @@
                                 <tfoot></tfoot>
                                 <tbody></tbody>
                             </table>
-
+                            <ul class="pagination" id="user-pagination"></ul>
                             <div class="modal fade" id="modal-container-new-user" role="dialog" aria-labelledby="user-new-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -736,6 +741,8 @@
                                 <tbody></tbody>
                             </table>
 
+                            <ul class="pagination" id="data-pagination"></ul>
+
                             <div class="modal fade" id="modal-container-new-data" role="dialog" aria-labelledby="data-new-label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -858,6 +865,10 @@
                                     <input type="number" class="form-control" id="result-test-id" placeholder="测试编号">
                                 </div>
                                 <div class="form-group">
+                                    <label for="result-test-plan-id">测试计划编号</label>
+                                    <input type="number" class="form-control" id="result-test-plan-id" placeholder="测试计划编号">
+                                </div>
+                                <div class="form-group">
                                     <label for="result-case-id">用例编号</label>
                                     <input type="number" class="form-control" id="result-case-id" placeholder="用例编号">
                                 </div>
@@ -870,16 +881,19 @@
                                     </select>
                                 </div>
                                 <button onclick="queryResult()" class="btn btn-default">查询</button>
+                                <a  class="btn" href="#modal-container-response-compare" data-toggle="modal">测试</a>
                             </form>
 
                             <!-- 表格 用于展示信息 -->
                             <table id="result-query-table" class="table table-bordered">
                                 <thead><tr>
-                                    <th>测试编号</th><th>用例编号</th><th>测试时间</th><th>期望输出</th><th>实际输出</th><th>断言</th><th>操作</th>
+                                    <th>测试编号</th><th>测试计划编号</th><th>用例编号</th><th>测试时间</th><th>期望输出</th><th>实际输出</th><th>断言</th><th>操作</th>
                                 </tr></thead>
                                 <tfoot></tfoot>
                                 <tbody></tbody>
                             </table>
+
+                            <ul class="pagination" id="result-pagination"></ul>
 
                             <div class="modal fade" id="modal-container-new-result" role="dialog" aria-labelledby="result-new-label" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -887,14 +901,14 @@
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                             <h4 class="modal-title" id="result-new-label">
-                                                新增抄表数据
+                                                新增测试结果
                                             </h4>
                                         </div>
                                         <div class="modal-body">
                                             <form id="new-result-form">
                                                 <div class="form-group">
-                                                    <label for="new-result-test-id">测试编号</label>
-                                                    <input type="number" class="form-control" id="new-result-test-id" placeholder="测试编号">
+                                                    <label for="new-result-test-plan-id">测试计划编号</label>
+                                                    <input type="number" class="form-control" id="new-result-test-plan-id" placeholder="测试计划编号">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="new-result-case-id">用例编号</label>
@@ -924,6 +938,44 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal" id="insert-result-modal-close" onclick="clearResultData()">关闭</button>
                                             <button type="button" class="btn btn-primary" onclick="insertResult()">新增</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-container-response-compare" role="dialog" aria-labelledby="result-response-compare" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="result-response-compare">
+                                                输出比对
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row clearfix">
+                                                <div class="col-md-6 column">
+                                                    <pre id="desired-response">
+
+
+
+
+
+                                                    </pre>
+                                                </div>
+                                                <div class="col-md-6 column">
+                                                    <pre id="actual-response">
+
+
+
+
+
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                         </div>
                                     </div>
                                 </div>

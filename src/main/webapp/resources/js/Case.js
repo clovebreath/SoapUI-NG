@@ -6,15 +6,46 @@ function queryCase(){
             "caseName":$("#case-name").val(),
             "caseId":$("#case-id").val(),
             "caseLibId":$("#case-lib-id").val(),
-            "caseParaType":$("#case-para-type").val()
+            "caseParaType":$("#case-para-type").val(),
+            "currPage":1
         },
         success:function (data) {
             $("#case-query-table tbody").html("");
-            for (let i = 0; i < data.length; i++) { //<th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th>
-                let tr = `<tr id="case-${data[i].caseId}"><td>${data[i].caseId}</td><td>${data[i].caseName}</td><td>${data[i].caseLibId}</td>
-                          <td>${data[i].caseParaType}</td><td>${data[i].parameter}</td><td>${data[i].desiredResponse}</td><td>${data[i].caseInfo}</td>
-                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${data[i].caseId})">修改</a><strong> | </strong>
-                          <a onclick="deleteCase(${data[i].caseId})">删除</a></td></tr>`;
+            let list=data.list;
+            let total=data.total;
+            for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th>
+                let tr = `<tr id="case-${list[i].caseId}"><td>${list[i].caseId}</td><td>${list[i].caseName}</td><td>${list[i].caseLibId}</td>
+                          <td>${list[i].caseParaType}</td><td>${list[i].parameter}</td><td>${list[i].desiredResponse}</td><td>${list[i].caseInfo}</td>
+                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})">修改</a><strong> | </strong>
+                          <a onclick="deleteCase(${list[i].caseId})">删除</a></td></tr>`;
+                $("#case-query-table tbody").append(tr);
+            }
+            initCasePagination(total);
+        },
+        error: function(data){
+            window.location="/error";
+        }
+    });
+}
+function queryCaseByPage(){
+    $.ajax({
+        url:"/testCase/query",
+        dataType:"json",
+        data:{
+            "caseName":$("#case-name").val(),
+            "caseId":$("#case-id").val(),
+            "caseLibId":$("#case-lib-id").val(),
+            "caseParaType":$("#case-para-type").val(),
+            "currPage":$("#case-pagination .active a").text()
+        },
+        success:function (data) {
+            $("#case-query-table tbody").html("");
+            let list=data.list;
+            for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th>
+                let tr = `<tr id="case-${list[i].caseId}"><td>${list[i].caseId}</td><td>${list[i].caseName}</td><td>${list[i].caseLibId}</td>
+                          <td>${list[i].caseParaType}</td><td>${list[i].parameter}</td><td>${list[i].desiredResponse}</td><td>${list[i].caseInfo}</td>
+                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})">修改</a><strong> | </strong>
+                          <a onclick="deleteCase(${list[i].caseId})">删除</a></td></tr>`;
                 $("#case-query-table tbody").append(tr);
             }
         },
@@ -22,6 +53,22 @@ function queryCase(){
             window.location="/error";
         }
     });
+}
+
+function initCasePagination(total) {
+    let $pagination = $('#case-pagination');
+    $pagination.twbsPagination('destroy');
+    if(total>0) {
+        let defaultOpts = {
+            totalPages: Math.ceil(total / 10),
+            first: "<<",
+            prev: "<",
+            next: ">",
+            last: ">>",
+            onPageClick: queryCaseByPage
+        };
+        $pagination.twbsPagination(defaultOpts);
+    }
 }
 function insertCase() {
     $.ajax({

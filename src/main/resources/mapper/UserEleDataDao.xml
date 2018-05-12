@@ -17,7 +17,35 @@
         <if test="userId!=null and userId!=''">
             AND USER_ELE_DATA.USER_ID=#{userId}
         </if>
-        <if test="collectTime!=null and collectTime!=''">
+        <if test="collectTime!=null">
+            AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
+        </if>
+        <if test="elemId!=null and elemId!=''">
+            AND USER_ELE_DATA.ELEM_ID=#{elemId}
+        </if>
+        <if test="elemData!=null and elemData!=''">
+            AND USER_ELE_DATA.ELEM_DATA=#{elemData}
+        </if>
+        order by USER_ELE_DATA.COLLECT_TIME DESC
+    </select>
+    <select id="categoryByUserId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select USER_ID type,count(1) number
+        from user_ele_data
+        group by USER_ID
+    </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(1) from user_ele_data
+    </select>
+    <select id="queryUserEleDataByPage" resultType="io.mojohao.soapui_ng.entity.UserEleData">
+        SELECT * FROM USER_ELE_DATA
+        WHERE 1=1
+        <if test="dataId!=null and dataId!=''">
+            AND USER_ELE_DATA.DATA_ID=#{dataId}
+        </if>
+        <if test="userId!=null and userId!=''">
+            AND USER_ELE_DATA.USER_ID=#{userId}
+        </if>
+        <if test="collectTime!=null">
             AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
         </if>
         <if test="elemId!=null and elemId!=''">
@@ -27,13 +55,24 @@
             AND USER_ELE_DATA.ELEM_DATA=#{elemData}
         </if>
     </select>
-    <select id="categoryByUserId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
-        select USER_ID type,count(1) number
-        from user_ele_data
-        group by USER_ID
-    </select>
-    <select id="countAll" resultType="java.lang.Integer">
-        select count(1) from user_ele_data
+    <select id="queryAmount" resultType="java.lang.Integer">
+        SELECT count(1) FROM USER_ELE_DATA
+        WHERE 1=1
+        <if test="dataId!=null and dataId!=''">
+            AND USER_ELE_DATA.DATA_ID=#{dataId}
+        </if>
+        <if test="userId!=null and userId!=''">
+            AND USER_ELE_DATA.USER_ID=#{userId}
+        </if>
+        <if test="collectTime!=null">
+            AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
+        </if>
+        <if test="elemId!=null and elemId!=''">
+            AND USER_ELE_DATA.ELEM_ID=#{elemId}
+        </if>
+        <if test="elemData!=null and elemData!=''">
+            AND USER_ELE_DATA.ELEM_DATA=#{elemData}
+        </if>
     </select>
     <delete id="deleteUserEleDataById">
         DELETE FROM USER_ELE_DATA WHERE USER_ELE_DATA.DATA_ID=#{dataId}

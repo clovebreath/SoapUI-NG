@@ -6,15 +6,46 @@ function queryUser(){
             "userName":$("#user-name").val(),
             "userId":$("#user-id").val(),
             "userElemCode":$("#user-elem-code").val(),
-            "userState":$("#user-state").val()
+            "userState":$("#user-state").val(),
+            "currPage":1
         },
         success:function (data) {
             $("#user-query-table tbody").html("");
-            for (let i = 0; i < data.length; i++) { //<th>ID</th><th>名称</th><th>状态</th><th>类型</th><th>地址</th><th>电能表编号</th><th>电能表台区编号</th><th>操作</th>
-                let tr = `<tr id="user-${data[i].userId}"><td>${data[i].userId}</td><td>${data[i].userName}</td><td>${data[i].userState}</td>
-                          <td>${data[i].userType}</td><td>${data[i].userAddress}</td><td>${data[i].userElemCode}</td><td>${data[i].userAreaCode}</td>
-                          <td><a href="#modal-container-modify-user" data-toggle="modal" onclick="modifyUser(${data[i].userId})">修改</a><strong> | </strong>
-                          <a onclick="deleteUser(${data[i].userId})">删除</a></td></tr>`;
+            let list=data.list;
+            let total=data.total;
+            for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>状态</th><th>类型</th><th>地址</th><th>电能表编号</th><th>电能表台区编号</th><th>操作</th>
+                let tr = `<tr id="user-${list[i].userId}"><td>${list[i].userId}</td><td>${list[i].userName}</td><td>${list[i].userState}</td>
+                          <td>${list[i].userType}</td><td>${list[i].userAddress}</td><td>${list[i].userElemCode}</td><td>${list[i].userAreaCode}</td>
+                          <td><a href="#modal-container-modify-user" data-toggle="modal" onclick="modifyUser(${list[i].userId})">修改</a><strong> | </strong>
+                          <a onclick="deleteUser(${list[i].userId})">删除</a></td></tr>`;
+                $("#user-query-table tbody").append(tr);
+            }
+            initUserPagination(total);
+        },
+        error: function(data){
+            window.location="/error";
+        }
+    });
+}
+function queryUserByPage(){
+    $.ajax({
+        url:"/user/query",
+        dataType:"json",
+        data:{
+            "userName":$("#user-name").val(),
+            "userId":$("#user-id").val(),
+            "userElemCode":$("#user-elem-code").val(),
+            "userState":$("#user-state").val(),
+            "currPage":$("#user-pagination .active a").text()
+        },
+        success:function (data) {
+            $("#user-query-table tbody").html("");
+            let list=data.list;
+            for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>状态</th><th>类型</th><th>地址</th><th>电能表编号</th><th>电能表台区编号</th><th>操作</th>
+                let tr = `<tr id="user-${list[i].userId}"><td>${list[i].userId}</td><td>${list[i].userName}</td><td>${list[i].userState}</td>
+                          <td>${list[i].userType}</td><td>${list[i].userAddress}</td><td>${list[i].userElemCode}</td><td>${list[i].userAreaCode}</td>
+                          <td><a href="#modal-container-modify-user" data-toggle="modal" onclick="modifyUser(${list[i].userId})">修改</a><strong> | </strong>
+                          <a onclick="deleteUser(${list[i].userId})">删除</a></td></tr>`;
                 $("#user-query-table tbody").append(tr);
             }
         },
@@ -23,6 +54,23 @@ function queryUser(){
         }
     });
 }
+
+function initUserPagination(total) {
+    let $pagination = $('#user-pagination');
+    $pagination.twbsPagination('destroy');
+    if(total>0){
+        let defaultOpts = {
+            totalPages: Math.ceil(total/10),
+            first:"<<",
+            prev:"<",
+            next:">",
+            last:">>",
+            onPageClick:queryUserByPage
+        };
+        $pagination.twbsPagination(defaultOpts);
+    }
+}
+
 function insertUser() {
     $.ajax({
         url:"/user/insert",

@@ -5,14 +5,43 @@ function queryLib(){
         data:{
             "libId":$("#lib-id").val(),
             "libName":$("#lib-name").val(),
-            "applyApiId":$("#apply-api-id").val()
+            "applyApiId":$("#apply-api-id").val(),
+            "currPage":1
         },
         success:function (data) {
             $("#lib-query-table tbody").html("");
-            for (let i = 0; i < data.length; i++) {
-                let tr = `<tr id="lib-${data[i].libId}"><td>${data[i].libId}</td><td>${data[i].libName}</td><td>${data[i].applyApiId}</td><td>${data[i].libInfo}</td>
-                          <td><a href="#modal-container-modify-lib" data-toggle="modal" onclick="modifyLib(${data[i].libId})">修改</a><strong> | </strong>
-                          <a onclick="deleteLib(${data[i].libId})">删除</a></td></tr>`;
+            let list=data.list;
+            let total=data.total;
+            for (let i = 0; i < list.length; i++) {
+                let tr = `<tr id="lib-${list[i].libId}"><td>${list[i].libId}</td><td>${list[i].libName}</td><td>${list[i].applyApiId}</td><td>${list[i].libInfo}</td>
+                          <td><a href="#modal-container-modify-lib" data-toggle="modal" onclick="modifyLib(${list[i].libId})">修改</a><strong> | </strong>
+                          <a onclick="deleteLib(${list[i].libId})">删除</a></td></tr>`;
+                $("#lib-query-table tbody").append(tr);
+            }
+            initLibPagination(total);
+        },
+        error: function(data){
+            window.location="/error";
+        }
+    });
+}
+function queryLibByPage(){
+    $.ajax({
+        url:"/testCaseLib/query",
+        dataType:"json",
+        data:{
+            "libId":$("#lib-id").val(),
+            "libName":$("#lib-name").val(),
+            "applyApiId":$("#apply-api-id").val(),
+            "currPage":$("#lib-pagination .active a").text()
+        },
+        success:function (data) {
+            $("#lib-query-table tbody").html("");
+            let list=data.list;
+            for (let i = 0; i < list.length; i++) {
+                let tr = `<tr id="lib-${list[i].libId}"><td>${list[i].libId}</td><td>${list[i].libName}</td><td>${list[i].applyApiId}</td><td>${list[i].libInfo}</td>
+                          <td><a href="#modal-container-modify-lib" data-toggle="modal" onclick="modifyLib(${list[i].libId})">修改</a><strong> | </strong>
+                          <a onclick="deleteLib(${list[i].libId})">删除</a></td></tr>`;
                 $("#lib-query-table tbody").append(tr);
             }
         },
@@ -20,6 +49,22 @@ function queryLib(){
             window.location="/error";
         }
     });
+}
+
+function initLibPagination(total) {
+    let $pagination = $('#lib-pagination');
+    $pagination.twbsPagination('destroy');
+    if(total>0) {
+        let defaultOpts = {
+            totalPages: Math.ceil(total / 10),
+            first: "<<",
+            prev: "<",
+            next: ">",
+            last: ">>",
+            onPageClick: queryLibByPage
+        };
+        $pagination.twbsPagination(defaultOpts);
+    }
 }
 function insertLib() {
     $.ajax({

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TestResultServiceImpl implements TestResultService {
@@ -15,35 +16,50 @@ public class TestResultServiceImpl implements TestResultService {
     @Autowired
     TestResultDao testResultDao;
 
+    @Override
     public List<TestResult> getAllTestResults() {
         return testResultDao.getAllTestResults();
     }
 
-    public TestResult queryTestResultById(int testId, int caseId) {
-        return null;
+    @Override
+    public TestResult queryTestResultById(int testId) {
+        return testResultDao.queryTestResultById(testId);
     }
 
+    @Override
     public List<TestResult> queryTestResultByCondition(TestResult testResult) {
         return testResultDao.queryTestResultByCondition(testResult);
     }
-
+    @Override
+    public List<TestResult> queryTestResultByPage(Map param) {
+        return testResultDao.queryTestResultByPage(param);
+    }
+    @Override
     public int insertTestResult(TestResult testResult) {
         return testResultDao.insertTestResult(testResult);
     }
 
-    public int deleteTestResult(int testId, int caseId) {
-        return testResultDao.deleteTestResult(testId,caseId);
+    @Override
+    public int deleteTestResult(int testId) {
+        return testResultDao.deleteTestResult(testId);
     }
 
-    public List<ChartTypeDto> categoryByTestId() {
-        return testResultDao.categoryByTestId();
+    @Override
+    public List<ChartTypeDto> categoryByTestPlanId() {
+        return testResultDao.categoryByTestPlanId();
     }
 
+    @Override
     public List<ChartTypeDto> categoryByCaseId() {
-        return testResultDao.categoryByTestId();
+        return testResultDao.categoryByCaseId();
     }
 
+    @Override
     public List<ChartTypeDto> categoryByAssertion() {
         return testResultDao.categoryByAssertion();
+    }
+    @Override
+    public int queryAmount(Map param) {
+        return testResultDao.queryAmount(param);
     }
 }

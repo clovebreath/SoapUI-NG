@@ -6,7 +6,7 @@
         SELECT * FROM TEST_RESULT
     </select>
     <select id="queryTestResultById" resultType="TestResult">
-        SELECT * FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
+        SELECT * FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId}
     </select>
     <select id="queryTestResultByCondition" parameterType="TestResult" resultType="TestResult">
         SELECT * FROM TEST_RESULT
@@ -20,11 +20,14 @@
         <if test="assertion!=null and assertion!=''">
             AND TEST_RESULT.ASSERTION=#{assertion}
         </if>
+        <if test="testPlanId!=null and testPlanId!=''">
+            AND TEST_RESULT.TEST_PLAN_ID=#{testPlanId}
+        </if>
     </select>
-    <select id="categoryByTestId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
-        select TEST_ID type,count(1) number
+    <select id="categoryByTestPlanId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select TEST_PLAN_ID type,count(1) number
         from test_result
-        group by TEST_ID
+        group by TEST_PLAN_ID
     </select>
     <select id="categoryByCaseId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
         select CASE_ID type,count(1) number
@@ -39,11 +42,43 @@
     <select id="countAll" resultType="java.lang.Integer">
         select count(1) from test_result
     </select>
-    <insert id="insertTestResult" parameterType="TestResult" useGeneratedKeys="false">
-        insert into TEST_RESULT(TEST_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
-        values(#{testId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})
+    <select id="queryTestResultByPage" resultType="io.mojohao.soapui_ng.entity.TestResult">
+        SELECT * FROM TEST_RESULT
+        WHERE 1=1
+        <if test="testId!=null and testId!=''">
+            AND TEST_RESULT.TEST_ID=#{testId}
+        </if>
+        <if test="caseId!=null and caseId!=''">
+            AND TEST_RESULT.CASE_ID=#{caseId}
+        </if>
+        <if test="assertion!=null and assertion!=''">
+            AND TEST_RESULT.ASSERTION=#{assertion}
+        </if>
+        <if test="testPlanId!=null and testPlanId!=''">
+            AND TEST_RESULT.TEST_PLAN_ID=#{testPlanId}
+        </if>
+    </select>
+    <select id="queryAmount" resultType="java.lang.Integer">
+        SELECT count(1) FROM TEST_RESULT
+        WHERE 1=1
+        <if test="testId!=null and testId!=''">
+            AND TEST_RESULT.TEST_ID=#{testId}
+        </if>
+        <if test="caseId!=null and caseId!=''">
+            AND TEST_RESULT.CASE_ID=#{caseId}
+        </if>
+        <if test="assertion!=null and assertion!=''">
+            AND TEST_RESULT.ASSERTION=#{assertion}
+        </if>
+        <if test="testPlanId!=null and testPlanId!=''">
+            AND TEST_RESULT.TEST_PLAN_ID=#{testPlanId}
+        </if>
+    </select>
+    <insert id="insertTestResult" parameterType="TestResult" useGeneratedKeys="true" keyProperty="testId">
+        insert into TEST_RESULT(TEST_PLAN_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
+        values(#{testPlanId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})
     </insert>
     <delete id="deleteTestResult">
-        DELETE FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId} AND TEST_RESULT.CASE_ID=#{caseId}
+        DELETE FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId}
     </delete>
 </mapper>

@@ -19,7 +19,14 @@
   </properties>
 
   <dependencies>
-      <!--日志系统-->
+    <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
+    <dependency>
+      <groupId>org.dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+
+    <!--日志系统-->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -137,5 +144,17 @@
   </dependencies>
   <build>
     <finalName>SoapUI-NG</finalName>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <source>1.8</source>
+                  <target>1.8</target>
+                  <showWarnings>true</showWarnings>
+                  <encoding>UTF-8</encoding>
+              </configuration>
+          </plugin>
+      </plugins>
   </build>
 </project>

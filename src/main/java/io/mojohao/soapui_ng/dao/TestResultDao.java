@@ -5,15 +5,22 @@ import io.mojohao.soapui_ng.entity.TestResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TestResultDao {
     List<TestResult> getAllTestResults();
-    TestResult queryTestResultById(@Param("testId") int testId,@Param("caseId") int caseId);
+    TestResult queryTestResultById(@Param("testId") int testId);
     List<TestResult> queryTestResultByCondition(TestResult testResult);
+    List<TestResult> queryTestResultByPage(Map param);
     int insertTestResult(TestResult testResult);
-    int deleteTestResult(@Param("testId") int testId,@Param("caseId") int caseId);
-    List<ChartTypeDto> categoryByTestId();
+    int deleteTestResult(@Param("testId") int testId);
+    List<ChartTypeDto> categoryByTestPlanId();
     List<ChartTypeDto> categoryByCaseId();
     List<ChartTypeDto> categoryByAssertion();
     int countAll();
+    /**
+     * 统计符合条件的多少个
+     * @return
+     */
+    int queryAmount(Map param);
 }

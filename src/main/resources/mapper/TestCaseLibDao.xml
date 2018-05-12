@@ -35,6 +35,32 @@
     <select id="countAll" resultType="java.lang.Integer">
         select count(1) from test_case_lib
     </select>
+    <select id="queryTestCaseLibByPage" resultType="io.mojohao.soapui_ng.entity.TestCaseLib">
+        SELECT * FROM TEST_CASE_LIB
+        WHERE 1=1
+        <if test="libId!=null and libId!=''">
+            AND TEST_CASE_LIB.LIB_ID=#{libId}
+        </if>
+        <if test="libName!=null and libName!=''">
+            AND TEST_CASE_LIB.LIB_NAME=#{libName}
+        </if>
+        <if test="applyApiId!=null and applyApiId!=''">
+            AND TEST_CASE_LIB.APPLY_API_ID=#{applyApiId}
+        </if>
+    </select>
+    <select id="queryAmount" resultType="java.lang.Integer">
+        SELECT count(1) FROM TEST_CASE_LIB
+        WHERE 1=1
+        <if test="libId!=null and libId!=''">
+            AND TEST_CASE_LIB.LIB_ID=#{libId}
+        </if>
+        <if test="libName!=null and libName!=''">
+            AND TEST_CASE_LIB.LIB_NAME=#{libName}
+        </if>
+        <if test="applyApiId!=null and applyApiId!=''">
+            AND TEST_CASE_LIB.APPLY_API_ID=#{applyApiId}
+        </if>
+    </select>
     <delete id="deleteTestCaseLibById" parameterType="int">
         DELETE FROM TEST_CASE_LIB WHERE TEST_CASE_LIB.LIB_ID=#{id}
     </delete>

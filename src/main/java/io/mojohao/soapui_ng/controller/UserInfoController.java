@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -29,21 +31,28 @@ public class UserInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/query")
-    public List<UserInfo> queryUserInfoByCondition(String userName,String userState,String userElemCode,String userId) {
-        UserInfo userInfo=new UserInfo();
+    public HashMap<String,Object> queryUserInfoByCondition(String userName,String userState,String userElemCode,String userId,int currPage) {
+        Map param=new HashMap<String,Object>();
         if(StringUtils.isNotBlank(userId)&&StringUtils.isNumeric(userId)){
-            userInfo.setUserId(Integer.parseInt(userId));
+            param.put("userId",Integer.parseInt(userId));
         }
         if(StringUtils.isNotBlank(userElemCode)){
-            userInfo.setUserElemCode(userElemCode);
+            param.put("userElemCode",userElemCode);
         }
         if(StringUtils.isNotBlank(userName)){
-            userInfo.setUserName(userName);
+            param.put("userName",userName);
         }
         if(StringUtils.isNotBlank(userState)){
-            userInfo.setUserState(userState);
+            param.put("userState",userState);
         }
-        return userInfoService.queryUserInfoByCondition(userInfo);
+        if(currPage<=0) {
+            currPage = 1;
+        }
+        param.put("currPage",currPage);
+        HashMap<String,Object> retMap=new HashMap<>();
+        retMap.put("list",userInfoService.queryUserInfoByPage(param));
+        retMap.put("total",userInfoService.queryAmount(param));
+        return retMap;
     }
 
     @ResponseBody

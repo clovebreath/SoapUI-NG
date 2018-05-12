@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/testCase")
@@ -28,21 +30,28 @@ public class TestCaseController {
 
     @ResponseBody
     @RequestMapping(value = "/query")
-    List<TestCase> queryTestCaseByCondition(String caseId,String caseName,String caseLibId,String caseParaType){
-        TestCase testCase=new TestCase();
+    HashMap<String,Object> queryTestCaseByCondition(String caseId,String caseName,String caseLibId,String caseParaType,int currPage){
+        Map param=new HashMap<String,Object>();
+        HashMap<String,Object> retMap=new HashMap<>();
         if(StringUtils.isNotBlank(caseId)&&StringUtils.isNumeric(caseId)){
-            testCase.setCaseId(Integer.parseInt(caseId));
+            param.put("caseId",Integer.parseInt(caseId));
         }
         if(StringUtils.isNotBlank(caseLibId)&&StringUtils.isNumeric(caseLibId)){
-            testCase.setCaseLibId(Integer.parseInt(caseLibId));
+            param.put("caseLibId",Integer.parseInt(caseLibId));
         }
         if(StringUtils.isNotBlank(caseName)){
-            testCase.setCaseName(caseName);
+            param.put("caseName",caseName);
         }
         if(StringUtils.isNotBlank(caseParaType)){
-            testCase.setCaseParaType(caseParaType);
+            param.put("caseParaType",caseParaType);
         }
-        return testCaseService.queryTestCaseByCondition(testCase);
+        if(currPage<=0) {
+            currPage = 1;
+        }
+        param.put("currPage",currPage);
+        retMap.put("list",testCaseService.queryTestCaseByPage(param));
+        retMap.put("total",testCaseService.queryAmount(param));
+        return retMap;
     }
 
     @ResponseBody

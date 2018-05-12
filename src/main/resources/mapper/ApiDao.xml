@@ -58,4 +58,30 @@
     <select id="countAll" resultType="java.lang.Integer">
         select count(1) from api_list
     </select>
+    <select id="queryApiByPage" parameterType="java.util.Map" resultType="io.mojohao.soapui_ng.entity.Api">
+        SELECT * FROM API_LIST
+        WHERE 1=1
+        <if test="apiId!=null and apiId!=''">
+            AND API_LIST.API_ID=#{apiId}
+        </if>
+        <if test="apiName!=null and apiName!=''">
+            AND API_LIST.API_NAME=#{apiName}
+        </if>
+        <if test="apiType!=null and apiType!=''">
+            AND API_LIST.API_TYPE=#{apiType}
+        </if>
+    </select>
+    <select id="queryAmount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) FROM API_LIST
+        WHERE 1=1
+        <if test="apiId!=null and apiId!=''">
+            AND API_LIST.API_ID=#{apiId}
+        </if>
+        <if test="apiName!=null and apiName!=''">
+            AND API_LIST.API_NAME=#{apiName}
+        </if>
+        <if test="apiType!=null and apiType!=''">
+            AND API_LIST.API_TYPE=#{apiType}
+        </if>
+    </select>
 </mapper>

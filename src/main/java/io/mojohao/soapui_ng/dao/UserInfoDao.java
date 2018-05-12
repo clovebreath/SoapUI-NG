@@ -5,6 +5,7 @@ import io.mojohao.soapui_ng.entity.UserInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserInfoDao {
     List<UserInfo> getAllUserInfos();
@@ -12,6 +13,8 @@ public interface UserInfoDao {
     UserInfo queryUserInfoById(@Param("userId") int userId);
 
     List<UserInfo> queryUserInfoByCondition(UserInfo userInfo);
+
+    List<UserInfo> queryUserInfoByPage(Map param);
 
     int deleteUserInfoById(@Param("userId") int userId);
 
@@ -26,4 +29,10 @@ public interface UserInfoDao {
     List<ChartTypeDto> categoryByUserAreaCode();
 
     int countAll();
+
+    /**
+     * 统计符合条件的多少个
+     * @return
+     */
+    int queryAmount(Map param);
 }

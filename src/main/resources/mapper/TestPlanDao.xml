@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mojohao.soapui_ng.dao.TestPlanDao">
+    <insert id="insertTestPlan" useGeneratedKeys="true" keyProperty="testPlanId">
+        insert into test_plan(API_ID, LIB_ID, CASE_ID, PLAN_NAME)
+                values (${apiID},${libId},${caseId},${planName})
+    </insert>
+    <update id="updateTestPlan">
+        update test_plan
+        set API_ID=${apiId},
+            LIB_ID=${libId},
+            CASE_ID=${caseId},
+            PLAN_NAME=${planName}
+        where TEST_PLAN_ID=${testPlanId}
+    </update>
+    <delete id="deleteTestPlanById">
+        delete * from test_plan where TEST_PLAN_ID=#{planId}
+    </delete>
+    <select id="getAllTestPlans" resultType="io.mojohao.soapui_ng.entity.TestPlan">
+        select * from test_plan
+    </select>
+    <select id="queryTestPlanById" resultType="io.mojohao.soapui_ng.entity.TestPlan">
+        select * from test_plan where TEST_PLAN_ID=#{id}
+    </select>
+    <select id="queryTestPlanByCondition" resultType="io.mojohao.soapui_ng.entity.TestPlan">
+        select * from test_plan
+        where 1=1
+        <if test="testPlanId!=null and testPlanId!=''">
+            and TEST_PLAN_ID=#{testPlanId}
+        </if>
+        <if test="apiId!=null and apiId!=''">
+            and API_ID=#{apiId}
+        </if>
+        <if test="libId!=null and libId!=''">
+            and LIB_ID=#{libId}
+        </if>
+    </select>
+    <select id="queryTestPlanByPage" resultType="io.mojohao.soapui_ng.entity.TestPlan">
+        select * from test_plan
+        where 1=1
+        <if test="testPlanId!=null and testPlanId!=''">
+            and TEST_PLAN_ID=#{testPlanId}
+        </if>
+        <if test="apiId!=null and apiId!=''">
+            and API_ID=#{apiId}
+        </if>
+        <if test="libId!=null and libId!=''">
+            and LIB_ID=#{libId}
+        </if>
+    </select>
+    <select id="categoryByLibId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select count(1) number,LIB_ID type
+        from test_plan
+        group by LIB_ID
+    </select>
+    <select id="categoryByApiId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
+        select count(1) number,API_ID type
+        from test_plan
+        group by API_ID
+    </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        select count(1) from test_plan
+    </select>
+    <select id="queryAmount" resultType="java.lang.Integer">
+        select count(1) from test_plan
+        where 1=1
+        <if test="testPlanId!=null and testPlanId!=''">
+            and TEST_PLAN_ID=#{testPlanId}
+        </if>
+        <if test="apiId!=null and apiId!=''">
+            and API_ID=#{apiId}
+        </if>
+        <if test="libId!=null and libId!=''">
+            and LIB_ID=#{libId}
+        </if>
+    </select>
+</mapper>

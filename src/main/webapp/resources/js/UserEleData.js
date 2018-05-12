@@ -5,15 +5,45 @@ function queryData(){
         data:{
             "dataId":$("#data-id").val(),
             "userId":$("#data-user-id").val(),
-            "userElemCode":$("#data-user-elem-code").val()
+            "userElemCode":$("#data-user-elem-code").val(),
+            "currPage":1
         },
         success:function (data) {
             $("#data-query-table tbody").html("");
-            for (let i = 0; i < data.length; i++) { //<th>数据ID</th><th>抄表日期</th><th>用户ID</th><th>电能表编号</th><th>电能表数据</th><th>操作</th>
-                let tr = `<tr id="data-${data[i].dataId}"><td>${data[i].dataId}</td><td>${data[i].collectTime}</td><td>${data[i].userId}</td>
-                          <td>${data[i].elemId}</td><td>${data[i].elemData}</td>
-                          <td><a href="#modal-container-modify-data" data-toggle="modal" onclick="modifyData(${data[i].dataId})">修改</a><strong> | </strong>
-                          <a onclick="deleteData(${data[i].dataId})">删除</a></td></tr>`;
+            let list=data.list;
+            let total=data.total;
+            for (let i = 0; i < list.length; i++) { //<th>数据ID</th><th>抄表日期</th><th>用户ID</th><th>电能表编号</th><th>电能表数据</th><th>操作</th>
+                let tr = `<tr id="data-${list[i].dataId}"><td>${list[i].dataId}</td><td>${list[i].collectTime}</td><td>${list[i].userId}</td>
+                          <td>${list[i].elemId}</td><td>${list[i].elemData}</td>
+                          <td><a href="#modal-container-modify-data" data-toggle="modal" onclick="modifyData(${list[i].dataId})">修改</a><strong> | </strong>
+                          <a onclick="deleteData(${list[i].dataId})">删除</a></td></tr>`;
+                $("#data-query-table tbody").append(tr);
+            }
+            initDataPagination(total);
+        },
+        error: function(data){
+            window.location="/error";
+        }
+    });
+}
+function queryDataByPage(){
+    $.ajax({
+        url:"/data/query",
+        dataType:"json",
+        data:{
+            "dataId":$("#data-id").val(),
+            "userId":$("#data-user-id").val(),
+            "userElemCode":$("#data-user-elem-code").val(),
+            "currPage":$("#data-pagination .active a").text()
+        },
+        success:function (data) {
+            $("#data-query-table tbody").html("");
+            let list=data.list;
+            for (let i = 0; i < list.length; i++) { //<th>数据ID</th><th>抄表日期</th><th>用户ID</th><th>电能表编号</th><th>电能表数据</th><th>操作</th>
+                let tr = `<tr id="data-${list[i].dataId}"><td>${list[i].dataId}</td><td>${list[i].collectTime}</td><td>${list[i].userId}</td>
+                          <td>${list[i].elemId}</td><td>${list[i].elemData}</td>
+                          <td><a href="#modal-container-modify-data" data-toggle="modal" onclick="modifyData(${list[i].dataId})">修改</a><strong> | </strong>
+                          <a onclick="deleteData(${list[i].dataId})">删除</a></td></tr>`;
                 $("#data-query-table tbody").append(tr);
             }
         },
@@ -22,6 +52,22 @@ function queryData(){
         }
     });
 }
+function initDataPagination(total) {
+    let $pagination = $('#data-pagination');
+    $pagination.twbsPagination('destroy');
+    if(total>0){
+        let defaultOpts = {
+            totalPages: Math.ceil(total/10),
+            first:"<<",
+            prev:"<",
+            next:">",
+            last:">>",
+            onPageClick:queryDataByPage
+        };
+        $pagination.twbsPagination(defaultOpts);
+    }
+}
+
 function insertData() {
     $.ajax({
         url:"/data/insert",

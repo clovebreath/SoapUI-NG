@@ -15,7 +15,7 @@ DATA_ID INT NOT NULL AUTO_INCREMENT comment '数据ID',
 USER_ID INT NOT NULL comment '用户ID',
 COLLECT_TIME timestamp NOT NULL comment '抄表日期',
 ELEM_ID varchar(20) NOT NULL comment '电能表编号',
-ELEM_DATA varchar(20) NOT NULL comment '电能表数据',
+ELEM_DATA double NOT NULL comment '电能表数据',
 PRIMARY KEY (DATA_ID)
 ) comment='采集电能表数据信息';
 CREATE TABLE mojohao.API_LIST
@@ -24,7 +24,7 @@ API_ID INT NOT NULL AUTO_INCREMENT comment '接口ID',
 API_NAME varchar(20) NOT NULL comment '接口名称',
 API_TYPE ENUM('REST', 'SOAP') NOT NULL comment '接口类别',
 API_LINK varchar(60) NOT NULL comment '接口地址',
-ACCESS_MODE ENUM('GET', 'POST','PUT','DELETE') NOT NULL comment '访问方式',
+ACCESS_MODE ENUM('GET', 'POST','PUT','DELETE','SOAP') NOT NULL comment '访问方式',
 API_INFO varchar(60) NOT NULL comment '接口说明',
 PRIMARY KEY (API_ID)
 ) comment='接口服务信息';
@@ -49,11 +49,21 @@ PRIMARY KEY (LIB_ID)
 ) comment='测试用例库';
 CREATE TABLE mojohao.TEST_RESULT
 (
-TEST_ID INT NOT NULL COMMENT '测试编号',
+TEST_ID INT NOT NULL auto_increment COMMENT '测试编号',
+TEST_PLAN_ID INT NOT NULL COMMENT '测试计划编号',
 CASE_ID INT NOT NULL COMMENT '用例编号',
 TEST_DATE TIMESTAMP NOT NULL COMMENT '测试时间',
 DESIRED_RESPONSE TEXT  comment '期望输出',
 ACTUAL_RESPONSE TEXT  comment '实际输出',
 ASSERTION ENUM('PASSED', 'UNPASSED') comment '断言',
-PRIMARY KEY (TEST_ID,CASE_ID)
+PRIMARY KEY (TEST_ID)
 ) comment='测试结果';
+CREATE TABLE mojohao.TEST_PLAN
+(
+TEST_PLAN_ID INT NOT NULL AUTO_INCREMENT COMMENT '测试计划编号',
+API_ID INT NOT NULL comment '接口ID',
+LIB_ID INT NOT NULL comment '用例库ID',
+CASE_ID TEXT COMMENT '用例编号集',
+PLAN_NAME varchar(20) NOT NULL COMMENT '测试计划名称',
+PRIMARY KEY (TEST_PLAN_ID)
+) comment='测试计划';

@@ -14,7 +14,9 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/data")
@@ -34,18 +36,25 @@ public class UserEleDataController {
 
     @ResponseBody
     @RequestMapping(value = "/query")
-    List<UserEleData> queryUserEleDataByCondition(String dataId,String userId,String userElemCode){
-        UserEleData userEleData = new UserEleData();
+    HashMap<String,Object> queryUserEleDataByCondition(String dataId,String userId,String userElemCode,int currPage){
+        Map param=new HashMap<String,Object>();
         if(StringUtils.isNotBlank(dataId)&&StringUtils.isNumeric(dataId)){
-            userEleData.setDataId(Integer.parseInt(dataId));
+            param.put("dataId",Integer.parseInt(dataId));
         }
         if(StringUtils.isNotBlank(userId)&&StringUtils.isNumeric(userId)){
-            userEleData.setUserId(Integer.parseInt(userId));
+            param.put("userId",Integer.parseInt(userId));
         }
         if(StringUtils.isNotBlank(userElemCode)){
-            userEleData.setElemId(userElemCode);
+            param.put("elemId",userElemCode);
         }
-        return userEleDataService.queryUserEleDataByCondition(userEleData);
+        if(currPage<=0) {
+            currPage = 1;
+        }
+        param.put("currPage",currPage);
+        HashMap<String,Object> retMap=new HashMap<>();
+        retMap.put("list",userEleDataService.queryUserEleDataByPage(param));
+        retMap.put("total",userEleDataService.queryAmount(param));
+        return retMap;
     }
 
     @ResponseBody
@@ -67,8 +76,8 @@ public class UserEleDataController {
         if(StringUtils.isNotBlank(userId)&&StringUtils.isNumeric(userId)){
             userEleData.setUserId(Integer.parseInt(userId));
         }
-        if(StringUtils.isNotBlank(elemData)){
-            userEleData.setElemData(elemData);
+        if(StringUtils.isNotBlank(elemData)&&StringUtils.isNumeric(elemData)){
+            userEleData.setElemData(Double.parseDouble(elemData));
         }
         if(StringUtils.isNotBlank(collectTime)){
             userEleData.setCollectTime(convertDate(collectTime));
@@ -86,8 +95,8 @@ public class UserEleDataController {
         if(StringUtils.isNotBlank(userId)&&StringUtils.isNumeric(userId)){
             userEleData.setUserId(Integer.parseInt(userId));
         }
-        if(StringUtils.isNotBlank(elemData)){
-            userEleData.setElemData(elemData);
+        if(StringUtils.isNotBlank(elemData)&&StringUtils.isNumeric(elemData)){
+            userEleData.setElemData(Double.parseDouble(elemData));
         }
         if(StringUtils.isNotBlank(collectTime)){
             userEleData.setCollectTime(convertDate(collectTime));

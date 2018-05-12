@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/testCaseLib")
@@ -29,18 +31,25 @@ public class TestCaseLibController {
 
     @ResponseBody
     @RequestMapping(value = "/query")
-    List<TestCaseLib> queryTestCaseLibByCondition(String libId,String libName,String applyApiId){
-        TestCaseLib caseLib=new TestCaseLib();
+    HashMap<String,Object> queryTestCaseLibByCondition(String libId,String libName,String applyApiId,int currPage){
+        Map param=new HashMap<String,Object>();
+        HashMap<String,Object> retMap=new HashMap<>();
         if(StringUtils.isNotBlank(libId)&&StringUtils.isNumeric(libId)){
-            caseLib.setLibId(Integer.parseInt(libId));
+            param.put("libId",Integer.parseInt(libId));
         }
         if(StringUtils.isNotBlank(libName)){
-            caseLib.setLibName(libName);
+            param.put("libName",libName);
         }
         if(StringUtils.isNotBlank(applyApiId)&&StringUtils.isNumeric(applyApiId)){
-            caseLib.setApplyApiId(Integer.parseInt(applyApiId));
+            param.put("applyApiId",Integer.parseInt(applyApiId));
         }
-        return testCaseLibService.queryTestCaseLibByCondition(caseLib);
+        if(currPage<=0) {
+            currPage = 1;
+        }
+        param.put("currPage",currPage);
+        retMap.put("list",testCaseLibService.queryTestCaseLibByPage(param));
+        retMap.put("total",testCaseLibService.queryAmount(param));
+        return retMap;
     }
     @ResponseBody
     @RequestMapping(value = "/delete")

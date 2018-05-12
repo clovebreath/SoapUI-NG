@@ -10,12 +10,12 @@ public class UserEleData {
 
     private int userId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM", timezone = "GMT+8")
     private Timestamp collectTime;
 
     private String elemId;
 
-    private String elemData;
+    private double elemData;
 
 
     public int getDataId() {
@@ -50,11 +50,11 @@ public class UserEleData {
         this.elemId = elemId;
     }
 
-    public String getElemData() {
+    public double getElemData() {
         return elemData;
     }
 
-    public void setElemData(String elemData) {
+    public void setElemData(double elemData) {
         this.elemData = elemData;
     }
 }

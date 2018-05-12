@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 public interface UserEleDataService {
     List<UserEleData> getAllUserEleDatas();
@@ -14,6 +15,8 @@ public interface UserEleDataService {
 
     List<UserEleData> queryUserEleDataByCondition(UserEleData userEleData);
 
+    List<UserEleData> queryUserEleDataByPage(Map param);
+
     int deleteUserEleDataById(int dataId);
 
     int updateUserEleData(UserEleData userEleData);
@@ -21,5 +24,9 @@ public interface UserEleDataService {
     int insertUserEleData(UserEleData userEleData);
 
     List<ChartTypeDto> categoryByUserId();
-
+    /**
+     * 统计符合条件的多少个
+     * @return
+     */
+    int queryAmount(Map param);
 }

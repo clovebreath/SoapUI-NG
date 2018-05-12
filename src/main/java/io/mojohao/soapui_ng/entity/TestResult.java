@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 public class TestResult {
     private int testId;
     private int caseId;
+    private int testPlanId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Timestamp testDate;
@@ -61,5 +62,13 @@ public class TestResult {
 
     public void setAssertion(String assertion) {
         this.assertion = assertion;
+    }
+
+    public int getTestPlanId() {
+        return testPlanId;
+    }
+
+    public void setTestPlanId(int testPlanId) {
+        this.testPlanId = testPlanId;
     }
 }

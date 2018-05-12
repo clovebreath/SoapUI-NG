@@ -14,7 +14,9 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/result")
@@ -27,35 +29,45 @@ public class TestResultController {
     List<TestResult> getAllTestResults(){
         return testResultService.getAllTestResults();
     }
-    TestResult queryTestResultById(@Param("testId") int testId, @Param("caseId") int caseId){
-        return null;
+    TestResult queryTestResultById(@Param("testId") int testId){
+        return testResultService.queryTestResultById(testId);
     }
 
     @ResponseBody
     @RequestMapping(value = "/query")
-    List<TestResult> queryTestResultByCondition(String caseId,String testId,String assertion){
-        TestResult testResult=new TestResult();
+    HashMap<String,Object> queryTestResultByCondition(String caseId,String testId,String testPlanId,String assertion,int currPage){
+        Map param=new HashMap<String,Object>();
         if(StringUtils.isNotBlank(caseId)&&StringUtils.isNumeric(caseId)){
-            testResult.setCaseId(Integer.parseInt(caseId));
+            param.put("caseId",Integer.parseInt(caseId));
+        }
+        if(StringUtils.isNotBlank(testPlanId)&&StringUtils.isNumeric(testPlanId)){
+            param.put("testPlanId",Integer.parseInt(testPlanId));
         }
         if(StringUtils.isNotBlank(testId)&&StringUtils.isNumeric(testId)){
-            testResult.setTestId(Integer.parseInt(testId));
+            param.put("testId",Integer.parseInt(testId));
         }
         if(StringUtils.isNotBlank(assertion)){
-            testResult.setAssertion(assertion);
+            param.put("assertion",assertion);
         }
-        return testResultService.queryTestResultByCondition(testResult);
+        if(currPage<=0) {
+            currPage = 1;
+        }
+        param.put("currPage",currPage);
+        HashMap<String,Object> retMap=new HashMap<>();
+        retMap.put("list",testResultService.queryTestResultByPage(param));
+        retMap.put("total",testResultService.queryAmount(param));
+        return retMap;
     }
 
     @ResponseBody
     @RequestMapping(value = "/insert")
-    int insertTestResult(String testId,String caseId,String testDate,String desiredResponse,String actualResponse,String assertion) throws ParseException {
+    int insertTestResult(String testPlanId,String caseId,String testDate,String desiredResponse,String actualResponse,String assertion) throws ParseException {
         TestResult testResult=new TestResult();
         if(StringUtils.isNotBlank(caseId)&&StringUtils.isNumeric(caseId)){
             testResult.setCaseId(Integer.parseInt(caseId));
         }
-        if(StringUtils.isNotBlank(testId)&&StringUtils.isNumeric(testId)){
-            testResult.setTestId(Integer.parseInt(testId));
+        if(StringUtils.isNotBlank(testPlanId)&&StringUtils.isNumeric(testPlanId)){
+            testResult.setTestId(Integer.parseInt(testPlanId));
         }
         if(StringUtils.isNotBlank(assertion)){
             testResult.setAssertion(assertion);
@@ -74,13 +86,13 @@ public class TestResultController {
 
     @ResponseBody
     @RequestMapping(value = "/delete")
-    int deleteTestResult(@Param("testId") int testId, @Param("caseId") int caseId){
-        return testResultService.deleteTestResult(testId,caseId);
+    int deleteTestResult(@Param("testId") int testId){
+        return testResultService.deleteTestResult(testId);
     }
     @ResponseBody
-    @RequestMapping(value = "/categoryByTestId")
-    List<ChartTypeDto> categoryByTestId(){
-        return testResultService.categoryByTestId();
+    @RequestMapping(value = "/categoryByTestPlanId")
+    List<ChartTypeDto> categoryByTestPlanId(){
+        return testResultService.categoryByTestPlanId();
     }
     @ResponseBody
     @RequestMapping(value = "/categoryByCaseId")

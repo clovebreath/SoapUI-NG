@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/api")
@@ -25,18 +27,25 @@ public class ApiController {
 
     @ResponseBody
     @RequestMapping(value = "/query")
-    public List<Api> queryApiByCondition(String apiId,String apiName,String apiType){
-        Api api=new Api();
+    public HashMap queryApiByPage(String apiId,String apiName,String apiType,int currPage ){
+        Map param=new HashMap<String,Object>();
+        HashMap<String,Object> retMap=new HashMap<>();
         if(StringUtils.isNotBlank(apiId)&&StringUtils.isNumeric(apiId)){
-            api.setApiId(Integer.parseInt(apiId));
+            param.put("apiId",Integer.parseInt(apiId));
         }
         if(StringUtils.isNotBlank(apiName)){
-            api.setApiName(apiName);
+            param.put("apiName",apiName);
         }
         if(StringUtils.isNotBlank(apiType)){
-            api.setApiType(apiType);
+            param.put("apiType",apiType);
         }
-        return apiService.queryApiByCondition(api);
+        if(currPage<=0) {
+            currPage = 1;
+        }
+        param.put("currPage",currPage);
+        retMap.put("list",apiService.queryApiByPage(param));
+        retMap.put("total",apiService.queryAmount(param));
+        return retMap;
     }
 
     @ResponseBody

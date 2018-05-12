@@ -4,6 +4,7 @@ import io.mojohao.soapui_ng.entity.Api;
 import io.mojohao.soapui_ng.entity.ChartTypeDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mojohao
@@ -28,6 +29,13 @@ public interface ApiDao {
      * @return
      */
     List<Api> queryApiByCondition(Api api);
+
+    /**
+     * 根据条件查询api 分页
+     * @param map 条件容器
+     * @return
+     */
+    List<Api> queryApiByPage(Map map);
 
     /**
      * 删除api
@@ -67,4 +75,10 @@ public interface ApiDao {
      * @return
      */
     int countAll();
+
+    /**
+     * 统计符合条件的有多少个
+     * @return
+     */
+    int queryAmount(Map map);
 }

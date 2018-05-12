@@ -16,4 +16,12 @@
         <!-- 指定日志系统 -->
         <setting name="logImpl" value="SLF4J"/>
     </settings>
+
+    <plugins>
+        <plugin interceptor="io.mojohao.soapui_ng.util.MyPageInterceptor">
+            <property name="limit" value="10"/>
+            <property name="dbType" value="mysql"/>
+        </plugin>
+    </plugins>
+
 </configuration>

@@ -5,15 +5,45 @@ function queryApi() {
         data:{
             "apiId":$("#api-id").val(),
             "apiName":$("#api-name").val(),
-            "apiType":$("#api-type").val()
+            "apiType":$("#api-type").val(),
+            "currPage":1
         },
         success:function (data) {
             $("#api-query-table tbody").html("");
-            for (let i = 0; i < data.length; i++) {
-                let tr = `<tr id="api-${data[i].apiId}"><td>${data[i].apiId}</td><td>${data[i].apiName}</td><td>${data[i].apiType}</td><td>${data[i].apiLink}</td>
-                          <td>${data[i].accessMode}</td><td>${data[i].apiInfo}</td><td>
-                          <a href="#modal-container-modify-api" data-toggle="modal" onclick="modifyApi(${data[i].apiId})">修改</a><strong> | </strong>
-                          <a onclick="deleteApi(${data[i].apiId})">删除</a></td></tr>`;
+            let list=data.list;
+            let total=data.total;
+            for (let i = 0; i < list.length; i++) {
+                let tr = `<tr id="api-${list[i].apiId}"><td>${list[i].apiId}</td><td>${list[i].apiName}</td><td>${list[i].apiType}</td><td>${list[i].apiLink}</td>
+                          <td>${list[i].accessMode}</td><td>${list[i].apiInfo}</td><td>
+                          <a href="#modal-container-modify-api" data-toggle="modal" onclick="modifyApi(${list[i].apiId})">修改</a><strong> | </strong>
+                          <a onclick="deleteApi(${list[i].apiId})">删除</a></td></tr>`;
+                $("#api-query-table tbody").append(tr);
+            }
+            initApiPagination(total);
+        },
+        error: function(data){
+            window.location="/error";
+        }
+    });
+}
+function queryApiByPage() {
+    $.ajax({
+        url:"/api/query",
+        dataType:"json",
+        data:{
+            "apiId":$("#api-id").val(),
+            "apiName":$("#api-name").val(),
+            "apiType":$("#api-type").val(),
+            "currPage":$("#api-pagination .active a").text()
+        },
+        success:function (data) {
+            $("#api-query-table tbody").html("");
+            let list=data.list;
+            for (let i = 0; i < list.length; i++) {
+                let tr = `<tr id="api-${list[i].apiId}"><td>${list[i].apiId}</td><td>${list[i].apiName}</td><td>${list[i].apiType}</td><td>${list[i].apiLink}</td>
+                          <td>${list[i].accessMode}</td><td>${list[i].apiInfo}</td><td>
+                          <a href="#modal-container-modify-api" data-toggle="modal" onclick="modifyApi(${list[i].apiId})">修改</a><strong> | </strong>
+                          <a onclick="deleteApi(${list[i].apiId})">删除</a></td></tr>`;
                 $("#api-query-table tbody").append(tr);
             }
         },
@@ -22,6 +52,22 @@ function queryApi() {
         }
     });
 }
+function initApiPagination(total) {
+    let $pagination = $('#api-pagination');
+    $pagination.twbsPagination('destroy');
+    if(total>0){
+        let defaultOpts = {
+            totalPages: Math.ceil(total/10),
+            first:"<<",
+            prev:"<",
+            next:">",
+            last:">>",
+            onPageClick:queryApiByPage
+        };
+        $pagination.twbsPagination(defaultOpts);
+    }
+}
+
 function insertApi() {
     $.ajax({
         url:"/api/insert",
