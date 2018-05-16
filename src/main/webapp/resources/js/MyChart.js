@@ -121,16 +121,22 @@ function getBarOption(data,myTittle,mySubTittle){
 }
 
 function countAllData(){
+    //初始化echarts对象
     let chartCountAll = echarts.init(document.getElementById('chart-count-all'));
+    //读取数据前显示读取提醒
     chartCountAll.showLoading({
-        text: '正在努力的读取数据中...'    //loading话术
+        text: '正在努力的读取数据中...'
     });
+    //获取数据
     $.ajax({
         url:"/common/countAll",
         dataType:"json",
         success:function (data) {
+            //隐藏读取中提示
             chartCountAll.hideLoading();
+            //设置option，显示图表
             chartCountAll.setOption(getBarOption(data,"数据总览",""));
+            window.onresize=chartCountAll.resize;
         },
         error:function () {
             chartCountAll.showLoading({
@@ -151,6 +157,7 @@ function apiCategoryByType() {
         success:function (data) {
             chartApiType.hideLoading();
             chartApiType.setOption(getPieOption(data,"接口信息","根据类型统计","接口类型"));
+            window.onresize=chartApiType.resize;
         },
         error:function () {
             chartApiType.showLoading({
@@ -170,6 +177,7 @@ function apiCategoryByAccessMode() {
         success:function (data) {
             chartApiAccessMode.hideLoading();
             chartApiAccessMode.setOption(getPieOption(data,"接口信息","根据访问方式统计","接口访问方式"));
+            window.onresize=chartApiAccessMode.resize;
         },
         error:function () {
             chartApiAccessMode.showLoading({
@@ -189,6 +197,7 @@ function caseCategoryByLibId(){
         success:function (data) {
             chartCaseLib.hideLoading();
             chartCaseLib.setOption(getPieOption(data,"用例信息","根据所属用例库统计","用例所属用例库"));
+            window.onresize=chartCaseLib.resize;
         },
         error:function () {
             chartCaseLib.showLoading({
@@ -208,6 +217,7 @@ function caseCategoryByParaType(){
         success:function (data) {
             chartCaseParaType.hideLoading();
             chartCaseParaType.setOption(getPieOption(data,"用例信息","根据参数类型统计","参数类型"));
+            window.onresize=chartCaseParaType.resize;
         },
         error:function () {
             chartCaseParaType.showLoading({
@@ -227,6 +237,7 @@ function libCategoryByApplyApiId(){
         success:function (data) {
             chartLibApply.hideLoading();
             chartLibApply.setOption(getPieOption(data,"用例库信息","根据适用接口统计","适用接口"));
+            window.onresize=chartLibApply.resize;
         },
         error:function () {
             chartLibApply.showLoading({
@@ -246,6 +257,7 @@ function resultCategoryByTestId(){
         success:function (data) {
             chartResultTestId.hideLoading();
             chartResultTestId.setOption(getPieOption(data,"测试结果信息","根据测试编号统计","测试编号"));
+            window.onresize=chartResultTestId.resize;
         },
         error:function () {
             chartResultTestId.showLoading({
@@ -265,6 +277,7 @@ function resultCategoryByCaseId(){
         success:function (data) {
             chartResultCaseId.hideLoading();
             chartResultCaseId.setOption(getPieOption(data,"测试结果信息","根据用例编号统计","用例编号"));
+            window.onresize=chartResultCaseId.resize;
         },
         error:function () {
             chartResultCaseId.showLoading({
@@ -284,6 +297,7 @@ function resultCategoryByAssertion(){
         success:function (data) {
             chartResultAssertion.hideLoading();
             chartResultAssertion.setOption(getPieOption(data,"测试结果信息","根据断言统计","断言"));
+            window.onresize=chartResultAssertion.resize;
         },
         error:function () {
             chartResultAssertion.showLoading({
@@ -303,6 +317,7 @@ function dataCategoryByUserId(){
         success:function (data) {
             chartDataUserId.hideLoading();
             chartDataUserId.setOption(getPieOption(data,"采集数据信息","根据用户编号统计","用户编号"));
+            window.onresize=chartDataUserId.resize;
         },
         error:function () {
             chartDataUserId.showLoading({
@@ -322,6 +337,7 @@ function userCategoryByState(){
         success:function (data) {
             chartUserState.hideLoading();
             chartUserState.setOption(getPieOption(data,"用户档案","根据用户状态统计","用户状态"));
+            window.onresize=chartUserState.resize;
         },
         error:function () {
             chartUserState.showLoading({
@@ -341,6 +357,7 @@ function userCategoryByType(){
         success:function (data) {
             chartUserType.hideLoading();
             chartUserType.setOption(getPieOption(data,"用户档案","根据用户类型统计","用户类型"));
+            window.onresize=chartUserType.resize;
         },
         error:function () {
             chartUserType.showLoading({
@@ -360,6 +377,7 @@ function userCategoryByAreaCode(){
         success:function (data) {
             chartUserAreaCode.hideLoading();
             chartUserAreaCode.setOption(getPieOption(data,"用户档案","根据台区编号统计","用户台区编号"));
+            window.onresize=chartUserAreaCode.resize;
         },
         error:function () {
             chartUserAreaCode.showLoading({

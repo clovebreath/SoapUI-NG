@@ -6,6 +6,16 @@ public class TestPlan {
     private int libId;
     private String caseId;
     private String planName;
+    private int planStatus;
+
+    public int getPlanStatus() {
+        return planStatus;
+    }
+
+    public void setPlanStatus(int planStatus) {
+        this.planStatus = planStatus;
+    }
+
 
     public int getTestPlanId() {
         return testPlanId;

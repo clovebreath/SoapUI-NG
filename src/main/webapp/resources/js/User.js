@@ -16,8 +16,8 @@ function queryUser(){
             for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>状态</th><th>类型</th><th>地址</th><th>电能表编号</th><th>电能表台区编号</th><th>操作</th>
                 let tr = `<tr id="user-${list[i].userId}"><td>${list[i].userId}</td><td>${list[i].userName}</td><td>${list[i].userState}</td>
                           <td>${list[i].userType}</td><td>${list[i].userAddress}</td><td>${list[i].userElemCode}</td><td>${list[i].userAreaCode}</td>
-                          <td><a href="#modal-container-modify-user" data-toggle="modal" onclick="modifyUser(${list[i].userId})">修改</a><strong> | </strong>
-                          <a onclick="deleteUser(${list[i].userId})">删除</a></td></tr>`;
+                          <td><a href="#modal-container-modify-user" data-toggle="modal" onclick="modifyUser(${list[i].userId})" class="btn">修改</a>
+                          <a onclick="deleteUser(${list[i].userId})" class="btn">删除</a></td></tr>`;
                 $("#user-query-table tbody").append(tr);
             }
             initUserPagination(total);
@@ -44,8 +44,8 @@ function queryUserByPage(){
             for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>状态</th><th>类型</th><th>地址</th><th>电能表编号</th><th>电能表台区编号</th><th>操作</th>
                 let tr = `<tr id="user-${list[i].userId}"><td>${list[i].userId}</td><td>${list[i].userName}</td><td>${list[i].userState}</td>
                           <td>${list[i].userType}</td><td>${list[i].userAddress}</td><td>${list[i].userElemCode}</td><td>${list[i].userAreaCode}</td>
-                          <td><a href="#modal-container-modify-user" data-toggle="modal" onclick="modifyUser(${list[i].userId})">修改</a><strong> | </strong>
-                          <a onclick="deleteUser(${list[i].userId})">删除</a></td></tr>`;
+                          <td><a href="#modal-container-modify-user" data-toggle="modal" onclick="modifyUser(${list[i].userId})" class="btn">修改</a>
+                          <a onclick="deleteUser(${list[i].userId})" class="btn">删除</a></td></tr>`;
                 $("#user-query-table tbody").append(tr);
             }
         },

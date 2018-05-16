@@ -11,6 +11,7 @@
     <script src="resources/js/User.js"></script>
     <script src="resources/js/UserEleData.js"></script>
     <script src="resources/js/Result.js"></script>
+    <script src="resources/js/Plan.js"></script>
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/css/syntax.css" rel="stylesheet">
 </head>
@@ -41,6 +42,9 @@
                     </li>
                     <li id="tab-result">
                         <a href="#panel-result" data-toggle="tab">测试结果管理</a>
+                    </li>
+                    <li id="tab-plan">
+                        <a href="#panel-plan" data-toggle="tab">测试计划管理</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -881,7 +885,6 @@
                                     </select>
                                 </div>
                                 <button onclick="queryResult()" class="btn btn-default">查询</button>
-                                <a  class="btn" href="#modal-container-response-compare" data-toggle="modal">测试</a>
                             </form>
 
                             <!-- 表格 用于展示信息 -->
@@ -1018,6 +1021,157 @@
                                 </li>
                                 <li>
                                     <a id="modal-result-echart" class="btn" href="#modal-container-result-echart" data-toggle="modal">数据概览</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="panel-plan">
+                        <div class="col-md-9 column">
+                            <!-- 表单 用于查询信息 -->
+                            <form class="form-inline" id="plan-query-form" target="nm_iframe">
+                                <div class="form-group">
+                                    <label for="plan-plan-id">测试计划编号</label>
+                                    <input type="number" class="form-control" id="plan-plan-id" placeholder="测试计划编号">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="plan-lib-id">用例库编号</label>
+                                    <input type="number" class="form-control" id="plan-lib-id" placeholder="用例库编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="plan-api-id">被测接口编号</label>
+                                    <input type="number" class="form-control" id="plan-api-id" placeholder="被测接口编号">
+                                </div>
+                                <div class="form-group">
+                                    <label for="plan-status">当前状态</label>
+                                    <select class="form-control" id="plan-status">
+                                        <option value="-1">全部</option>
+                                        <option value="0">未执行</option>
+                                        <option value="1">执行中</option>
+                                        <option value="2">执行完成</option>
+                                        <option value="3">执行中断</option>
+                                    </select>
+                                </div>
+                                <button onclick="queryPlan()" class="btn btn-default">查询</button>
+                            </form>
+
+                            <!-- 表格 用于展示信息 -->
+                            <table id="plan-query-table" class="table table-bordered">
+                                <thead><tr>
+                                    <th>测试计划编号</th><th>测试计划名称</th><th>用例库编号</th><th>被测接口编号</th><th>当前状态</th><th>操作</th>
+                                </tr></thead>
+                                <tfoot></tfoot>
+                                <tbody></tbody>
+                            </table>
+
+                            <ul class="pagination" id="plan-pagination"></ul>
+
+                            <div class="modal fade" id="modal-container-new-plan" role="dialog" aria-labelledby="plan-new-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="plan-new-label">
+                                                新增测试计划
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="new-plan-form">
+                                                <div class="form-group">
+                                                    <label for="plan-new-plan-id">测试计划编号</label>
+                                                    <input type="number" class="form-control" id="plan-new-plan-id" placeholder="测试计划编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="plan-new-lib-id">用例库编号</label>
+                                                    <input type="number" class="form-control" id="plan-new-lib-id" placeholder="用例库编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="plan-new-plan-name">测试计划名称</label>
+                                                    <input type="text" class="form-control" id="plan-new-plan-name" placeholder="测试计划名称">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="plan-new-api-id">被测接口编号</label>
+                                                    <input type="number" class="form-control" id="plan-new-api-id" placeholder="被测接口编号">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="insert-plan-modal-close" onclick="clearPlanData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="insertPlan()">新增</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modal-container-modify-plan" role="dialog" aria-labelledby="plan-modify-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="plan-modify-label">
+                                                修改测试计划
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="modify-plan-form">
+                                                <div class="form-group" style="display: none;">
+                                                    <label for="plan-modify-plan-id">测试计划编号</label>
+                                                    <input type="number" class="form-control" id="plan-modify-plan-id" placeholder="测试计划编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="plan-modify-lib-id">用例库编号</label>
+                                                    <input type="number" class="form-control" id="plan-modify-lib-id" placeholder="用例库编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="plan-modify-api-id">被测接口编号</label>
+                                                    <input type="number" class="form-control" id="plan-modify-api-id" placeholder="被测接口编号">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="plan-modify-plan-name">测试计划名称</label>
+                                                    <input type="text" class="form-control" id="plan-modify-plan-name" placeholder="测试计划名称">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal" id="modify-plan-modal-close" onclick="clearPlanData()">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="updatePlan()">修改</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="modal fade" id="modal-container-plan-echart" role="dialog" aria-labelledby="plan-echart-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="plan-echart-label">
+                                                数据概览
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="chart-plan-test-id" style="width: 100%;height: 300px;">
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 column">
+                            <ul class="nav nav-stacked nav-tabs">
+                                <li class="active">
+                                    <a class="btn" href="#">测试计划查询</a>
+                                </li>
+                                <li>
+                                    <a id="modal-new-plan" class="btn" href="#modal-container-new-plan" data-toggle="modal">新增测试计划</a>
+                                </li>
+                                <li>
+                                    <a id="modal-plan-echart" class="btn" href="#modal-container-plan-echart" data-toggle="modal">数据概览</a>
                                 </li>
                             </ul>
                         </div>

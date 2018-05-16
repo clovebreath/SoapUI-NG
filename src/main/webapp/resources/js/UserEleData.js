@@ -15,8 +15,8 @@ function queryData(){
             for (let i = 0; i < list.length; i++) { //<th>数据ID</th><th>抄表日期</th><th>用户ID</th><th>电能表编号</th><th>电能表数据</th><th>操作</th>
                 let tr = `<tr id="data-${list[i].dataId}"><td>${list[i].dataId}</td><td>${list[i].collectTime}</td><td>${list[i].userId}</td>
                           <td>${list[i].elemId}</td><td>${list[i].elemData}</td>
-                          <td><a href="#modal-container-modify-data" data-toggle="modal" onclick="modifyData(${list[i].dataId})">修改</a><strong> | </strong>
-                          <a onclick="deleteData(${list[i].dataId})">删除</a></td></tr>`;
+                          <td><a href="#modal-container-modify-data" data-toggle="modal" onclick="modifyData(${list[i].dataId})" class="btn">修改</a>
+                          <a onclick="deleteData(${list[i].dataId})" class="btn">删除</a></td></tr>`;
                 $("#data-query-table tbody").append(tr);
             }
             initDataPagination(total);
@@ -42,8 +42,8 @@ function queryDataByPage(){
             for (let i = 0; i < list.length; i++) { //<th>数据ID</th><th>抄表日期</th><th>用户ID</th><th>电能表编号</th><th>电能表数据</th><th>操作</th>
                 let tr = `<tr id="data-${list[i].dataId}"><td>${list[i].dataId}</td><td>${list[i].collectTime}</td><td>${list[i].userId}</td>
                           <td>${list[i].elemId}</td><td>${list[i].elemData}</td>
-                          <td><a href="#modal-container-modify-data" data-toggle="modal" onclick="modifyData(${list[i].dataId})">修改</a><strong> | </strong>
-                          <a onclick="deleteData(${list[i].dataId})">删除</a></td></tr>`;
+                          <td><a href="#modal-container-modify-data" data-toggle="modal" onclick="modifyData(${list[i].dataId})" class="btn">修改</a>
+                          <a onclick="deleteData(${list[i].dataId})" class="btn">删除</a></td></tr>`;
                 $("#data-query-table tbody").append(tr);
             }
         },

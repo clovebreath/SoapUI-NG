@@ -14,8 +14,8 @@ function queryLib(){
             let total=data.total;
             for (let i = 0; i < list.length; i++) {
                 let tr = `<tr id="lib-${list[i].libId}"><td>${list[i].libId}</td><td>${list[i].libName}</td><td>${list[i].applyApiId}</td><td>${list[i].libInfo}</td>
-                          <td><a href="#modal-container-modify-lib" data-toggle="modal" onclick="modifyLib(${list[i].libId})">修改</a><strong> | </strong>
-                          <a onclick="deleteLib(${list[i].libId})">删除</a></td></tr>`;
+                          <td><a href="#modal-container-modify-lib" data-toggle="modal" onclick="modifyLib(${list[i].libId})" class="btn">修改</a>
+                          <a onclick="deleteLib(${list[i].libId})" class="btn">删除</a></td></tr>`;
                 $("#lib-query-table tbody").append(tr);
             }
             initLibPagination(total);
@@ -40,8 +40,8 @@ function queryLibByPage(){
             let list=data.list;
             for (let i = 0; i < list.length; i++) {
                 let tr = `<tr id="lib-${list[i].libId}"><td>${list[i].libId}</td><td>${list[i].libName}</td><td>${list[i].applyApiId}</td><td>${list[i].libInfo}</td>
-                          <td><a href="#modal-container-modify-lib" data-toggle="modal" onclick="modifyLib(${list[i].libId})">修改</a><strong> | </strong>
-                          <a onclick="deleteLib(${list[i].libId})">删除</a></td></tr>`;
+                          <td><a href="#modal-container-modify-lib" data-toggle="modal" onclick="modifyLib(${list[i].libId})" class="btn">修改</a>
+                          <a onclick="deleteLib(${list[i].libId})" class="btn">删除</a></td></tr>`;
                 $("#lib-query-table tbody").append(tr);
             }
         },

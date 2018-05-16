@@ -49,6 +49,13 @@ public interface TestPlanDao {
     int updateTestPlan(TestPlan plan);
 
     /**
+     * 更新plan
+     * @param plan
+     * @return
+     */
+    int updateTestPlanStatus(TestPlan plan);
+
+    /**
      * 插入新的plan
      * @param plan
      * @return
@@ -66,6 +73,13 @@ public interface TestPlanDao {
      * @return
      */
     List<ChartTypeDto> categoryByApiId();
+
+    /**
+     * 按照status统计数据
+     * @return
+     */
+    List<ChartTypeDto> categoryByStatus();
+
 
     /**
      * 统计一共多少个

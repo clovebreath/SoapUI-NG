@@ -17,8 +17,8 @@ function queryResult(){
                 let tr = `<tr id="result-${list[i].testId}">
                           <td>${list[i].testId}</td><td>${list[i].testPlanId}</td><td>${list[i].caseId}</td><td>${list[i].testDate}</td>
                           <td>${list[i].desiredResponse}</td><td>${list[i].actualResponse}</td><td>${list[i].assertion}</td>
-                          <td><a onclick="seeDetail(${list[i].testId})">输出比对</a><strong>| </strong>
-                              <a onclick="deleteResult(${list[i].testId})">删除</a></td></tr>`;
+                          <td><a onclick="seeDetail(${list[i].testId})" class="btn" href="#modal-container-response-compare" data-toggle="modal">输出比对</a>
+                              <a onclick="deleteResult(${list[i].testId})" class="btn">删除</a></td></tr>`;
                 $("#result-query-table tbody").append(tr);
             }
             initResultPagination(total);
@@ -46,8 +46,8 @@ function queryResultByPage(){
                 let tr = `<tr id="result-${list[i].testId}">
                           <td>${list[i].testId}</td><td>${list[i].testPlanId}</td><td>${list[i].caseId}</td><td>${list[i].testDate}</td>
                           <td>${list[i].desiredResponse}</td><td>${list[i].actualResponse}</td><td>${list[i].assertion}</td>
-                          <td><a onclick="seeDetail(${list[i].testId})">输出比对</a><strong>| </strong>
-                              <a onclick="deleteResult(${list[i].testId})">删除</a></td></tr>`;
+                          <td><a onclick="seeDetail(${list[i].testId})" class="btn" href="#modal-container-response-compare" data-toggle="modal">输出比对</a>
+                              <a onclick="deleteResult(${list[i].testId})" class="btn">删除</a></td></tr>`;
                 $("#result-query-table tbody").append(tr);
             }
         },

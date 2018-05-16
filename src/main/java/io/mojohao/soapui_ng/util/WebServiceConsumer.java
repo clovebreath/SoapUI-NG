@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 @Component
 public class WebServiceConsumer {
@@ -68,17 +69,15 @@ public class WebServiceConsumer {
         return soapXML;
     }
 
-    public void consumeSoapService() throws Exception{
+    public HashMap<String,Object> consumeSoapService(String link, String soapXML) throws Exception{
         //1：创建服务地址
-        URL url = new URL("http://localhost/service/WSDLExample?wsdl");
+        URL url = new URL(link);
         //2：打开到服务地址的一个连接
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         //3：设置连接参数
         connection.setConnectTimeout(5000);
         //3.1设置发送方式：POST必须大写
         connection.setRequestMethod("POST");
-        //3.2组织SOAP协议数据
-        String soapXML = getXML("1866666666");
         //3.3根据namespace判断soap版本，设置数据格式：Content-type
         if(soapXML.contains(SOAP11_NAMESPACE)) {
             connection.setRequestProperty("content-type", SOAP11_PROPERTY);
@@ -95,6 +94,11 @@ public class WebServiceConsumer {
 
         //5：接收服务端的响应
         int responseCode = connection.getResponseCode();
+
+        //返回Map
+        HashMap<String,Object> retMap=new HashMap<>();
+        retMap.put("responseCode",responseCode);
+
         //表示服务端响应成功
         if(200 == responseCode){
             InputStream is = connection.getInputStream();
@@ -108,13 +112,15 @@ public class WebServiceConsumer {
                 sb.append(temp);
             }
 
-            System.out.println(sb.toString());
+            retMap.put("response",sb.toString());
 
             is.close();
             isr.close();
             br.close();
         }
         os.close();
+
+        return retMap;
     }
 
     public String consumeRestService(String url, Object request, String accessMethod){

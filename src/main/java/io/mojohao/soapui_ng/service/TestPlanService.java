@@ -1,6 +1,8 @@
 package io.mojohao.soapui_ng.service;
 
+import io.mojohao.soapui_ng.entity.Api;
 import io.mojohao.soapui_ng.entity.ChartTypeDto;
+import io.mojohao.soapui_ng.entity.TestCase;
 import io.mojohao.soapui_ng.entity.TestPlan;
 
 import java.util.List;
@@ -49,6 +51,13 @@ public interface TestPlanService {
     int updateTestPlan(TestPlan plan);
 
     /**
+     * 更新plan
+     * @param plan
+     * @return
+     */
+    int updateTestPlanStatus(TestPlan plan);
+
+    /**
      * 插入新的plan
      * @param plan
      * @return
@@ -68,6 +77,12 @@ public interface TestPlanService {
     List<ChartTypeDto> categoryByApiId();
 
     /**
+     * 按照status统计数据
+     * @return
+     */
+    List<ChartTypeDto> categoryByStatus();
+
+    /**
      * 统计一共多少个
      * @return
      */
@@ -78,4 +93,10 @@ public interface TestPlanService {
      * @return
      */
     int queryAmount(Map param);
+
+    /**
+     * 执行测试计划
+     * @return
+     */
+    int excutePlan(Api api,List<TestCase> caseList,TestPlan plan);
 }

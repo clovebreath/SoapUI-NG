@@ -15,8 +15,8 @@ function queryApi() {
             for (let i = 0; i < list.length; i++) {
                 let tr = `<tr id="api-${list[i].apiId}"><td>${list[i].apiId}</td><td>${list[i].apiName}</td><td>${list[i].apiType}</td><td>${list[i].apiLink}</td>
                           <td>${list[i].accessMode}</td><td>${list[i].apiInfo}</td><td>
-                          <a href="#modal-container-modify-api" data-toggle="modal" onclick="modifyApi(${list[i].apiId})">修改</a><strong> | </strong>
-                          <a onclick="deleteApi(${list[i].apiId})">删除</a></td></tr>`;
+                          <a href="#modal-container-modify-api" data-toggle="modal" onclick="modifyApi(${list[i].apiId})" class="btn">修改</a>
+                          <a onclick="deleteApi(${list[i].apiId})" class="btn">删除</a></td></tr>`;
                 $("#api-query-table tbody").append(tr);
             }
             initApiPagination(total);
@@ -42,8 +42,8 @@ function queryApiByPage() {
             for (let i = 0; i < list.length; i++) {
                 let tr = `<tr id="api-${list[i].apiId}"><td>${list[i].apiId}</td><td>${list[i].apiName}</td><td>${list[i].apiType}</td><td>${list[i].apiLink}</td>
                           <td>${list[i].accessMode}</td><td>${list[i].apiInfo}</td><td>
-                          <a href="#modal-container-modify-api" data-toggle="modal" onclick="modifyApi(${list[i].apiId})">修改</a><strong> | </strong>
-                          <a onclick="deleteApi(${list[i].apiId})">删除</a></td></tr>`;
+                          <a href="#modal-container-modify-api" data-toggle="modal" onclick="modifyApi(${list[i].apiId})" class="btn">修改</a>
+                          <a onclick="deleteApi(${list[i].apiId})" class="btn">删除</a></td></tr>`;
                 $("#api-query-table tbody").append(tr);
             }
         },

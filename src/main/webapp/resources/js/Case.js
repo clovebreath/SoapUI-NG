@@ -16,8 +16,8 @@ function queryCase(){
             for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th>
                 let tr = `<tr id="case-${list[i].caseId}"><td>${list[i].caseId}</td><td>${list[i].caseName}</td><td>${list[i].caseLibId}</td>
                           <td>${list[i].caseParaType}</td><td>${list[i].parameter}</td><td>${list[i].desiredResponse}</td><td>${list[i].caseInfo}</td>
-                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})">修改</a><strong> | </strong>
-                          <a onclick="deleteCase(${list[i].caseId})">删除</a></td></tr>`;
+                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})" class="btn">修改</a>
+                          <a onclick="deleteCase(${list[i].caseId})" class="btn">删除</a></td></tr>`;
                 $("#case-query-table tbody").append(tr);
             }
             initCasePagination(total);
@@ -44,8 +44,8 @@ function queryCaseByPage(){
             for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th>
                 let tr = `<tr id="case-${list[i].caseId}"><td>${list[i].caseId}</td><td>${list[i].caseName}</td><td>${list[i].caseLibId}</td>
                           <td>${list[i].caseParaType}</td><td>${list[i].parameter}</td><td>${list[i].desiredResponse}</td><td>${list[i].caseInfo}</td>
-                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})">修改</a><strong> | </strong>
-                          <a onclick="deleteCase(${list[i].caseId})">删除</a></td></tr>`;
+                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})" class="btn">修改</a>
+                          <a onclick="deleteCase(${list[i].caseId})" class="btn">删除</a></td></tr>`;
                 $("#case-query-table tbody").append(tr);
             }
         },

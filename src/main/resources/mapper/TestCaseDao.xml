@@ -20,7 +20,7 @@
     <select id="queryTestCaseByCondition" parameterType="TestCase" resultMap="TestCaseResult">
         SELECT * FROM TEST_CASE
         WHERE 1=1
-        <if test="caseId!=null and caseId!=''">
+        <if test="caseId!=null and caseId!=0">
             AND TEST_CASE.CASE_ID=#{caseId}
         </if>
         <if test="caseName!=null and caseName!=''">
@@ -29,7 +29,7 @@
         <if test="caseParaType!=null and caseParaType!=''">
             AND TEST_CASE.CASE_PARA_TYPE=#{caseParaType}
         </if>
-        <if test="caseLibId!=null and caseLibId!=''">
+        <if test="caseLibId!=null and caseLibId!=0">
             AND TEST_CASE.CASE_LIB_ID=#{caseLibId}
         </if>
     </select>
