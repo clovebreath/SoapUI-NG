@@ -1,17 +1,18 @@
 package io.mojohao.soapui_ng.service.impl;
 
+import com.google.gson.JsonParser;
 import io.mojohao.soapui_ng.dao.TestPlanDao;
-import io.mojohao.soapui_ng.entity.Api;
-import io.mojohao.soapui_ng.entity.ChartTypeDto;
-import io.mojohao.soapui_ng.entity.TestCase;
-import io.mojohao.soapui_ng.entity.TestPlan;
+import io.mojohao.soapui_ng.dao.TestResultDao;
+import io.mojohao.soapui_ng.entity.*;
 import io.mojohao.soapui_ng.service.TestPlanService;
 import io.mojohao.soapui_ng.util.WebServiceConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Service
 public class TestPlanServiceImpl implements TestPlanService {
@@ -19,8 +20,10 @@ public class TestPlanServiceImpl implements TestPlanService {
     private TestPlanDao testPlanDao;
 
     @Autowired
-    private WebServiceConsumer serviceConsumer;
+    private TestResultDao testResultDao;
 
+    @Autowired
+    private WebServiceConsumer serviceConsumer;
 
     @Override
     public List<TestPlan> getAllTestPlans() {
@@ -91,27 +94,95 @@ public class TestPlanServiceImpl implements TestPlanService {
         //设置当前计划执行状态 1-执行中
         plan.setPlanStatus(1);
         testPlanDao.updateTestPlanStatus(plan);
+        //生成测试编号
+        String testId=UUID.randomUUID().toString();
+        //新建测试结果对象
+        TestResult result=new TestResult();
+        result.setTestId(testId);
+        result.setTestPlanId(plan.getTestPlanId());
 
+        //rest接口
         if("REST".equals(api.getApiType())){
             for (TestCase testCase :
                     caseList) {
-                serviceConsumer.consumeRestService(api.getApiLink(),testCase.getParameter(),api.getAccessMode());
+                //设置相应的数据
+                result.setCaseId(testCase.getCaseId());
+                result.setTestDate(new Timestamp(System.currentTimeMillis()));
+                result.setDesiredResponse(testCase.getDesiredResponse());
+                //接口访问方式
+                HttpMethod accessMethod=HttpMethod.HEAD;
+                if("GET".equals(api.getAccessMode())){
+                    accessMethod=HttpMethod.GET;
+                }else if("PUT".equals(api.getAccessMode())){
+                    accessMethod=HttpMethod.PUT;
+                }else if("POST".equals(api.getAccessMode())){
+                    accessMethod=HttpMethod.POST;
+                }else if("DELETE".equals(api.getAccessMode())){
+                    accessMethod=HttpMethod.DELETE;
+                }
+                Map responseMap;
+                try {
+                    //获取接口的返回值
+                    responseMap = serviceConsumer.consumeRestService(api.getApiLink(),testCase.getParameter(),accessMethod,new HashMap());
+                } catch (HttpClientErrorException e) {
+                    responseMap=new HashMap();
+                    responseMap.put("responseCode",e.getStatusCode());
+                }
+                if(200==(int)responseMap.get("responseCode")){
+                    String acturalResponse =(String) responseMap.get("response");
+                    result.setActualResponse(acturalResponse);
+                    if(serviceConsumer.compareJson(testCase.getDesiredResponse(),acturalResponse)){
+                        result.setAssertion("PASSED");
+                    }else{
+                        result.setAssertion("UNPASSED");
+                    }
+                }else{
+                    result.setActualResponse("BAD RETURN CODE:"+(int)responseMap.get("responseCode"));
+                    result.setAssertion("UNPASSED");
+                }
+                testResultDao.insertTestResult(result);
             }
-
         }
 
+        //soap接口
         if("SOAP".equals(api.getApiType())){
             for (TestCase testCase :
                     caseList) {
+
+                    //设置相应的数据
+                    result.setCaseId(testCase.getCaseId());
+                    result.setTestDate(new Timestamp(System.currentTimeMillis()));
+                    result.setDesiredResponse(testCase.getDesiredResponse());
+                HashMap responseMap;
                 try {
-                    serviceConsumer.consumeSoapService(api.getApiLink(),testCase.getParameter());
+                    //获取接口的返回值
+                    responseMap = serviceConsumer.consumeSoapService(api.getApiLink(),testCase.getParameter());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    responseMap=new HashMap();
+                    if(e.getClass().equals(HttpClientErrorException.class)){
+                        responseMap.put("responseCode",((HttpClientErrorException)e).getStatusCode());
+                    }else {
+                        responseMap.put("responseCode","500");
+                    }
                 }
+                if(200==(int)responseMap.get("responseCode")){
+                    String acturalResponse =(String) responseMap.get("response");
+                    result.setActualResponse(acturalResponse);
+                    if(serviceConsumer.compareXml(testCase.getDesiredResponse(),acturalResponse)){
+                        result.setAssertion("PASSED");
+                    }else{
+                        result.setAssertion("UNPASSED");
+                    }
+                }else{
+                    result.setActualResponse("BAD RETURN CODE:"+(int)responseMap.get("responseCode"));
+                    result.setAssertion("UNPASSED");
+                }
+                testResultDao.insertTestResult(result);
             }
-
         }
-
-        return 0;
+        //设置当前计划执行状态 2-执行完成
+        plan.setPlanStatus(2);
+        testPlanDao.updateTestPlanStatus(plan);
+        return 2;
     }
 }

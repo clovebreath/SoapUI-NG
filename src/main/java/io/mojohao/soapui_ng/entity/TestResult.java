@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.sql.Timestamp;
 
 public class TestResult {
-    private int testId;
+
+    private int resultId;
+    private String testId;
     private int caseId;
     private int testPlanId;
 
@@ -16,11 +18,18 @@ public class TestResult {
     private String actualResponse;
     private String assertion;
 
-    public int getTestId() {
+    public int getResultId() {
+        return resultId;
+    }
+
+    public void setResultId(int resultId) {
+        this.resultId = resultId;
+    }
+    public String getTestId() {
         return testId;
     }
 
-    public void setTestId(int testId) {
+    public void setTestId(String testId) {
         this.testId = testId;
     }
 

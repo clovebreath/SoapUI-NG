@@ -4,6 +4,7 @@ import io.mojohao.soapui_ng.dao.UserEleDataDao;
 import io.mojohao.soapui_ng.entity.UserEleData;
 import io.mojohao.soapui_ng.entity.UserInfo;
 import io.mojohao.soapui_ng.service.UserInfoService;
+import io.mojohao.soapui_ng.api.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,7 @@ public class WSDLExample {
     }
 
     @WebMethod
-    public String getData(@WebParam(name = "userId",targetNamespace=namespace) int userId,
+    public Data getData(@WebParam(name = "userId",targetNamespace=namespace) int userId,
                             @WebParam(name = "elemId",targetNamespace=namespace) String elemId,
                             @WebParam(name = "month",targetNamespace=namespace) String month)  {
         HashMap<String,String> ret= new HashMap<>();
@@ -56,6 +57,7 @@ public class WSDLExample {
         UserEleData data=new UserEleData();
         data.setUserId(userId);
         data.setElemId(elemId);
+        Data retData;
         try{
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
             Calendar calendar = Calendar.getInstance();
@@ -69,17 +71,19 @@ public class WSDLExample {
             //下一个月份
             List<UserEleData> listNew=userEleDataDao.queryUserEleDataByCondition(data);
             if(1==listOld.size()&&1==listNew.size()){
-                ret.put("message","successed");
-                ret.put("data",String.valueOf(listNew.get(0).getElemData()-listOld.get(0).getElemData()));
+                retData=new Data("successed",String.valueOf(listNew.get(0).getElemData()-listOld.get(0).getElemData()));
+//                ret.put("message","successed");
+//                ret.put("data",String.valueOf(listNew.get(0).getElemData()-listOld.get(0).getElemData()));
             }else{
-                ret.put("message","invalid data");
+                retData=new Data("invalid data",null);
+//                ret.put("message","invalid data");
             }
         }catch (ParseException e){
-            ret.put("message","failed");
+            retData=new Data("failed",null);
+//            ret.put("message","failed");
         }
-        return  ret.toString();
+        return  retData;
     }
-
 
     public static void main(String[] args) {
 //        System.out.println("server is running");

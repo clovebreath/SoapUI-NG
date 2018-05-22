@@ -18,6 +18,7 @@
     </settings>
 
     <plugins>
+        <!-- 分页插件，使用拦截器配置 -->
         <plugin interceptor="io.mojohao.soapui_ng.util.MyPageInterceptor">
             <property name="limit" value="10"/>
             <property name="dbType" value="mysql"/>

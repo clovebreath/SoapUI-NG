@@ -41,7 +41,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public int updateUserInfo(UserInfo userInfo) {
-        return userInfoDao.updateUserInfo(userInfo);
+        int result=0;
+        try{
+            result=userInfoDao.updateUserInfo(userInfo);
+        }catch (Exception e){
+            result=0;
+        }
+        return result;
     }
 
     @Override

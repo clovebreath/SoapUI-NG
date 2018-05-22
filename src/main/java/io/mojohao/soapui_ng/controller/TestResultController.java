@@ -29,8 +29,8 @@ public class TestResultController {
     List<TestResult> getAllTestResults(){
         return testResultService.getAllTestResults();
     }
-    TestResult queryTestResultById(@Param("testId") int testId){
-        return testResultService.queryTestResultById(testId);
+    TestResult queryTestResultById(@Param("resultId") int resultId){
+        return testResultService.queryTestResultById(resultId);
     }
 
     @ResponseBody
@@ -43,8 +43,8 @@ public class TestResultController {
         if(StringUtils.isNotBlank(testPlanId)&&StringUtils.isNumeric(testPlanId)){
             param.put("testPlanId",Integer.parseInt(testPlanId));
         }
-        if(StringUtils.isNotBlank(testId)&&StringUtils.isNumeric(testId)){
-            param.put("testId",Integer.parseInt(testId));
+        if(StringUtils.isNotBlank(testId)){
+            param.put("testId",testId);
         }
         if(StringUtils.isNotBlank(assertion)){
             param.put("assertion",assertion);
@@ -61,13 +61,16 @@ public class TestResultController {
 
     @ResponseBody
     @RequestMapping(value = "/insert")
-    int insertTestResult(String testPlanId,String caseId,String testDate,String desiredResponse,String actualResponse,String assertion) throws ParseException {
+    int insertTestResult(String testPlanId,String testId,String caseId,String testDate,String desiredResponse,String actualResponse,String assertion) throws ParseException {
         TestResult testResult=new TestResult();
         if(StringUtils.isNotBlank(caseId)&&StringUtils.isNumeric(caseId)){
             testResult.setCaseId(Integer.parseInt(caseId));
         }
         if(StringUtils.isNotBlank(testPlanId)&&StringUtils.isNumeric(testPlanId)){
-            testResult.setTestId(Integer.parseInt(testPlanId));
+            testResult.setTestPlanId(Integer.parseInt(testPlanId));
+        }
+        if(StringUtils.isNotBlank(testId)){
+            testResult.setTestId(testId);
         }
         if(StringUtils.isNotBlank(assertion)){
             testResult.setAssertion(assertion);
@@ -86,8 +89,8 @@ public class TestResultController {
 
     @ResponseBody
     @RequestMapping(value = "/delete")
-    int deleteTestResult(@Param("testId") int testId){
-        return testResultService.deleteTestResult(testId);
+    int deleteTestResult(@Param("resultId") int resultId){
+        return testResultService.deleteTestResult(resultId);
     }
     @ResponseBody
     @RequestMapping(value = "/categoryByTestPlanId")

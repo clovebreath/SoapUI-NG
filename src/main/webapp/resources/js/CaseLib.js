@@ -79,6 +79,7 @@ function insertLib() {
             if(1==data){
                 $("#insert-lib-modal-close").trigger("click");
                 alert("新增成功！");
+                queryLibByPage();
             }else{
                 alert("新增失败！");
             }
@@ -107,6 +108,7 @@ function updateLib(){
             if(1==data){
                 $("#modify-lib-modal-close").trigger("click");
                 alert("修改成功！");
+                queryLibByPage();
             }else{
                 alert("修改失败！");
             }
@@ -135,6 +137,7 @@ function deleteLib(id){
         success:function (data) {
             if(1==data){
                 alert("删除成功！");
+                queryLibByPage();
             }else{
                 alert("删除失败！");
             }

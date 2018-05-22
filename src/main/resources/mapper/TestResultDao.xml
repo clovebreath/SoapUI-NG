@@ -6,7 +6,7 @@
         SELECT * FROM TEST_RESULT
     </select>
     <select id="queryTestResultById" resultType="TestResult">
-        SELECT * FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId}
+        SELECT * FROM TEST_RESULT WHERE TEST_RESULT.RESULT_ID=#{resultId}
     </select>
     <select id="queryTestResultByCondition" parameterType="TestResult" resultType="TestResult">
         SELECT * FROM TEST_RESULT
@@ -74,11 +74,11 @@
             AND TEST_RESULT.TEST_PLAN_ID=#{testPlanId}
         </if>
     </select>
-    <insert id="insertTestResult" parameterType="TestResult" useGeneratedKeys="true" keyProperty="testId">
-        insert into TEST_RESULT(TEST_PLAN_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
-        values(#{testPlanId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})
+    <insert id="insertTestResult" parameterType="TestResult" useGeneratedKeys="true" keyProperty="resultId">
+        insert into TEST_RESULT(TEST_ID,TEST_PLAN_ID,CASE_ID,TEST_DATE,DESIRED_RESPONSE,ACTUAL_RESPONSE,ASSERTION)
+        values(#{testId},#{testPlanId},#{caseId},#{testDate},#{desiredResponse},#{actualResponse},#{assertion})
     </insert>
     <delete id="deleteTestResult">
-        DELETE FROM TEST_RESULT WHERE TEST_RESULT.TEST_ID=#{testId}
+        DELETE FROM TEST_RESULT WHERE TEST_RESULT.RESULT_ID=#{resultId}
     </delete>
 </mapper>

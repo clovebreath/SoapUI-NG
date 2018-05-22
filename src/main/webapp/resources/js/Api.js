@@ -83,6 +83,7 @@ function insertApi() {
             if(1==data){
                 $("#insert-api-modal-close").trigger("click");
                 alert("新增成功！");
+                queryApiByPage();
             }else{
                 alert("新增失败！");
             }
@@ -122,6 +123,7 @@ function updateApi(){
             if(1==data){
                 $("#modify-api-modal-close").trigger("click");
                 alert("更新成功！");
+                queryApiByPage();
             }else{
                 alert("更新失败！");
             }
@@ -141,6 +143,7 @@ function deleteApi(apiId) {
         success:function (data) {
             if(1==data){
                 alert("删除成功！");
+                queryApiByPage();
             }else{
                 alert("删除失败！");
             }

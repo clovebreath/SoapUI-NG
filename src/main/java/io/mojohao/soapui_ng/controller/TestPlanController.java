@@ -25,12 +25,25 @@ public class TestPlanController {
     @Autowired
     ApiService apiService;
 
+    /**
+     * 获取所有测试计划
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/all")
     public List<TestPlan> getAllPlans(){
         return planService.getAllTestPlans();
     }
 
+    /**
+     * 根据条件查询测试计划
+     * @param planId
+     * @param libId
+     * @param apiId
+     * @param planStatus
+     * @param currPage
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/query")
     public HashMap queryPlanByPage(String planId,String libId,String apiId,String planStatus,int currPage ){
@@ -57,18 +70,33 @@ public class TestPlanController {
         return retMap;
     }
 
+    /**
+     * 根据id删除测试计划
+     * @param planId
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/delete")
     int deletePlanById(int planId){
         return planService.deleteTestPlanById(planId);
     }
 
+    /**
+     * 更新测试计划
+     * @param plan
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/update")
     int updatePlan(TestPlan plan){
         return planService.updateTestPlan(plan);
     }
 
+    /**
+     * 插入测试计划
+     * @param plan
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/insert")
     int insertPlan(TestPlan plan){
@@ -87,17 +115,26 @@ public class TestPlanController {
         return planService.categoryByStatus();
     }
 
+    /**
+     * 执行测试计划
+     * @param planId
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/execute")
     int executePlan(int planId){
-        synchronized (this){
-            TestPlan testPlan=planService.queryTestPlanById(planId);
+        //查询测试计划状态
+        TestPlan testPlan=planService.queryTestPlanById(planId);
+        if(1==testPlan.getPlanStatus()){
+            //返回-1，不许执行
+            return -1;
+        }else {
+            //正常执行
             Api api=apiService.queryApiById(testPlan.getApiId());
             TestCase queryCase=new TestCase();
             queryCase.setCaseLibId(testPlan.getLibId());
             List<TestCase> caseList=testCaseService.queryTestCaseByCondition(queryCase);
-            planService.excutePlan(api,caseList,testPlan);
+            return planService.excutePlan(api,caseList,testPlan);
         }
-        return 0;
     }
 }

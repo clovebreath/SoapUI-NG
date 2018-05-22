@@ -22,8 +22,8 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     @Override
-    public TestResult queryTestResultById(int testId) {
-        return testResultDao.queryTestResultById(testId);
+    public TestResult queryTestResultById(int resultId) {
+        return testResultDao.queryTestResultById(resultId);
     }
 
     @Override
@@ -40,8 +40,8 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     @Override
-    public int deleteTestResult(int testId) {
-        return testResultDao.deleteTestResult(testId);
+    public int deleteTestResult(int resultId) {
+        return testResultDao.deleteTestResult(resultId);
     }
 
     @Override

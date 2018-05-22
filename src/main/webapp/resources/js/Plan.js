@@ -85,7 +85,7 @@ function insertPlan() {
         url:"/plan/insert",
         dataType:"json",
         data:{
-            "testPlanId":$("#plan-new-plan-id").val(),
+            // "testPlanId":$("#plan-new-plan-id").val(),
             "libId":$("#plan-new-lib-id").val(),
             "planName":$("#plan-new-plan-name").val(),
             "apiId":$("#plan-new-api-id").val()
@@ -94,6 +94,7 @@ function insertPlan() {
             if(1==data){
                 $("#insert-plan-modal-close").trigger("click");
                 alert("新增成功！");
+                queryPlanByPage();
             }else{
                 alert("新增失败！");
             }
@@ -116,8 +117,8 @@ function updatePlan() {
         success:function (data) {
             if(1==data){
                 $("#modify-plan-modal-close").trigger("click");
-                queryPlanByPage();
                 alert("修改成功！");
+                queryPlanByPage();
             }else{
                 alert("修改失败！");
             }
@@ -150,6 +151,7 @@ function deletePlan(planId){
         success:function (data) {
             if(1==data){
                 alert("删除成功！");
+                queryPlanByPage();
             }else{
                 alert("删除失败！");
             }
@@ -160,6 +162,9 @@ function deletePlan(planId){
     });
 }
 function executePlan(planId) {
+    let tempRow=$("#plan-"+planId);
+    tempRow.find("td").eq(4).text("执行中");
+    tempRow.find("a").attr("disabled", "");
     $.ajax({
         url:"/plan/execute",
         dataType:"json",
@@ -167,7 +172,16 @@ function executePlan(planId) {
             "planId":planId
         },
         success:function (data) {
-            queryPlanByPage();
+            if(2==data){
+                tempRow.find("td").eq(4).text("执行完成");
+                tempRow.find("a").removeAttr("disabled");
+            }else if(-1==data){
+                alert("计划正在执行中！");
+                queryPlanByPage();
+            }else{
+                tempRow.find("td").eq(4).text("执行中断");
+                tempRow.find("a").removeAttr("disabled");
+            }
         },
         error: function(data){
             window.location="/error";

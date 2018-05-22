@@ -252,11 +252,11 @@ function resultCategoryByTestId(){
         text: '正在努力的读取数据中...'   //loading话术
     });
     $.ajax({
-        url:"/result/categoryByTestId",
+        url:"/result/categoryByTestPlanId",
         dataType:"json",
         success:function (data) {
             chartResultTestId.hideLoading();
-            chartResultTestId.setOption(getPieOption(data,"测试结果信息","根据测试编号统计","测试编号"));
+            chartResultTestId.setOption(getPieOption(data,"测试结果信息","根据测试计划编号统计","测试编号"));
             window.onresize=chartResultTestId.resize;
         },
         error:function () {

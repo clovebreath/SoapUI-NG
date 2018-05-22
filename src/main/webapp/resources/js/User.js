@@ -87,6 +87,7 @@ function insertUser() {
             if(1==data){
                 $("#insert-user-modal-close").trigger("click");
                 alert("新增成功！");
+                queryUserByPage();
             }else{
                 alert("新增失败！");
             }
@@ -117,6 +118,7 @@ function updateUser(){
             if(1==data){
                 $("#modify-user-modal-close").trigger("click");
                 alert("修改成功！");
+                queryUserByPage();
             }else{
                 alert("修改失败！");
             }
@@ -147,6 +149,7 @@ function deleteUser(id){
         success:function (data) {
             if(1==data){
                 alert("删除成功！");
+                queryUserByPage();
             }else{
                 alert("删除失败！");
             }

@@ -12,8 +12,10 @@
     <script src="resources/js/UserEleData.js"></script>
     <script src="resources/js/Result.js"></script>
     <script src="resources/js/Plan.js"></script>
+    <script src="resources/js/xmlTreeViewer.js"></script>
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-    <link href="resources/css/syntax.css" rel="stylesheet">
+    <link href="resources/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="resources/css/xmlTreeViewer.css">
 </head>
 <body>
 <div class="container">
@@ -68,6 +70,7 @@
                                     <label for="api-id">接口编号</label>
                                     <input type="number" class="form-control" width="40px" id="api-id" placeholder="接口编号">
                                 </div>
+                                <br/>
                                 <div class="form-group">
                                     <label for="api-type">接口类型</label>
                                     <select class="form-control" id="api-type">
@@ -119,6 +122,9 @@
                                                     <select class="form-control" id="new-api-access-mode">
                                                         <option value="GET">GET</option>
                                                         <option value="POST">POST</option>
+                                                        <option value="PUT">PUT</option>
+                                                        <option value="DELETE">DELETE</option>
+                                                        <option value="SOAP">SOAP</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -170,6 +176,9 @@
                                                     <select class="form-control" id="modify-api-access-mode">
                                                         <option value="GET">GET</option>
                                                         <option value="POST">POST</option>
+                                                        <option value="PUT">PUT</option>
+                                                        <option value="DELETE">DELETE</option>
+                                                        <option value="SOAP">SOAP</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -866,7 +875,7 @@
                             <form class="form-inline" id="result-query-form" target="nm_iframe">
                                 <div class="form-group">
                                     <label for="result-test-id">测试编号</label>
-                                    <input type="number" class="form-control" id="result-test-id" placeholder="测试编号">
+                                    <input type="text" class="form-control" id="result-test-id" placeholder="测试编号">
                                 </div>
                                 <div class="form-group">
                                     <label for="result-test-plan-id">测试计划编号</label>
@@ -914,6 +923,10 @@
                                                     <input type="number" class="form-control" id="new-result-test-plan-id" placeholder="测试计划编号">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="new-result-test-id">测试编号</label>
+                                                    <input type="text" class="form-control" id="new-result-test-id" placeholder="测试编号">
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="new-result-case-id">用例编号</label>
                                                     <input type="number" class="form-control" id="new-result-case-id" placeholder="用例编号">
                                                 </div>
@@ -947,7 +960,7 @@
                             </div>
 
                             <div class="modal fade" id="modal-container-response-compare" role="dialog" aria-labelledby="result-response-compare" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog" style="width: 90%;">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -958,26 +971,19 @@
                                         <div class="modal-body">
                                             <div class="row clearfix">
                                                 <div class="col-md-6 column">
-                                                    <pre id="desired-response">
-
-
-
-
-
-                                                    </pre>
+                                                    <h4>期望返回</h4>
+                                                    <pre id="desired-response-json"></pre>
+                                                    <pre id="desired-response-xml"></pre>
                                                 </div>
                                                 <div class="col-md-6 column">
-                                                    <pre id="actual-response">
-
-
-
-
-
-                                                    </pre>
+                                                    <h4>实际返回</h4>
+                                                    <pre id="actual-response-json"></pre>
+                                                    <pre id="actual-response-xml" lang="xml"></pre>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" onclick="syntaxHighlightXml()">格式化</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                         </div>
                                     </div>
@@ -1077,17 +1083,17 @@
                                         </div>
                                         <div class="modal-body">
                                             <form id="new-plan-form">
+                                                <!--<div class="form-group">-->
+                                                    <!--<label for="plan-new-plan-id">测试计划编号</label>-->
+                                                    <!--<input type="number" class="form-control" id="plan-new-plan-id" placeholder="测试计划编号">-->
+                                                <!--</div>-->
                                                 <div class="form-group">
-                                                    <label for="plan-new-plan-id">测试计划编号</label>
-                                                    <input type="number" class="form-control" id="plan-new-plan-id" placeholder="测试计划编号">
+                                                    <label for="plan-new-plan-name">测试计划名称</label>
+                                                    <input type="text" class="form-control" id="plan-new-plan-name" placeholder="测试计划名称">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="plan-new-lib-id">用例库编号</label>
                                                     <input type="number" class="form-control" id="plan-new-lib-id" placeholder="用例库编号">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="plan-new-plan-name">测试计划名称</label>
-                                                    <input type="text" class="form-control" id="plan-new-plan-name" placeholder="测试计划名称">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="plan-new-api-id">被测接口编号</label>

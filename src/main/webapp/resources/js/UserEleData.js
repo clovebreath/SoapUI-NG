@@ -82,6 +82,7 @@ function insertData() {
             if(1==data){
                 $("#insert-data-modal-close").trigger("click");
                 alert("新增成功！");
+                queryDataByPage();
             }else{
                 alert("新增失败！");
             }
@@ -110,6 +111,7 @@ function updateData(){
             if(1==data){
                 $("#modify-data-modal-close").trigger("click");
                 alert("修改成功！");
+                queryDataByPage();
             }else{
                 alert("修改失败！");
             }
@@ -138,6 +140,7 @@ function deleteData(id){
         success:function (data) {
             if(1==data){
                 alert("删除成功！");
+                queryDataByPage();
             }else{
                 alert("删除失败！");
             }

@@ -1,5 +1,9 @@
 package io.mojohao.soapui_ng.util;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -7,15 +11,21 @@ import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MimeType;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.xml.sax.SAXException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class WebServiceConsumer {
@@ -30,6 +40,12 @@ public class WebServiceConsumer {
     static String SOAP11_NAMESPACE="http://schemas.xmlsoap.org/soap/envelope/";
     static String SOAP12_NAMESPACE="http://www.w3.org/2003/05/soap-envelope";
 
+    /**
+     * 格式化xml
+     * @param inputXML
+     * @return
+     * @throws Exception
+     */
     public String formatXML(String inputXML) throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read(new StringReader(inputXML));
@@ -55,20 +71,13 @@ public class WebServiceConsumer {
         return requestXML;
     }
 
-    public String getXML(String phoneNum){
-        String soapXML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                +"<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
-                "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-                +"<soap:Body>"
-                +"<sayHello xmlns=\"http://api.soapui_ng.mojohao.io/\">"
-                +"<arg1>"+phoneNum+"</arg1>"
-                +"</sayHello>"
-                +" </soap:Body>"
-                +"</soap:Envelope>";
-        return soapXML;
-    }
-
+    /**
+     * 调用一个Soap接口，并获取返回值
+     * @param link 接口地址
+     * @param soapXML xml格式报文
+     * @return
+     * @throws Exception
+     */
     public HashMap<String,Object> consumeSoapService(String link, String soapXML) throws Exception{
         //1：创建服务地址
         URL url = new URL(link);
@@ -123,31 +132,87 @@ public class WebServiceConsumer {
         return retMap;
     }
 
-    public String consumeRestService(String url, Object request, String accessMethod){
-
-        String response="success";
-        try{
-            switch (accessMethod){
-                case "GET":
-                    response= restTemplate.getForObject(url,String.class);
-                    break;
-                case "POST":
-                    response=restTemplate.postForObject(url,request,String.class);
-                    break;
-                case "PUT":
-                    restTemplate.put(url,request);
-                    break;
-                case "DELETE":
-                    restTemplate.delete(url);
-                    break;
-                default:
-                    break;
-            }
-        }catch (RestClientException e){
-            logger.error(e.toString());
+    /**
+     * 调用REST接口
+     * @param url 地址
+     * @param requestBody 报文
+     * @param method 方法
+     * @param pathParam 参数
+     * @return
+     * @throws HttpClientErrorException
+     */
+    public HashMap<String,Object> consumeRestService(String url, String requestBody, HttpMethod method, Map pathParam)throws HttpClientErrorException {
+        // 请求头
+        HttpHeaders headers = new HttpHeaders();
+        MimeType mimeType = MimeTypeUtils.parseMimeType("application/json");
+        MediaType mediaType = new MediaType(mimeType.getType(), mimeType.getSubtype(), Charset.forName("UTF-8"));
+        // 请求体
+        headers.setContentType(mediaType);
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, method, entity, String.class,pathParam);
+        // 获取返回状态码
+        int responseCode = response.getStatusCode().value();
+        //返回Map
+        HashMap<String,Object> retMap=new HashMap<>();
+        retMap.put("responseCode",responseCode);
+        //如果状态码为200成功
+        if(200==responseCode){
+            retMap.put("response",response.getBody());
         }
-        return response;
+        return retMap;
     }
 
+    /**
+     * 比较两个xml是否相同（只看内容，忽略结构）
+     * @param xmlString1
+     * @param xmlString2
+     * @return true or false
+     */
+    public boolean compareXml(String xmlString1,String xmlString2){
+        boolean assertion=false;
+        //忽略属性位置
+        XMLUnit.setIgnoreAttributeOrder(true);
+        //忽略注解
+        XMLUnit.setIgnoreComments(true);
+        //忽略CDATA节点
+        XMLUnit.setIgnoreDiffBetweenTextAndCDATA(true);
+        //忽略空白
+        XMLUnit.setIgnoreWhitespace(true);
+        try {
+            Diff diff= XMLUnit.compareXML(xmlString1,xmlString2);
+            assertion=diff.similar();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("Error while compareXml,xml1:"+xmlString1+",xml2:"+xmlString2);
+            if(xmlString1.equals(xmlString2)){
+                assertion=true;
+            }
+        }
+        return assertion;
+    }
 
+    /**
+     * 比较两个JSON是否相同（只看内容，忽略结构）
+     * @param json1
+     * @param json2
+     * @return
+     */
+    public boolean compareJson(String json1,String json2){
+        boolean assertion=false;
+        try{
+            //使用gson将json转化为JsonObject然后对两个Object进行比较
+            JsonParser parser = new JsonParser();
+            JsonObject obj = (JsonObject) parser.parse(json1);
+            JsonParser parser1 = new JsonParser();
+            JsonObject obj1 = (JsonObject) parser1.parse(json2);
+            assertion=obj.equals(obj1);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("Error while compareJson,JSON1:"+json1+",JSON2:"+json2);
+            if(json1.equals(json2)){
+                assertion=true;
+            }
+        }
+        return assertion;
+    }
 }

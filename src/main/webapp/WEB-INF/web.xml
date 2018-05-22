@@ -40,4 +40,13 @@
     <filter-name>encodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <!--&lt;!&ndash; 默认情况下，PUT和DELETE请求是无法提交表单数据的。 &ndash;&gt;-->
+  <!--<filter>-->
+    <!--<filter-name>HttpMethodFilter</filter-name>-->
+    <!--<filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>-->
+  <!--</filter>-->
+  <!--<filter-mapping>-->
+    <!--<filter-name>HttpMethodFilter</filter-name>-->
+    <!--<servlet-name>dispatcher</servlet-name>-->
+  <!--</filter-mapping>-->
 </web-app>

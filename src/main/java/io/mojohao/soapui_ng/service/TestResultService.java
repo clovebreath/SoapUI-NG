@@ -9,11 +9,11 @@ import java.util.Map;
 
 public interface TestResultService {
     List<TestResult> getAllTestResults();
-    TestResult queryTestResultById(int testId);
+    TestResult queryTestResultById(int resultId);
     List<TestResult> queryTestResultByCondition(TestResult testResult);
     List<TestResult> queryTestResultByPage(Map param);
     int insertTestResult(TestResult testResult);
-    int deleteTestResult(int testId);
+    int deleteTestResult(int resultId);
     List<ChartTypeDto> categoryByTestPlanId();
     List<ChartTypeDto> categoryByCaseId();
     List<ChartTypeDto> categoryByAssertion();

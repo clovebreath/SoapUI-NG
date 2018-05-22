@@ -49,15 +49,15 @@ PRIMARY KEY (LIB_ID)
 ) comment='测试用例库';
 CREATE TABLE mojohao.TEST_RESULT
 (
-# todo 需改测试结果 添加主键：结果编号
-TEST_ID INT NOT NULL auto_increment COMMENT '测试编号',
+RESULT_ID INT NOT NULL auto_increment COMMENT '结果编号',
+TEST_ID varchar(36) NOT NULL COMMENT '测试编号',
 TEST_PLAN_ID INT NOT NULL COMMENT '测试计划编号',
 CASE_ID INT NOT NULL COMMENT '用例编号',
 TEST_DATE TIMESTAMP NOT NULL COMMENT '测试时间',
 DESIRED_RESPONSE TEXT  comment '期望输出',
 ACTUAL_RESPONSE TEXT  comment '实际输出',
 ASSERTION ENUM('PASSED', 'UNPASSED') comment '断言',
-PRIMARY KEY (TEST_ID)
+PRIMARY KEY (RESULT_ID)
 ) comment='测试结果';
 CREATE TABLE mojohao.TEST_PLAN
 (

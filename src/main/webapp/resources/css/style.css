@@ -1,7 +1,16 @@
+/**
+json 展示样式
+ */
 pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 .string { color: green; }
 .number { color: darkorange; }
 .boolean { color: blue; }
 .null { color: magenta; }
 .key { color: red; }
+table pre{height: 70px;width: 200px;overflow: auto;}
 
+/**
+主页面样式
+ */
+.tab-content{margin-top: 15px;}
+.table-bordered{margin-top:15px;}
