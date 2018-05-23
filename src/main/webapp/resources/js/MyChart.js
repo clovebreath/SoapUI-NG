@@ -120,6 +120,9 @@ function getBarOption(data,myTittle,mySubTittle){
     return option;
 }
 
+/**
+ * 首页柱状图
+ */
 function countAllData(){
     //初始化echarts对象
     let chartCountAll = echarts.init(document.getElementById('chart-count-all'));
@@ -386,7 +389,49 @@ function userCategoryByAreaCode(){
         }
     });
 }
-
+function planCategoryByLibId(){
+    let chartPlanLibId= echarts.init(document.getElementById('chart-plan-lib-id'));
+    chartPlanLibId.showLoading({
+        text: '正在努力的读取数据中...'  //loading话术
+    });
+    $.ajax({
+        url:"/plan/categoryByLib",
+        dataType:"json",
+        success:function (data) {
+            chartPlanLibId.hideLoading();
+            chartPlanLibId.setOption(getPieOption(data,"测试计划","根据用例库统计","用例库编号"));
+            window.onresize=chartPlanLibId.resize;
+        },
+        error:function () {
+            chartPlanLibId.showLoading({
+                text: '读取数据失败。'    //loading话术
+            });
+        }
+    });
+}
+function planCategoryByApiId(){
+    let chartPlanApiId= echarts.init(document.getElementById('chart-plan-api-id'));
+    chartPlanApiId.showLoading({
+        text: '正在努力的读取数据中...'  //loading话术
+    });
+    $.ajax({
+        url:"/plan/categoryByApi",
+        dataType:"json",
+        success:function (data) {
+            chartPlanApiId.hideLoading();
+            chartPlanApiId.setOption(getPieOption(data,"测试计划","根据被测试接口统计","接口编号"));
+            window.onresize=chartPlanApiId.resize;
+        },
+        error:function () {
+            chartPlanApiId.showLoading({
+                text: '读取数据失败。'    //loading话术
+            });
+        }
+    });
+}
+/**
+ * 初始化所有表格
+ */
 function chartInit(){
     countAllData();
     $("#modal-echart-api").click(function () {
@@ -423,6 +468,12 @@ function chartInit(){
             userCategoryByAreaCode();
             userCategoryByState();
             userCategoryByType();
+        },250);
+    });
+    $("#modal-plan-echart").click(function () {
+        setTimeout(function () {
+            planCategoryByLibId();
+            planCategoryByApiId();
         },250);
     });
 }

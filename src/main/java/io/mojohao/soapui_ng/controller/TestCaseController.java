@@ -19,15 +19,34 @@ public class TestCaseController {
     @Autowired
     private TestCaseService testCaseService;
 
+    /**
+     * 查询所有
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/all")
     List<TestCase> getAllTestCases(){
         return testCaseService.getAllTestCases();
     }
+
+    /**
+     * 查询 根据主键
+     * @param id
+     * @return
+     */
     TestCase queryTestCaseById(int id){
         return testCaseService.queryTestCaseById(id);
     }
 
+    /**
+     * 查询 根据条件
+     * @param caseId
+     * @param caseName
+     * @param caseLibId
+     * @param caseParaType
+     * @param currPage
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/query")
     HashMap<String,Object> queryTestCaseByCondition(String caseId,String caseName,String caseLibId,String caseParaType,int currPage){
@@ -54,22 +73,55 @@ public class TestCaseController {
         return retMap;
     }
 
+    /**
+     * 删除 ，根据主键
+     * @param id
+     * @return 0 不存在，1删除成功，-1违法主键约束
+     */
     @ResponseBody
     @RequestMapping(value = "/delete")
     int deleteTestCaseById(int id){
-        return testCaseService.deleteTestCaseById(id);
+        int ret = 0;
+        try{
+            ret = testCaseService.deleteTestCaseById(id);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
+    /**
+     * 更新
+     * @param testCase
+     * @return 0 不存在，1更新成功，-1违法主键约束
+     */
     @ResponseBody
     @RequestMapping(value = "/update")
     int updateTestCase(TestCase testCase){
-        return testCaseService.updateTestCase(testCase);
+        int ret = 0;
+        try{
+            ret = testCaseService.updateTestCase(testCase);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
+    /**
+     * 插入
+     * @param testCase
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/insert")
     int insertTestCase(TestCase testCase){
-        return testCaseService.insertTestCase(testCase);
+        int ret = 0;
+        try{
+            ret = testCaseService.insertTestCase(testCase);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
     @ResponseBody

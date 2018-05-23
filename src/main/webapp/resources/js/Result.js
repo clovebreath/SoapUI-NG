@@ -132,7 +132,7 @@ function deleteResult(resultId){
         }
     });
 }
-
+//查看数据详情
 function seeDetail(resultId){
     let desiredResponse = $("#result-"+resultId+" td").eq(4).text();
     let acturalResponse = $("#result-"+resultId+" td").eq(5).text();
@@ -163,6 +163,7 @@ function seeDetail(resultId){
     }
 
 }
+//格式化XML
 function syntaxHighlightXml() {
     let xmlDePreSelector="#desired-response-xml";
     let xmlAcPreSelector="#actual-response-xml";
@@ -175,7 +176,15 @@ function syntaxHighlightXml() {
     let retNode2 = xmlTreeViewer.getXMLViewerNode(xmlNode2.xml);
     $(xmlAcPreSelector).html("").append(retNode2);
 }
+//格式化JSON
 function syntaxHighlightJson(json) {
+    try {
+        if(typeof json === 'string'){
+            json=JSON.parse(json);
+        }
+    } catch(e) {
+
+    }
     if (typeof json !== 'string') {
         json = JSON.stringify(json, undefined, 2);
     }

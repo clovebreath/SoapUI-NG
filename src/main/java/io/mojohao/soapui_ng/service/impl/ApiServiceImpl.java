@@ -48,7 +48,11 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public int insertApi(Api api) {
-        return apiDao.insertApi(api);
+        int ret=apiDao.insertApi(api);
+        if(1==ret){
+            ret=api.getApiId();
+        }
+        return ret;
     }
 
     @Override

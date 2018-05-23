@@ -88,12 +88,14 @@ function insertCase() {
             "caseInfo":$("#new-case-info").val()
         },
         success:function (data) {
-            if(1==data){
+            if(0!=data&&-1!=data){
                 $("#insert-case-modal-close").trigger("click");
                 alert("新增成功！");
                 queryCaseByPage();
-            }else{
+            }else if(0==data){
                 alert("新增失败！");
+            }else if(-1==data){
+                alert("用例库ID不存在，重新输入！");
             }
         },
         error: function(data){
@@ -123,7 +125,9 @@ function updateCase(){
                 $("#modify-case-modal-close").trigger("click");
                 alert("修改成功！");
                 queryCaseByPage();
-            }else{
+            }else if(-1==data){
+                alert("用例库ID不存在，重新输入！");
+            }else {
                 alert("修改失败！");
             }
         },
@@ -138,7 +142,7 @@ function modifyCase(id) {//<th>ID</th><th>名称</th><th>所属用例库编号</
     $("#modify-case-name").val(tempRow.find("td")[1].innerText);
     $("#modify-case-lib-id").val(tempRow.find("td")[2].innerText);
     $("#modify-case-para-type").val(tempRow.find("td")[3].innerText);
-    $("#modify-case-parameter").val(tempRow.find("td")[4].innerText);
+    $("#modify-parameter").val(tempRow.find("td")[4].innerText);
     $("#modify-desired-response").val(tempRow.find("td")[5].innerText);
     $("#modify-case-info").val(tempRow.find("td")[6].innerText);
 }
@@ -153,7 +157,10 @@ function deleteCase(id){
             if(1==data){
                 alert("删除成功！");
                 queryCaseByPage();
-            }else{
+            }else if(0==data){
+                alert("数据已删除！");
+                queryCaseByPage();
+            }else if(-1==data){
                 alert("删除失败！");
             }
         },

@@ -52,7 +52,11 @@ public class TestCaseLibServiceImpl implements TestCaseLibService {
 
     @Override
     public int insertTestCaseLib(TestCaseLib testCaseLib) {
-        return testCaseLibDao.insertTestCaseLib(testCaseLib);
+        int ret = testCaseLibDao.insertTestCaseLib(testCaseLib);
+        if(1==ret){
+            ret=testCaseLib.getLibId();
+        }
+        return ret;
     }
 
     @Override

@@ -91,12 +91,14 @@ function insertPlan() {
             "apiId":$("#plan-new-api-id").val()
         },
         success:function (data) {
-            if(1==data){
+            if(data>0){
                 $("#insert-plan-modal-close").trigger("click");
                 alert("新增成功！");
                 queryPlanByPage();
-            }else{
+            }else if(0==data){
                 alert("新增失败！");
+            }else if(-1==data){
+                alert("请检查相关测试计划和API是否存在！");
             }
         },
         error: function(data){
@@ -119,8 +121,10 @@ function updatePlan() {
                 $("#modify-plan-modal-close").trigger("click");
                 alert("修改成功！");
                 queryPlanByPage();
-            }else{
+            }else if(0==data){
                 alert("修改失败！");
+            }else if(-1==data){
+                alert("请检查是否存在相关测试计划和API！");
             }
         },
         error: function(data){
@@ -152,8 +156,10 @@ function deletePlan(planId){
             if(1==data){
                 alert("删除成功！");
                 queryPlanByPage();
-            }else{
+            }else if(0==data){
                 alert("删除失败！");
+            }else if(-1==data){
+                alert("请检查是否存在相关测试计划和API！");
             }
         },
         error: function(data){

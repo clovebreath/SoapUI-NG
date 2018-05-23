@@ -52,7 +52,11 @@ public class TestCaseServiceImpl implements TestCaseService {
 
     @Override
     public int insertTestCase(TestCase testCase) {
-        return testCaseDao.insertTestCase(testCase);
+        int ret = testCaseDao.insertTestCase(testCase);
+        if(0==ret){
+            return 0;
+        }
+        return testCase.getCaseId();
     }
 
     @Override

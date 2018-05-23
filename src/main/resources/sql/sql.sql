@@ -69,3 +69,15 @@ PLAN_NAME varchar(20) NOT NULL COMMENT '测试计划名称',
 PLAN_STATUS int(2) NOT NULL COMMENT '计划执行状态',
 PRIMARY KEY (TEST_PLAN_ID)
 ) comment='测试计划';
+ALTER TABLE test_case
+ADD CONSTRAINT test_case_test_case_lib_LIB_ID_fk
+FOREIGN KEY (CASE_LIB_ID) REFERENCES test_case_lib (LIB_ID);
+ALTER TABLE test_plan
+ADD CONSTRAINT test_plan_api_list_API_ID_fk
+FOREIGN KEY (API_ID) REFERENCES api_list (API_ID);
+ALTER TABLE test_plan
+ADD CONSTRAINT test_plan_test_case_lib_LIB_ID_fk
+FOREIGN KEY (LIB_ID) REFERENCES test_case_lib (LIB_ID);
+ALTER TABLE test_case_lib
+  ADD CONSTRAINT test_case_lib_api_list_API_ID_fk
+FOREIGN KEY (APPLY_API_ID) REFERENCES api_list (API_ID);

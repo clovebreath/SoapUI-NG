@@ -62,7 +62,11 @@ public class TestPlanServiceImpl implements TestPlanService {
 
     @Override
     public int insertTestPlan(TestPlan plan) {
-        return testPlanDao.insertTestPlan(plan);
+        int ret=testPlanDao.insertTestPlan(plan);
+        if(0!=ret){
+            ret=plan.getTestPlanId();
+        }
+        return ret;
     }
 
     @Override

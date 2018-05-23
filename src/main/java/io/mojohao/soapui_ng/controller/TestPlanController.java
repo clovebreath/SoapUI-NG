@@ -78,7 +78,13 @@ public class TestPlanController {
     @ResponseBody
     @RequestMapping(value = "/delete")
     int deletePlanById(int planId){
-        return planService.deleteTestPlanById(planId);
+        int ret=0;
+        try{
+            ret=planService.deleteTestPlanById(planId);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
     /**
@@ -89,7 +95,13 @@ public class TestPlanController {
     @ResponseBody
     @RequestMapping(value = "/update")
     int updatePlan(TestPlan plan){
-        return planService.updateTestPlan(plan);
+        int ret=0;
+        try{
+            ret=planService.updateTestPlan(plan);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
     /**
@@ -100,13 +112,25 @@ public class TestPlanController {
     @ResponseBody
     @RequestMapping(value = "/insert")
     int insertPlan(TestPlan plan){
-        return planService.insertTestPlan(plan);
+        int ret=0;
+        try{
+            ret=planService.insertTestPlan(plan);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
     @ResponseBody
     @RequestMapping(value = "/categoryByApi")
     public List<ChartTypeDto> categoryByApiId() {
         return planService.categoryByApiId();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/categoryByLib")
+    public List<ChartTypeDto> categoryByLibId() {
+        return planService.categoryByLibId();
     }
 
     @ResponseBody

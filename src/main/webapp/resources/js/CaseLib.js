@@ -76,11 +76,13 @@ function insertLib() {
             "applyApiId":$("#new-apply-api-id").val()
         },
         success:function (data) {
-            if(1==data){
+            if(0!=data&&-1!=data){
                 $("#insert-lib-modal-close").trigger("click");
                 alert("新增成功！");
                 queryLibByPage();
-            }else{
+            }else if(-1==data){
+                alert("请检查相关测试用例和测试计划是否存在！");
+            }else if(0==data){
                 alert("新增失败！");
             }
         },
@@ -109,8 +111,10 @@ function updateLib(){
                 $("#modify-lib-modal-close").trigger("click");
                 alert("修改成功！");
                 queryLibByPage();
-            }else{
+            }else if(0==data){
                 alert("修改失败！");
+            }else if(-1==data){
+                alert("请检查相关测试用例和测试计划是否存在！");
             }
         },
         error: function(data){
@@ -138,6 +142,8 @@ function deleteLib(id){
             if(1==data){
                 alert("删除成功！");
                 queryLibByPage();
+            }else if(-1==data){
+                alert("请检查相关测试用例和测试计划是否已经全部删除！");
             }else{
                 alert("删除失败！");
             }

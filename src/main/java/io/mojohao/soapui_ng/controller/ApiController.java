@@ -19,12 +19,24 @@ public class ApiController {
     @Autowired
     private ApiService apiService;
 
+    /**
+     * 查询全部
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/all")
     public List<Api> getAllApis(){
         return apiService.getAllApis();
     }
 
+    /**
+     * 根据条件查询
+     * @param apiId
+     * @param apiName
+     * @param apiType
+     * @param currPage
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/query")
     public HashMap queryApiByPage(String apiId,String apiName,String apiType,int currPage ){
@@ -48,22 +60,55 @@ public class ApiController {
         return retMap;
     }
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/delete")
     int deleteApiById(int id){
-        return apiService.deleteApiById(id);
+        int ret=0;
+        try{
+            ret=apiService.deleteApiById(id);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
+    /**
+     * 更新
+     * @param api
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/update")
     int updateApi(Api api){
-        return apiService.updateApi(api);
+        int ret=0;
+        try{
+            ret=apiService.updateApi(api);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
+    /**
+     * 插入
+     * @param api
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/insert")
     int insertApi(Api api){
-        return apiService.insertApi(api);
+        int ret=0;
+        try{
+            ret=apiService.insertApi(api);
+        }catch (Exception e){
+            ret=-1;
+        }
+        return ret;
     }
 
     @ResponseBody

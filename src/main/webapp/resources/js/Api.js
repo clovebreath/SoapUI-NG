@@ -80,12 +80,14 @@ function insertApi() {
             "apiInfo":$("#new-api-info").val()
         },
         success:function (data) {
-            if(1==data){
+            if(data>0){
                 $("#insert-api-modal-close").trigger("click");
                 alert("新增成功！");
                 queryApiByPage();
-            }else{
+            }else if(0==data){
                 alert("新增失败！");
+            }else if(-1==data){
+                alert("请检查相关测试计划是否存在！");
             }
         },
         error: function(data){
@@ -124,8 +126,10 @@ function updateApi(){
                 $("#modify-api-modal-close").trigger("click");
                 alert("更新成功！");
                 queryApiByPage();
-            }else{
+            }else if(0==data){
                 alert("更新失败！");
+            }else if(-1==data){
+                alert("请检查相关测试计划是否已删除！");
             }
         },
         error: function(data){
@@ -144,8 +148,10 @@ function deleteApi(apiId) {
             if(1==data){
                 alert("删除成功！");
                 queryApiByPage();
-            }else{
+            }else if(0==data){
                 alert("删除失败！");
+            }else if(-1==data){
+                alert("请检查相关测试计划是否已删除！");
             }
         },
         error: function(data){
