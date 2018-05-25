@@ -24,15 +24,34 @@ public class TestResultController {
     @Autowired
     private TestResultService testResultService;
 
+    /**
+     * 获取全部
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/all")
     List<TestResult> getAllTestResults(){
         return testResultService.getAllTestResults();
     }
+
+    /**
+     * 获取一个
+     * @param resultId
+     * @return
+     */
     TestResult queryTestResultById(@Param("resultId") int resultId){
         return testResultService.queryTestResultById(resultId);
     }
 
+    /**
+     * 分页查询
+     * @param caseId
+     * @param testId
+     * @param testPlanId
+     * @param assertion
+     * @param currPage
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/query")
     HashMap<String,Object> queryTestResultByCondition(String caseId,String testId,String testPlanId,String assertion,int currPage){
@@ -59,6 +78,18 @@ public class TestResultController {
         return retMap;
     }
 
+    /**
+     * 插入
+     * @param testPlanId
+     * @param testId
+     * @param caseId
+     * @param testDate
+     * @param desiredResponse
+     * @param actualResponse
+     * @param assertion
+     * @return
+     * @throws ParseException
+     */
     @ResponseBody
     @RequestMapping(value = "/insert")
     int insertTestResult(String testPlanId,String testId,String caseId,String testDate,String desiredResponse,String actualResponse,String assertion) throws ParseException {
@@ -87,29 +118,54 @@ public class TestResultController {
         return testResultService.insertTestResult(testResult);
     }
 
+    /**
+     * 删除
+     * @param resultId
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/delete")
     int deleteTestResult(@Param("resultId") int resultId){
         return testResultService.deleteTestResult(resultId);
     }
+
+    /**
+     * 根据测试计划 ID统计
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/categoryByTestPlanId")
     List<ChartTypeDto> categoryByTestPlanId(){
         return testResultService.categoryByTestPlanId();
     }
+
+    /**
+     * 根据用例统计
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/categoryByCaseId")
     List<ChartTypeDto> categoryByCaseId(){
         return testResultService.categoryByCaseId();
     }
 
+    /**
+     * 根据测试结果统计
+     * @param testId
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/categoryByAssertion")
-    List<ChartTypeDto> categoryByAssertion(){
-        return testResultService.categoryByAssertion();
+    List<ChartTypeDto> categoryByAssertion(String testId){
+        return testResultService.categoryByAssertion(testId);
     }
 
-
+    /**
+     * 转换时间格式
+     * @param dateTime
+     * @return
+     * @throws ParseException
+     */
     private Timestamp convertDateTime(String dateTime) throws ParseException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         format.setLenient(false);

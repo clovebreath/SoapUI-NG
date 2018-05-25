@@ -21,16 +21,17 @@
             AND TEST_CASE_LIB.LIB_ID=#{libId}
         </if>
         <if test="libName!=null and libName!=''">
-            AND TEST_CASE_LIB.LIB_NAME=#{libName}
+            AND TEST_CASE_LIB.LIB_NAME LIKE CONCAT(CONCAT('%', #{libName}), '%')
         </if>
         <if test="applyApiId!=null and applyApiId!=''">
             AND TEST_CASE_LIB.APPLY_API_ID=#{applyApiId}
         </if>
     </select>
     <select id="categoryByApplyApiId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
-        select APPLY_API_ID type,count(LIB_ID) number
-        from test_case_lib
-        group by APPLY_API_ID
+        select a.APPLY_API_ID type,count(1) number,b.API_NAME name
+        from test_case_lib a,api_list b
+        where a.APPLY_API_ID=b.API_ID
+        group by a.APPLY_API_ID,b.API_NAME
     </select>
     <select id="countAll" resultType="java.lang.Integer">
         select count(1) from test_case_lib
@@ -42,7 +43,7 @@
             AND TEST_CASE_LIB.LIB_ID=#{libId}
         </if>
         <if test="libName!=null and libName!=''">
-            AND TEST_CASE_LIB.LIB_NAME=#{libName}
+            AND TEST_CASE_LIB.LIB_NAME LIKE CONCAT(CONCAT('%', #{libName}), '%')
         </if>
         <if test="applyApiId!=null and applyApiId!=''">
             AND TEST_CASE_LIB.APPLY_API_ID=#{applyApiId}
@@ -55,7 +56,7 @@
             AND TEST_CASE_LIB.LIB_ID=#{libId}
         </if>
         <if test="libName!=null and libName!=''">
-            AND TEST_CASE_LIB.LIB_NAME=#{libName}
+            AND TEST_CASE_LIB.LIB_NAME LIKE CONCAT(CONCAT('%', #{libName}), '%')
         </if>
         <if test="applyApiId!=null and applyApiId!=''">
             AND TEST_CASE_LIB.APPLY_API_ID=#{applyApiId}

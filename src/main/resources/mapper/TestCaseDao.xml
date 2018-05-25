@@ -24,7 +24,7 @@
             AND TEST_CASE.CASE_ID=#{caseId}
         </if>
         <if test="caseName!=null and caseName!=''">
-            AND TEST_CASE.CASE_NAME=#{caseName}
+            AND TEST_CASE.CASE_NAME LIKE CONCAT(CONCAT('%', #{caseName}), '%')
         </if>
         <if test="caseParaType!=null and caseParaType!=''">
             AND TEST_CASE.CASE_PARA_TYPE=#{caseParaType}
@@ -39,9 +39,10 @@
         group by CASE_PARA_TYPE
     </select>
     <select id="categoryByLibId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
-        select CASE_LIB_ID type,count(CASE_ID) number
-        from test_case
-        group by CASE_LIB_ID
+        select a.CASE_LIB_ID type,count(1) number,b.LIB_NAME name
+        from test_case a,test_case_lib b
+        where a.CASE_LIB_ID=b.LIB_ID
+        group by a.CASE_LIB_ID,b.LIB_NAME
     </select>
     <select id="countAll" resultType="java.lang.Integer">
         select count(1) from test_case
@@ -53,7 +54,7 @@
             AND TEST_CASE.CASE_ID=#{caseId}
         </if>
         <if test="caseName!=null and caseName!=''">
-            AND TEST_CASE.CASE_NAME=#{caseName}
+            AND TEST_CASE.CASE_NAME LIKE CONCAT(CONCAT('%', #{caseName}), '%')
         </if>
         <if test="caseParaType!=null and caseParaType!=''">
             AND TEST_CASE.CASE_PARA_TYPE=#{caseParaType}
@@ -69,7 +70,7 @@
             AND TEST_CASE.CASE_ID=#{caseId}
         </if>
         <if test="caseName!=null and caseName!=''">
-            AND TEST_CASE.CASE_NAME=#{caseName}
+            AND TEST_CASE.CASE_NAME LIKE CONCAT(CONCAT('%', #{caseName}), '%')
         </if>
         <if test="caseParaType!=null and caseParaType!=''">
             AND TEST_CASE.CASE_PARA_TYPE=#{caseParaType}

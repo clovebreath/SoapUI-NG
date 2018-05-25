@@ -5,6 +5,7 @@
     <script src="resources/js/jquery-3.3.1.min.js"></script>
     <script src="resources/js/jquery.pagination.js"></script>
     <script src="resources/js/bootstrap.min.js"></script>
+    <script src="resources/js/DataFormat.js"></script>
     <script src="resources/js/Api.js"></script>
     <script src="resources/js/CaseLib.js"></script>
     <script src="resources/js/Case.js"></script>
@@ -24,6 +25,12 @@
 
             <div class="tabbable" id="tabs-main">
                 <ul class="nav nav-tabs">
+                    <li id="tab-user">
+                        <a href="#panel-user" data-toggle="tab">用户管理</a>
+                    </li>
+                    <li id="tab-data">
+                        <a href="#panel-data" data-toggle="tab">抄表数据管理</a>
+                    </li>
                     <li id="tab-all" class="active">
                         <a href="#panel-all" data-toggle="tab">总览</a>
                     </li>
@@ -36,24 +43,29 @@
                     <li id="tab-case">
                         <a href="#panel-case" data-toggle="tab">用例管理</a>
                     </li>
-                    <li id="tab-user">
-                        <a href="#panel-user" data-toggle="tab">用户管理</a>
-                    </li>
-                    <li id="tab-data">
-                        <a href="#panel-data" data-toggle="tab">抄表数据管理</a>
+                    <li id="tab-plan">
+                        <a href="#panel-plan" data-toggle="tab">测试计划管理</a>
                     </li>
                     <li id="tab-result">
                         <a href="#panel-result" data-toggle="tab">测试结果管理</a>
-                    </li>
-                    <li id="tab-plan">
-                        <a href="#panel-plan" data-toggle="tab">测试计划管理</a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="panel-all">
                         <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
-                        <div class="col-md-12 column">
+                        <div class="col-md-6 column">
                             <div id="chart-count-all" style="width: 100%;height: 400px;">
+
+                            </div>
+                            <div id="chart-count-api" style="width: 100%;height: 400px;">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 column">
+                            <div id="chart-count-case" style="width: 100%;height: 400px;">
+
+                            </div>
+                            <div id="chart-count-result" style="width: 100%;height: 400px;">
 
                             </div>
                         </div>
@@ -62,34 +74,36 @@
                         <div class="col-md-9 column">
                             <!-- 表单 用于查询信息 -->
                             <form class="form-inline" id="api-query-form" target="nm_iframe">
-                                <div class="form-group">
-                                    <label for="api-name">接口名称</label>
-                                    <input type="text" class="form-control"  width="100px" id="api-name" placeholder="接口名称">
-                                </div>
-                                <div class="form-group">
-                                    <label for="api-id">接口编号</label>
-                                    <input type="number" class="form-control" width="40px" id="api-id" placeholder="接口编号">
-                                </div>
-                                <br/>
-                                <div class="form-group">
-                                    <label for="api-type">接口类型</label>
-                                    <select class="form-control" id="api-type">
-                                        <option value="">所有</option>
-                                        <option value="SOAP">SOAP</option>
-                                        <option value="REST">REST</option>
-                                    </select>
-                                </div>
-                                <button onclick="queryApi()" class="btn btn-default">查询</button>
+                                <!--<div class="row">-->
+                                    <div class="form-group">
+                                        <label for="api-name">接口名称</label>
+                                        <input type="text" class="form-control" id="api-name" placeholder="接口名称">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="api-id">接口编号</label>
+                                        <input type="number" class="form-control" id="api-id" placeholder="接口编号">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="api-type">接口类型</label>
+                                        <select class="form-control" id="api-type">
+                                            <option value="">所有</option>
+                                            <option value="SOAP">SOAP</option>
+                                            <option value="REST">REST</option>
+                                        </select>
+                                    </div>
+                                    <div  class=""><button onclick="queryApi()" class="btn btn-default">查询</button></div>
+                                <!--</div>-->
                             </form>
-
-                            <!-- 表格 用于展示信息 -->
-                            <table id="api-query-table" class="table table-bordered">
-                                <thead><tr>
-                                    <th>ID</th> <th>名称</th> <th>类型</th> <th>地址</th> <th>访问方式</th> <th>说明</th> <th>操作</th>
-                                </tr></thead>
-                                <tfoot></tfoot>
-                                <tbody></tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <!-- 表格 用于展示信息 -->
+                                <table id="api-query-table" class="table table-bordered">
+                                    <thead><tr>
+                                        <th>ID</th> <th>名称</th> <th>类型</th> <th>地址</th> <th>访问方式</th> <th>说明</th> <th>操作</th>
+                                    </tr></thead>
+                                    <tfoot></tfoot>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                             <ul class="pagination" id="api-pagination"></ul>
                             <div class="modal fade" id="modal-container-new-api" role="dialog" aria-labelledby="new-api-label" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -253,16 +267,16 @@
                                 </div>
                                 <button onclick="queryLib()" class="btn btn-default">查询</button>
                             </form>
-
-                            <!-- 表格 用于展示信息 -->
-                            <table id="lib-query-table" class="table table-bordered">
-                                <thead><tr>
-                                    <th>ID</th><th>名称</th><th>适用接口编号</th><th>简介</th><th>操作</th>
-                                </tr></thead>
-                                <tfoot></tfoot>
-                                <tbody></tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <!-- 表格 用于展示信息 -->
+                                <table id="lib-query-table" class="table table-bordered">
+                                    <thead><tr>
+                                        <th>ID</th><th>名称</th><th>适用接口编号</th><th>简介</th><th>操作</th>
+                                    </tr></thead>
+                                    <tfoot></tfoot>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                             <ul class="pagination" id="lib-pagination"></ul>
 
                             <div class="modal fade" id="modal-container-new-lib" role="dialog" aria-labelledby="lib-new-label" aria-hidden="true">
@@ -397,16 +411,16 @@
                                 </div>
                                 <button onclick="queryCase()" class="btn btn-default">查询</button>
                             </form>
-
-                            <!-- 表格 用于展示信息 -->
-                            <table id="case-query-table" class="table table-bordered">
-                                <thead><tr>
-                                    <th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th><th>操作</th>
-                                </tr></thead>
-                                <tfoot></tfoot>
-                                <tbody></tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <!-- 表格 用于展示信息 -->
+                                <table id="case-query-table" class="table table-bordered">
+                                    <thead><tr>
+                                        <th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th><th>操作</th>
+                                    </tr></thead>
+                                    <tfoot></tfoot>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                             <ul class="pagination" id="case-pagination"></ul>
 
                             <div class="modal fade" id="modal-container-new-case" role="dialog" aria-labelledby="case-new-label" aria-hidden="true">
@@ -533,6 +547,36 @@
                                 </div>
                             </div>
 
+                            <div class="modal fade" id="modal-container-case-detail" role="dialog" aria-labelledby="case-parameter-compare" aria-hidden="true">
+                                <div class="modal-dialog" style="width: 90%;">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="case-parameter-compare">
+                                                参数详情
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row clearfix">
+                                                <div class="col-md-6 column">
+                                                    <h4>输入数据</h4>
+                                                    <pre id="case-parameter-json"></pre>
+                                                    <pre id="case-parameter-xml"></pre>
+                                                </div>
+                                                <div class="col-md-6 column">
+                                                    <h4>期望返回</h4>
+                                                    <pre id="case-response-json"></pre>
+                                                    <pre id="case-response-xml" lang="xml"></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <!--<button type="button" class="btn btn-primary" onclick="syntaxHighlightXml()">格式化</button>-->
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-3 column">
                             <ul class="nav nav-stacked nav-tabs">
@@ -574,15 +618,16 @@
                                 </div>
                                 <button onclick="queryUser()" class="btn btn-default">查询</button>
                             </form>
-
-                            <!-- 表格 用于展示信息 -->
-                            <table id="user-query-table" class="table table-bordered">
-                                <thead><tr>
-                                    <th>ID</th><th>名称</th><th>状态</th><th>类型</th><th>地址</th><th>电能表编号</th><th>电能表台区编号</th><th>操作</th>
-                                </tr></thead>
-                                <tfoot></tfoot>
-                                <tbody></tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <!-- 表格 用于展示信息 -->
+                                <table id="user-query-table" class="table table-bordered">
+                                    <thead><tr>
+                                        <th>ID</th><th>名称</th><th>状态</th><th>类型</th><th>地址</th><th>电能表编号</th><th>电能表台区编号</th><th>操作</th>
+                                    </tr></thead>
+                                    <tfoot></tfoot>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                             <ul class="pagination" id="user-pagination"></ul>
                             <div class="modal fade" id="modal-container-new-user" role="dialog" aria-labelledby="user-new-label" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -744,16 +789,16 @@
                                 </div>
                                 <button onclick="queryData()" class="btn btn-default">查询</button>
                             </form>
-
-                            <!-- 表格 用于展示信息 -->
-                            <table id="data-query-table" class="table table-bordered">
-                                <thead><tr>
-                                    <th>数据ID</th><th>抄表日期</th><th>用户ID</th><th>电能表编号</th><th>电能表数据</th><th>操作</th>
-                                </tr></thead>
-                                <tfoot></tfoot>
-                                <tbody></tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <!-- 表格 用于展示信息 -->
+                                <table id="data-query-table" class="table table-bordered">
+                                    <thead><tr>
+                                        <th>数据ID</th><th>抄表日期</th><th>用户ID</th><th>电能表编号</th><th>电能表数据</th><th>操作</th>
+                                    </tr></thead>
+                                    <tfoot></tfoot>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                             <ul class="pagination" id="data-pagination"></ul>
 
                             <div class="modal fade" id="modal-container-new-data" role="dialog" aria-labelledby="data-new-label" aria-hidden="true">
@@ -897,14 +942,15 @@
                             </form>
 
                             <!-- 表格 用于展示信息 -->
-                            <table id="result-query-table" class="table table-bordered">
-                                <thead><tr>
-                                    <th>测试编号</th><th>测试计划编号</th><th>用例编号</th><th>测试时间</th><th>期望输出</th><th>实际输出</th><th>断言</th><th>操作</th>
-                                </tr></thead>
-                                <tfoot></tfoot>
-                                <tbody></tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <table id="result-query-table" class="table table-bordered">
+                                    <thead><tr>
+                                        <th>测试编号</th><th>测试计划编号</th><th>用例编号</th><th>测试时间</th><th>期望输出</th><th>实际输出</th><th>断言</th><th>操作</th>
+                                    </tr></thead>
+                                    <tfoot></tfoot>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                             <ul class="pagination" id="result-pagination"></ul>
 
                             <div class="modal fade" id="modal-container-new-result" role="dialog" aria-labelledby="result-new-label" aria-hidden="true">
@@ -1061,15 +1107,16 @@
                                 <button onclick="queryPlan()" class="btn btn-default">查询</button>
                             </form>
 
-                            <!-- 表格 用于展示信息 -->
-                            <table id="plan-query-table" class="table table-bordered">
-                                <thead><tr>
-                                    <th>测试计划编号</th><th>测试计划名称</th><th>用例库编号</th><th>被测接口编号</th><th>当前状态</th><th>操作</th>
-                                </tr></thead>
-                                <tfoot></tfoot>
-                                <tbody></tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <!-- 表格 用于展示信息 -->
+                                <table id="plan-query-table" class="table table-bordered">
+                                    <thead><tr>
+                                        <th>测试计划编号</th><th>测试计划名称</th><th>用例库编号</th><th>被测接口编号</th><th>当前状态</th><th>操作</th>
+                                    </tr></thead>
+                                    <tfoot></tfoot>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                             <ul class="pagination" id="plan-pagination"></ul>
 
                             <div class="modal fade" id="modal-container-new-plan" role="dialog" aria-labelledby="plan-new-label" aria-hidden="true">

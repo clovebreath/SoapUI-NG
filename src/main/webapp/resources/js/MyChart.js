@@ -6,12 +6,17 @@
  * @param myCategory
  * @returns {{title: {text: *, subtext: *, x: string}, tooltip: {trigger: string, formatter: string}, legend: {orient: string, x: string, data: Array}, toolbox: {show: boolean, x: string, y: string, feature: {mark: {show: boolean}, dataView: {show: boolean, readOnly: boolean}, magicType: {show: boolean, type: string[], option: {funnel: {x: string, width: string, funnelAlign: string, max: number}}}, restore: {show: boolean}, saveAsImage: {show: boolean}}}, calculable: boolean, series: *[]}}
  */
-function getPieOption(data,myTittle,mySubTittle,myCategory) {
+function getPieOption(data,myTittle,mySubTittle,myCategory,hasName) {
     let legendData=[];
     let seriesData=[];
     for (let i = 0; i < data.length; i++) {
-        legendData.push(data[i].type);
-        seriesData.push({"value":data[i].number,"name":data[i].type});
+        if(hasName){
+            legendData.push(data[i].name+"(ID:"+data[i].type+")");
+            seriesData.push({"value":data[i].number,"name":data[i].name+"(ID:"+data[i].type+")"});
+        }else{
+            legendData.push(data[i].type);
+            seriesData.push({"value":data[i].number,"name":data[i].type});
+        }
     }
     let option={
         title : {
@@ -121,7 +126,7 @@ function getBarOption(data,myTittle,mySubTittle){
 }
 
 /**
- * 首页柱状图
+ * 首页柱状图、首页饼图
  */
 function countAllData(){
     //初始化echarts对象
@@ -143,6 +148,60 @@ function countAllData(){
         },
         error:function () {
             chartCountAll.showLoading({
+                text: '读取数据失败。'    //loading话术
+            });
+        }
+    });
+    let chartApiType = echarts.init(document.getElementById('chart-count-api'));
+    chartApiType.showLoading({
+        text: '正在努力的读取数据中...'    //loading话术
+    });
+    $.ajax({
+        url:"/api/categoryByType",
+        dataType:"json",
+        success:function (data) {
+            chartApiType.hideLoading();
+            chartApiType.setOption(getPieOption(data,"接口信息","根据类型统计","接口类型"));
+            window.onresize=chartApiType.resize;
+        },
+        error:function () {
+            chartApiType.showLoading({
+                text: '读取数据失败。'    //loading话术
+            });
+        }
+    });
+    let chartCaseLib = echarts.init(document.getElementById('chart-count-case'));
+    chartCaseLib.showLoading({
+        text: '正在努力的读取数据中...'   //loading话术
+    });
+    $.ajax({
+        url:"/testCase/categoryByLibId",
+        dataType:"json",
+        success:function (data) {
+            chartCaseLib.hideLoading();
+            chartCaseLib.setOption(getPieOption(data,"用例信息","根据所属用例库统计","用例所属用例库",true));
+            window.onresize=chartCaseLib.resize;
+        },
+        error:function () {
+            chartCaseLib.showLoading({
+                text: '读取数据失败。'    //loading话术
+            });
+        }
+    });
+    let chartResultTestId= echarts.init(document.getElementById('chart-count-result'));
+    chartResultTestId.showLoading({
+        text: '正在努力的读取数据中...'   //loading话术
+    });
+    $.ajax({
+        url:"/result/categoryByTestPlanId",
+        dataType:"json",
+        success:function (data) {
+            chartResultTestId.hideLoading();
+            chartResultTestId.setOption(getPieOption(data,"测试结果信息","根据测试计划统计","测试编号"));
+            window.onresize=chartResultTestId.resize;
+        },
+        error:function () {
+            chartResultTestId.showLoading({
                 text: '读取数据失败。'    //loading话术
             });
         }
@@ -199,7 +258,7 @@ function caseCategoryByLibId(){
         dataType:"json",
         success:function (data) {
             chartCaseLib.hideLoading();
-            chartCaseLib.setOption(getPieOption(data,"用例信息","根据所属用例库统计","用例所属用例库"));
+            chartCaseLib.setOption(getPieOption(data,"用例信息","根据所属用例库统计","用例所属用例库",true));
             window.onresize=chartCaseLib.resize;
         },
         error:function () {
@@ -239,7 +298,7 @@ function libCategoryByApplyApiId(){
         dataType:"json",
         success:function (data) {
             chartLibApply.hideLoading();
-            chartLibApply.setOption(getPieOption(data,"用例库信息","根据适用接口统计","适用接口"));
+            chartLibApply.setOption(getPieOption(data,"用例库信息","根据适用接口统计","适用接口",true));
             window.onresize=chartLibApply.resize;
         },
         error:function () {
@@ -289,7 +348,12 @@ function resultCategoryByCaseId(){
         }
     });
 }
-function resultCategoryByAssertion(){
+function resultCategoryByAssertion(testId){
+    let subTitle='测试编号:'+testId;
+    if(!testId){
+        testId='';
+        subTitle="根据断言统计";
+    }
     let chartResultAssertion= echarts.init(document.getElementById('chart-result-assertion'));
     chartResultAssertion.showLoading({
         text: '正在努力的读取数据中...'    //loading话术
@@ -297,9 +361,12 @@ function resultCategoryByAssertion(){
     $.ajax({
         url:"/result/categoryByAssertion",
         dataType:"json",
+        data:{
+          'testId':  testId
+        },
         success:function (data) {
             chartResultAssertion.hideLoading();
-            chartResultAssertion.setOption(getPieOption(data,"测试结果信息","根据断言统计","断言"));
+            chartResultAssertion.setOption(getPieOption(data,"测试结果信息",subTitle,"断言"));
             window.onresize=chartResultAssertion.resize;
         },
         error:function () {
@@ -399,7 +466,7 @@ function planCategoryByLibId(){
         dataType:"json",
         success:function (data) {
             chartPlanLibId.hideLoading();
-            chartPlanLibId.setOption(getPieOption(data,"测试计划","根据用例库统计","用例库编号"));
+            chartPlanLibId.setOption(getPieOption(data,"测试计划","根据用例库统计","用例库编号",true));
             window.onresize=chartPlanLibId.resize;
         },
         error:function () {
@@ -419,7 +486,7 @@ function planCategoryByApiId(){
         dataType:"json",
         success:function (data) {
             chartPlanApiId.hideLoading();
-            chartPlanApiId.setOption(getPieOption(data,"测试计划","根据被测试接口统计","接口编号"));
+            chartPlanApiId.setOption(getPieOption(data,"测试计划","根据被测试接口统计","接口编号",true));
             window.onresize=chartPlanApiId.resize;
         },
         error:function () {
@@ -457,6 +524,8 @@ function chartInit(){
         },250);
     });
     $("#modal-result-echart").click(function () {
+        $("#chart-result-case-id").show();
+        $("#chart-result-test-id").show();
         setTimeout(function () {
             resultCategoryByAssertion();
             resultCategoryByCaseId();

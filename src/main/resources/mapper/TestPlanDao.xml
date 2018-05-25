@@ -44,7 +44,7 @@
             and PLAN_STATUS=#{planStatus}
         </if>
         <if test="planName!=null and planName!=''">
-            and PLAN_NAME=#{planName}
+            and PLAN_NAME LIKE CONCAT(CONCAT('%', #{planName}), '%')
         </if>
     </select>
     <select id="queryTestPlanByPage" resultType="io.mojohao.soapui_ng.entity.TestPlan">
@@ -63,18 +63,20 @@
             and PLAN_STATUS=#{planStatus}
         </if>
         <if test="planName!=null and planName!=''">
-            and PLAN_NAME=#{planName}
+            and PLAN_NAME LIKE CONCAT(CONCAT('%', #{planName}), '%')
         </if>
     </select>
     <select id="categoryByLibId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
-        select count(1) number,LIB_ID type
-        from test_plan
-        group by LIB_ID
+        select count(1) number,b.LIB_ID type,b.LIB_NAME name
+        from test_plan a, test_case_lib b
+        where a.LIB_ID=b.LIB_ID
+        group by b.LIB_ID,b.LIB_NAME
     </select>
     <select id="categoryByApiId" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
-        select count(1) number,API_ID type
-        from test_plan
-        group by API_ID
+        select count(1) number,a.API_ID type,b.API_NAME name
+        from test_plan a, api_list b
+        where a.API_ID=b.API_ID
+        group by a.API_ID ,b.API_NAME
     </select>
     <select id="categoryByStatus" resultType="io.mojohao.soapui_ng.entity.ChartTypeDto">
         select count(1) number,PLAN_STATUS type
@@ -100,7 +102,7 @@
             and PLAN_STATUS=#{planStatus}
         </if>
         <if test="planName!=null and planName!=''">
-            and PLAN_NAME=#{planName}
+            and PLAN_NAME LIKE CONCAT(CONCAT('%', #{planName}), '%')
         </if>
     </select>
 </mapper>

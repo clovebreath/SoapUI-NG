@@ -55,8 +55,8 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     @Override
-    public List<ChartTypeDto> categoryByAssertion() {
-        return testResultDao.categoryByAssertion();
+    public List<ChartTypeDto> categoryByAssertion(String testId) {
+        return testResultDao.categoryByAssertion(testId);
     }
     @Override
     public int queryAmount(Map param) {

@@ -16,7 +16,8 @@ function queryCase(){
             for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th>
                 let tr = `<tr id="case-${list[i].caseId}"><td>${list[i].caseId}</td><td>${list[i].caseName}</td><td>${list[i].caseLibId}</td>
                           <td>${list[i].caseParaType}</td><td><pre></pre></td><td><pre></pre></td><td>${list[i].caseInfo}</td>
-                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})" class="btn">修改</a>
+                          <td><a href="#modal-container-case-detail" data-toggle="modal" onclick="seeParameter(${list[i].caseId})" class="btn">查看参数</a>
+                          <a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})" class="btn">修改</a>
                           <a onclick="deleteCase(${list[i].caseId})" class="btn">删除</a></td></tr>`;
                 $("#case-query-table tbody").append(tr);
                 let trDom=$("#case-query-table tbody tr:last-child");
@@ -47,7 +48,8 @@ function queryCaseByPage(){
             for (let i = 0; i < list.length; i++) { //<th>ID</th><th>名称</th><th>所属用例库编号</th><th>参数类型</th><th>入参</th><th>期望返回值</th><th>备注</th>
                 let tr = `<tr id="case-${list[i].caseId}"><td>${list[i].caseId}</td><td>${list[i].caseName}</td><td>${list[i].caseLibId}</td>
                           <td>${list[i].caseParaType}</td><td><pre></pre></td><td><pre></pre></td><td>${list[i].caseInfo}</td>
-                          <td><a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})" class="btn">修改</a>
+                          <td><a href="#modal-container-case-detail" data-toggle="modal" onclick="seeParameter(${list[i].caseId})" class="btn">查看参数</a>
+                          <a href="#modal-container-modify-case" data-toggle="modal" onclick="modifyCase(${list[i].caseId})" class="btn">修改</a>
                           <a onclick="deleteCase(${list[i].caseId})" class="btn">删除</a></td></tr>`;
                 $("#case-query-table tbody").append(tr);
                 let trDom=$("#case-query-table tbody tr:last-child");
@@ -168,4 +170,35 @@ function deleteCase(id){
             window.location="/error";
         }
     });
+}
+//查看数据详情
+function seeParameter(caseId){
+    let inputData = $("#case-"+caseId+" td").eq(4).text();
+    let desiredResponse = $("#case-"+caseId+" td").eq(5).text();
+    let inputXmlSelector="#case-parameter-xml";
+    let inputJsonSelector="#case-parameter-json";
+    let responseXmlSelector="#case-response-xml";
+    let responseJsonSelector="#case-response-json";
+    if('<'===inputData[0]){
+
+        $(inputXmlSelector).text(formatXml(inputData));
+
+        $(inputXmlSelector).show();
+        $(inputJsonSelector).hide();
+    }else {
+        $(inputJsonSelector).html(syntaxHighlightJson(inputData));
+        $(inputXmlSelector).hide();
+        $(inputJsonSelector).show();
+    }
+    if('<'===desiredResponse[0]){
+        $(responseXmlSelector).text(formatXml(desiredResponse));
+
+        $(responseXmlSelector).show();
+        $(responseJsonSelector).hide();
+    }else {
+        $(responseJsonSelector).html(syntaxHighlightJson(desiredResponse));
+        $(responseXmlSelector).hide();
+        $(responseJsonSelector).show();
+    }
+
 }

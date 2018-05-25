@@ -49,7 +49,7 @@
             AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
         </if>
         <if test="elemId!=null and elemId!=''">
-            AND USER_ELE_DATA.ELEM_ID=#{elemId}
+            AND USER_ELE_DATA.ELEM_ID LIKE CONCAT(CONCAT('%', #{elemId}), '%')
         </if>
         <if test="elemData!=null and elemData!=''">
             AND USER_ELE_DATA.ELEM_DATA=#{elemData}
@@ -68,7 +68,7 @@
             AND USER_ELE_DATA.COLLECT_TIME=#{collectTime}
         </if>
         <if test="elemId!=null and elemId!=''">
-            AND USER_ELE_DATA.ELEM_ID=#{elemId}
+            AND USER_ELE_DATA.ELEM_ID LIKE CONCAT(CONCAT('%', #{elemId}), '%')
         </if>
         <if test="elemData!=null and elemData!=''">
             AND USER_ELE_DATA.ELEM_DATA=#{elemData}

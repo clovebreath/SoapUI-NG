@@ -5,7 +5,16 @@ package io.mojohao.soapui_ng.entity;
  */
 public class ChartTypeDto {
     private String type;
+    private String name;
     private int number;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getType() {
         return type;
